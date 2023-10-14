@@ -25,7 +25,7 @@ const patientSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ['Male', 'Female'],
+    enum: ['male', 'female'],
     required: true,
   },
   mobileNumber: {
@@ -43,6 +43,10 @@ const patientSchema = new mongoose.Schema({
     },
     prescriptions: {
       type: [String],
+    },
+    relationToPatient: {
+      type: String,
+      required: true,
     },
   },
 });

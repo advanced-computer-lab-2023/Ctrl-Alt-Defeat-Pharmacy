@@ -37,7 +37,7 @@ const PharmacistSchema = new mongoose.Schema({
   },
   isRegistered: {
     type: Boolean,
-    select: false,
+    default: false,
   },
 });
 

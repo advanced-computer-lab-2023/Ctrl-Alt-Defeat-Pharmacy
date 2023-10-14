@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import React, { useState } from "react";
+import Axios from "axios";
 
 function GetMedicineByName() {
   const [medicineName, setMedicineName] = useState("");
@@ -8,17 +8,12 @@ function GetMedicineByName() {
   const handleClick = async (e) => {
     e.preventDefault();
 
-   
-      const medicineSearched = await Axios.get(
-        `http://localhost:4000/api/v1/Pharmacy/medicine/searchByName/${medicineName}`
-      );
-    console.log(medicineSearched.data)
-      setMedicine(medicineSearched.data.data);
-      
-   
+    const medicineSearched = await Axios.get(
+      `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${medicineName}`
+    );
+    console.log(medicineSearched.data.data);
+    setMedicine(medicineSearched.data.data);
   };
-
- 
 
   return (
     <div>
@@ -35,21 +30,21 @@ function GetMedicineByName() {
           <button type="submit">Search</button>
         </div>
       </form>
-      {medicine && (
-        <div>
-          <h2>Medicine Information</h2>
-          <ul>
-            <li>Name: {medicine.name}</li>
-            <li>Price: {medicine.price}</li>
-            <li>Description: {medicine.description}</li>
-            <li>Quantity: {medicine.quantity}</li>
-            <li>Sales: {medicine.sales}</li>
-            <li>Ingredients:</li>
-           
-            <li>Medical Use: {medicine.medicalUse}</li>
-          </ul>
-        </div>
-      )}
+      <h2>Medicine Information</h2>
+      {medicine &&
+        medicine.map((el) => (
+          <div style={{ border: "1px solid black", width: "fit-content" }}>
+            <ul>
+              <li>Name: {el.name}</li>
+              <li>Price: {el.price}</li>
+              <li>Description: {el.description}</li>
+              <li>Quantity: {el.quantity}</li>
+              <li>Sales: {el.sales}</li>
+              <li>Ingredients: {el.ingredients.toString()}</li>
+              <li>Medical Use: {el.medicalUse}</li>
+            </ul>
+          </div>
+        ))}
     </div>
   );
 }

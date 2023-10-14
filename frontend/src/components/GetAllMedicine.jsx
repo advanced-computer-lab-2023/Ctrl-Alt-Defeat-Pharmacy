@@ -1,21 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import React, { useState } from "react";
+import Axios from "axios";
 
 function GetAllMedicine() {
   const [medicines, setMedicines] = useState([]);
- 
+  const [medicalUseFilter, setMedicalUseFilter] = useState("");
+
   const handleClick = async (e) => {
     e.preventDefault();
     const allMedicines = await Axios.get(
-      "http://localhost:4000/api/v1/Pharmacy/medicine" 
+      "http://localhost:8000/api/v1/pharmacy/medicine"
     );
-    console.log(allMedicines);
     setMedicines(allMedicines.data.data);
-    console.log(medicines)
+  };
+
+  const handleFilter = async (e) => {
+    e.preventDefault();
+    const filteredMedicines = await Axios.get(
+      `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`
+    );
+    setMedicines(filteredMedicines.data.data);
   };
 
   return (
     <div>
+      <div>
+        <h2>Filter by Medical Use</h2>
+        <input
+          type="text"
+          placeholder="Enter Medical Use"
+          value={medicalUseFilter}
+          onChange={(e) => setMedicalUseFilter(e.target.value)}
+        />
+        <button onClick={handleFilter}>Filter by Medical Use</button>
+      </div>
       <button onClick={handleClick}>View All Medicines</button>
       {medicines && (
         <div>
@@ -28,9 +45,8 @@ function GetAllMedicine() {
                 <p>Description: {medicine.description}</p>
                 <p>Quantity: {medicine.quantity} in stock</p>
                 <p>Sales: {medicine.sales} units sold</p>
-                <p>Ingredients: {medicine.ingredients.join(', ')}</p>
+                <p>Ingredients: {medicine.ingredients.join(", ")}</p>
                 <p>Medical Use: {medicine.medicalUse}</p>
-                
               </li>
             ))}
           </ul>

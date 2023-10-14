@@ -1,27 +1,22 @@
 // PharmacistDetails.js
-import React, { useState} from 'react';
-import Axios from 'axios';
-
+import React, { useState } from "react";
+import Axios from "axios";
 
 function PharmacistDetails() {
   const [username, setUsername] = useState("");
   const [pharmacist, setPharmacist] = useState(null);
- 
- 
+
   const handleClick = async (e) => {
     e.preventDefault();
     const pharmacistInfo = await Axios.get(
-      "http://localhost:4000/api/v1/Pharmacy/pharmacist/"+ username
-      ); 
-    
-    console.log(pharmacistInfo);
+      "http://localhost:8000/api/v1/pharmacy/pharmacist/" + username
+    );
     setPharmacist(pharmacistInfo.data.data);
-    
   };
 
   return (
     <div>
-        <h2>View Pharmacist </h2>
+      <h2>View Pharmacist </h2>
       <form onSubmit={handleClick}>
         <div>
           <label>Enter Username:</label>
@@ -35,18 +30,19 @@ function PharmacistDetails() {
         </div>
       </form>
       {pharmacist && (
-    <div>
-      <h2>Pharmacist Information</h2>
-      <ul>
-        <li>Username: {pharmacist.username}</li>
-        <li>Name: {pharmacist.name}</li>
-        <li>Email: {pharmacist.email}</li>
-        <li>Date of Birth: {pharmacist.dateOfBirth}</li>
-        <li>Hourly Rate: {pharmacist.hourlyRate}</li>
-        <li>Affiliation: {pharmacist.affiliation}</li>
-        <li>Educational Background: {pharmacist.educationalBackground}</li>
-      </ul>
-    </div>)}
+        <div>
+          <h2>Pharmacist Information</h2>
+          <ul>
+            <li>Username: {pharmacist.username}</li>
+            <li>Name: {pharmacist.name}</li>
+            <li>Email: {pharmacist.email}</li>
+            <li>Date of Birth: {pharmacist.dateOfBirth}</li>
+            <li>Hourly Rate: {pharmacist.hourlyRate}</li>
+            <li>Affiliation: {pharmacist.affiliation}</li>
+            <li>Educational Background: {pharmacist.educationalBackground}</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -18,4 +18,4 @@ app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 
-app.use('/api/v1/Pharmacy', pharmacyRouter);
+app.use('/api/v1/pharmacy', pharmacyRouter);
