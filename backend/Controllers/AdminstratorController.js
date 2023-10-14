@@ -87,9 +87,9 @@ exports.addAdmin = async (req, res) => {
   
       res.status(200).json({
         status: 'success',
-        data: {
-          returnedPharmacist,
-        },
+        data: 
+          returnedPharmacist
+        ,
       });
     } catch {
       res.status(404).json({
@@ -101,23 +101,22 @@ exports.addAdmin = async (req, res) => {
   
   exports.getPatient = async (req, res) => {
     try {
-      const returnedPatient = await Patient.findById(req.params.id).select(-prescriptions);
+      const returnedPatient = await Patient.findById(req.params.id).select('-prescriptions');
   
-      if (!returnedPharmacist) {
+      if (!returnedPatient) {
         return res.status(404).json({ message: 'Patient not found' });
       }
   
       res.status(200).json({
         status: 'success',
-        data: {
-          returnedPatient,
-        },
+        data: returnedPatient,
       });
-    } catch {
-      res.status(404).json({
+    } catch (err) {
+      res.status(500).json({
         status: 'fail',
-        message: 'err',
+        message: err.message,
       });
     }
   };
+  
   

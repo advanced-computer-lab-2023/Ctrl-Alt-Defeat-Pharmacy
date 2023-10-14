@@ -57,9 +57,9 @@ exports.getMedicineQuantitySales = async (req, res) => {
   
       res.status(200).json({
         status: 'success',
-        data: {
+        data: 
           updatedMedicine,
-        },
+        
       });
     } catch {
       res.status(404).json({

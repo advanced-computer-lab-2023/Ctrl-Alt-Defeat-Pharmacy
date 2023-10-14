@@ -12,9 +12,9 @@ exports.getAllMedicine = async (req, res) => {
       res.status(200).json({
         status: 'success',
         results: allMedicine.length,
-        data: {
+        data: 
           allMedicine,
-        },
+        
       });
     } catch {
       res.status(404).json({
@@ -26,7 +26,7 @@ exports.getAllMedicine = async (req, res) => {
 
   exports.getMedicineByName = async (req, res) => {
     try {
-      const returnedMedicine = await Medicine.findOne({ name: { $regex: new RegExp(req.body.name, 'i') } });
+      const returnedMedicine = await Medicine.find({ name: req.params.name } ).exec();
       res.status(200).json({
         status: 'success',
         data: returnedMedicine,
@@ -41,7 +41,7 @@ exports.getAllMedicine = async (req, res) => {
 
   exports.getMedicineByMedicalUse = async (req, res) => {
     try {
-      const returnedMedicine = await Medicine.find({ medicinalUse: { $regex: new RegExp(req.body.medicinalUse, 'i') } });
+      const returnedMedicine = await Medicine.find({ medicalUse: req.params.medicalUse });
       res.status(200).json({
         status: 'success',
         data: returnedMedicine,
