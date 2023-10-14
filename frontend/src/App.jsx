@@ -11,6 +11,7 @@ import PharmacistDetails from "./components/PharmacistDetails";
 import PatientRegister from "./components/PatientRegister";
 import PharmacistRegister from "./components/PharmacistRegister";
 import AddMedicine from "./components/AddMedicine";
+import EditMedicine from "./components/EditMedicine";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
       <GetMedicineByName />
       <hr />
       <AddMedicine />
+      <hr />
+      <EditMedicine />
     </div>
   );
 }

@@ -55,7 +55,7 @@ exports.addMedicine = async (req, res) => {
 
 exports.updateMedicine = async (req, res) => {
   try {
-    const updatedMedicine = await Medicine.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedMedicine = await Medicine.findOneAndUpdate({ name: req.params.id }, req.body, {
       new: true,
       runValidators: true,
     });
