@@ -32,8 +32,8 @@ function GetMedicineByName() {
       </form>
       <h2>Medicine Information</h2>
       {medicine &&
-        medicine.map((el) => (
-          <div style={{ border: "1px solid black", width: "fit-content" }}>
+        medicine.map((el, idx) => (
+          <div style={{ border: "1px solid black", width: "fit-content" }} key={idx}>
             <ul>
               <li>Name: {el.name}</li>
               <li>Price: {el.price}</li>

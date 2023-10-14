@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const RemovePharmacists = () => {
-  const [pharmacistIdInput, setPharmacistIdInput] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleRemovePharmacist = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/Pharmacy/pharmacist/${pharmacistIdInput}`);
-      setPharmacistIdInput('');
+      await axios.delete(`http://localhost:8000/api/v1/Pharmacy/pharmacist/${username}`);
+      setUsername('');
     } catch (error) {
       console.error('Error removing pharmacist:', error);
     }
@@ -17,12 +17,12 @@ const RemovePharmacists = () => {
   return (
     <div>
       <h1>Remove Pharmacist</h1>
-      <label htmlFor="pharmacistIdInput">Enter Pharmacist ID:</label>
+      <label htmlFor="pharmacistIdInput">Enter Pharmacist username:</label>
       <input
         type="text"
         id="pharmacistIdInput"
-        value={pharmacistIdInput}
-        onChange={(e) => setPharmacistIdInput(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <button onClick={handleRemovePharmacist}>Remove Pharmacist</button>
     </div>

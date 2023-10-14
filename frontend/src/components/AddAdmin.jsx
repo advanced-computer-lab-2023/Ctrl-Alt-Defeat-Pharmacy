@@ -10,7 +10,7 @@ const AddAdmin = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/Pharmacy/admin",
+        "http://localhost:8000/api/v1/pharmacy/admin",
         {
           username,
           password,

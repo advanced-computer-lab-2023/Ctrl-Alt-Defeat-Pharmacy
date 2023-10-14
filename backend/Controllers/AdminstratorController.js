@@ -22,7 +22,7 @@ exports.addAdmin = async (req, res) => {
 
 exports.removePatient = async (req, res) => {
   try {
-    const deletedPatient = await Patient.findByIdAndDelete(req.params.id);
+    const deletedPatient = await Patient.findOneAndDelete({ username: req.params.id });
 
     if (!deletedPatient) {
       return res.status(404).json({ message: 'Patient not found' });
@@ -41,7 +41,7 @@ exports.removePatient = async (req, res) => {
 
 exports.removePharmacist = async (req, res) => {
   try {
-    const deltedPharmacist = await Pharmacist.findByIdAndDelete(req.params.id);
+    const deltedPharmacist = await Pharmacist.findOneAndDelete({ username: req.params.id });
 
     if (!deltedPharmacist) {
       return res.status(404).json({ message: 'Pharmacist not found' });

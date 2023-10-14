@@ -1,5 +1,5 @@
 // ViewPendingPharmacists.jsx
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const ViewPendingPharmacists = () => {
@@ -8,7 +8,7 @@ const ViewPendingPharmacists = () => {
   const fetchPendingPharmacists = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/Pharmacy/pendingRequests"
+        "http://localhost:8000/api/v1/Pharmacy/pendingRequests"
       );
       setPendingPharmacists(response.data.data);
     } catch (error) {
