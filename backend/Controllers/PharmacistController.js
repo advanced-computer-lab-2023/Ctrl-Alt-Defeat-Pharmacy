@@ -13,7 +13,7 @@ exports.registerPharmacist = async (req, res) => {
 
 exports.getMedicineQuantitySales = async (req, res) => {
   try {
-    const returnedMedicine = await Medicine.find().select('quantity sales');
+    const returnedMedicine = await Medicine.find().select('name quantity sales');
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
