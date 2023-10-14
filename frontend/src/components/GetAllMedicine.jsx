@@ -42,6 +42,7 @@ function GetAllMedicine() {
               <li key={medicine._id}>
                 <strong>Name: {medicine.name}</strong>
                 <p>Price: ${medicine.price}</p>
+                <img src={medicine.picture} alt="pic" width='150px' />
                 <p>Description: {medicine.description}</p>
                 <p>Quantity: {medicine.quantity} in stock</p>
                 <p>Sales: {medicine.sales} units sold</p>
