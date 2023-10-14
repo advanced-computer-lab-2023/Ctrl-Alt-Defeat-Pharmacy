@@ -1,6 +1,15 @@
 const Pharmacist = require('../Models/Pharmacist');
 const Medicine = require('../Models/Medicine');
-const APIFeatures = require('../helpers/apiFeatures');
+
+exports.registerPharmacist = async (req, res) => {
+  const newDoctor = await Pharmacist.create(req.body);
+
+  newDoctor.registrationStatus = undefined;
+  res.status(201).json({
+    message: 'pending approval of the new pharmacist',
+    data: newDoctor,
+  });
+};
 
 exports.getMedicineQuantitySales = async (req, res) => {
   try {
@@ -28,7 +37,7 @@ exports.addMedicine = async (req, res) => {
         data: newMedicine,
       });
     } else {
-      existingMedicine.quantity += req.body.quantity;
+      existingMedicine.quantity += parseInt(req.body.quantity);
       const updatedMedicine = await existingMedicine.save();
 
       return res.status(200).json({
@@ -36,10 +45,10 @@ exports.addMedicine = async (req, res) => {
         data: updatedMedicine,
       });
     }
-  } catch {
+  } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: 'err',
+      message: err.message,
     });
   }
 };
@@ -57,9 +66,7 @@ exports.updateMedicine = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
-        updatedMedicine,
-      },
+      data: updatedMedicine,
     });
   } catch {
     res.status(404).json({

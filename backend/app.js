@@ -8,6 +8,7 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
+
 app.use(cors({ origin: '*', credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,4 +19,4 @@ app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 
-app.use('/api/v1/Pharmacy', pharmacyRouter);
+app.use('/api/v1/pharmacy', pharmacyRouter);

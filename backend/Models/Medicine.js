@@ -30,7 +30,7 @@ const medicineSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  medicinalUse: {
+  medicalUse: {
     type: String,
   },
 });
