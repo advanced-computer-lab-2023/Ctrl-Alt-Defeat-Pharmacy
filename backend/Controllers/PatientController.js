@@ -55,11 +55,26 @@ exports.viewCart = async (req, res) => {
 };
 
 exports.removeItemFromCart = async(req,res) => {
+  try {
+    const { patientId } = req.params;
+    const { medicineId } = req.body;
+    const cart = await Cart.findOne({ patientId });
+    const itemIndex = cart.items.findIndex((item) => item.medicineId.toString() === medicineId);
+    if (itemIndex !== -1) {
+      cart.items.splice(itemIndex, 1);
+    }
+    await cart.save();
+    res.json(cart);
 
+  }
+  catch (err) {
+    res.status(500).json({ error: err.message });
+  }  
 
 };
 
 exports.updateQuantityOfItem = async(req,res) => {
+
 
 
 };
