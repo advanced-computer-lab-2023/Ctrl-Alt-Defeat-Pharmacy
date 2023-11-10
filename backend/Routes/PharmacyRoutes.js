@@ -21,10 +21,10 @@ router.route('/medicine/:id').patch(PharmacistController.updateMedicine);
 router.route('/pharmacist/:id').get(AdminstratorController.getPharmacist);
 router.route('/patientView/:id').get(AdminstratorController.getPatient);
 //Cart
-router.route('/addToCart/:patientId').post(PatientController.addOverTheCounterMedicine);
-router.route('/viewCart/:patientId').get(PatientController.viewCart);
-router.route('/removeFromCart/:patientId').put(PatientController.removeItemFromCart);
-router.route('/updateQuantity/:patientId').put(PatientController.updateQuantityOfItem);
+router.route('/addToCart').post(PatientController.addOverTheCounterMedicine);
+router.route('/viewCart').get(PatientController.viewCart);
+router.route('/removeFromCart').put(PatientController.removeItemFromCart);
+router.route('/updateQuantity').put(PatientController.updateQuantityOfItem);
 
 
 module.exports = router;
