@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const cartSchema = new mongoose.Schema({
-  patientId: { type: String, required: true },  // Associating the cart with a patient
+  patientId: { type: String, required: true }, // Associating the cart with a patient
   items: [
     {
       medicineId: { type: mongoose.Schema.Types.ObjectId, ref: 'Medicine' },
