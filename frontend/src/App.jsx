@@ -12,6 +12,8 @@ import PatientRegister from "./components/PatientRegister";
 import PharmacistRegister from "./components/PharmacistRegister";
 import AddMedicine from "./components/AddMedicine";
 import EditMedicine from "./components/EditMedicine";
+import AddToCart from "./components/AddToCart";
+import ViewCart from "./components/ViewCart";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import AdminHome from "./components/AdminHome";
@@ -73,7 +75,11 @@ function App() {
       <hr />
       <AddMedicine />
       <hr />
-      <EditMedicine /> */}
+      <EditMedicine />
+      <hr />
+      <AddToCart />
+      <hr />
+      <ViewCart /> */}
     </div>
   );
 }
