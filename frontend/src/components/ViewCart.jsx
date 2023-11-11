@@ -25,10 +25,10 @@ const ViewCart = () => {
 
   const handleRemoveItem = async (medicineId) => {
     try {
-      await axios.put(`http://localhost:8000/api/v1/pharmacy/removeFromCart`, {
-        patientUsername: patientUsername,
-        medicineId: medicineId
-      });
+        await axios.put(`http://localhost:8000/api/v1/pharmacy/removeFromCart`, {
+          patientUsername: patientUsername,
+          medicineId: medicineId
+        });
   
         setRes((prevRes) => {
             const updatedItems = prevRes.data.items.filter((item) => item.medicineId._id !== medicineId);
@@ -67,29 +67,30 @@ const ViewCart = () => {
       setRes((prevRes) => {
         const updatedItems = prevRes.data.items.map((item) => {
           if (item.medicineId._id === medicineId) {
-            const newQuantity = quantity;
-            if (newQuantity <= 0) {
-                return null; // remove item from cart
+            if (quantity <= 0) {
+              return null;
             }
            
-            const newPrice = item.medicineId.price * newQuantity;
+        const newPrice = item.medicineId.price * quantity;
   
             return {
               ...item,
-              quantity: newQuantity,
+              quantity,
               price: newPrice,
             };
           }
           return item;
         });
+
+        const updatedItems2 = updatedItems.filter((item) => item !== null);
   
-        const updatedTotalPrice = updatedItems.reduce((total, item) => total + item.price, 0);
+        const updatedTotalPrice = updatedItems2.reduce((total, item) => total + item.price, 0);
   
         return {
           ...prevRes,
           data: {
             ...prevRes.data,
-            items: updatedItems,
+            items: updatedItems2,
             totalPrice: updatedTotalPrice,
           },
         };

@@ -1,9 +1,8 @@
 const Patient = require('../Models/Patient');
 const Medicine = require('../Models/Medicine');
-const Cart =  require('../Models/Cart');
+const Cart = require('../Models/Cart');
 
 exports.registerPatient = async (req, res) => {
-
   const newPatient = await Patient.create(req.body);
   res.status(201).json({
     message: 'patient created successfully',
@@ -15,19 +14,18 @@ exports.addOverTheCounterMedicine = async (req, res) => {
   try {
     const { patientUsername, medicineName, quantity } = req.body;
 
-    if(!quantity || quantity==null || quantity==undefined || quantity=="" || quantity==0){
-      quantity = 1; 
+    if (!quantity || quantity == null || quantity == undefined || quantity == '' || quantity == 0) {
+      quantity = 1;
     }
 
     const patient = await Patient.findOne({ username: patientUsername });
     const medicine = await Medicine.findOne({ name: medicineName });
     const price = medicine.price * quantity;
-    
 
     if (!patient) {
       return res.status(404).json({ error: 'Patient not found' });
     }
-    if(!medicine){
+    if (!medicine) {
       return res.status(404).json({ error: 'Medicine not found' });
     }
 
@@ -41,7 +39,7 @@ exports.addOverTheCounterMedicine = async (req, res) => {
       return res.status(201).json(newCart);
     }
 
-    const existingItem = cart.items.find((item) => item.medicineId.toString() === medicine._id.toString());
+    const existingItem = cart.items.find(item => item.medicineId.toString() === medicine._id.toString());
     if (existingItem) {
       existingItem.quantity += quantity;
       existingItem.price += price;
@@ -58,27 +56,16 @@ exports.addOverTheCounterMedicine = async (req, res) => {
   }
 };
 
-
 exports.viewCart = async (req, res) => {
-
   try {
     const { patientUsername } = req.query;
     const patient = await Patient.findOne({ username: patientUsername });
-    const cart = await Cart.findOne({ patientId : patient._id }).populate('items.medicineId');
-    if(!cart){
-      cart.items = [];
-      await Cart.deleteOne({ _id: cart._id });
+    const cart = await Cart.findOne({ patientId: patient._id }).populate('items.medicineId');
+    if (!cart) {
       return res.status(404).json({ error: 'Cart not found' });
     }
-    if(cart.items.length == 0){
-      cart.totalPrice = 0;
-      await Cart.deleteOne({ _id: cart._id });
-      cart.items = [];
-      await cart.save();
-    }
     res.json(cart);
-  } 
-  catch (err) {
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -89,16 +76,18 @@ exports.removeItemFromCart = async (req, res) => {
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
 
-    const itemIndex = cart.items.findIndex((item) => item.medicineId.toString() === medicineId);
+    console.log(patient);
+
+    const itemIndex = cart.items.findIndex(item => item.medicineId.toString() === medicineId);
     if (itemIndex !== -1) {
       const removedItem = cart.items.splice(itemIndex, 1)[0];
       cart.totalPrice -= removedItem.price;
-      if(cart.items.length == 0){ 
+      await cart.save();
+
+      if (cart.items.length == 0) {
         cart.totalPrice = 0;
         await Cart.deleteOne({ _id: cart._id }); // delete cart
-        cart.items = [];
-      } 
-      await cart.save();
+      }
       res.json(cart);
     } else {
       return res.status(404).json({ error: 'Item not found' });
@@ -114,28 +103,38 @@ exports.updateQuantityOfItem = async (req, res) => {
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
 
-    const itemIndex = cart.items.findIndex((item) => item.medicineId.toString() === medicineId);
+    const itemIndex = cart.items.findIndex(item => item.medicineId.toString() === medicineId);
     if (itemIndex !== -1) {
       const medicine = await Medicine.findById(medicineId);
       if (!medicine) {
         return res.status(404).json({ error: 'Medicine not found' });
       }
 
-      const oldItemQuantity = cart.items[itemIndex].quantity; 
+      const oldItemQuantity = cart.items[itemIndex].quantity;
       const oldItemTotalPrice = cart.items[itemIndex].price;
 
       cart.items[itemIndex].quantity = quantity; //Update quantity of item
-      if(cart.items[itemIndex].quantity == 0){ //If quantity is 0, remove item from cart
+      if (cart.items[itemIndex].quantity == 0) {
+        cart.totalPrice -= oldItemTotalPrice;
         cart.items.splice(itemIndex, 1);
-      }
-      cart.items[itemIndex].price = medicine.price * quantity; //Update price of item
+        await cart.save();
 
-      if(cart.items[itemIndex].price>oldItemTotalPrice) //If new price is greater than old price 
+        if (cart.items.length == 0) {
+          cart.totalPrice = 0;
+          await Cart.deleteOne({ _id: cart._id }); // delete cart
+        }
+      } 
+      else {
+        cart.items[itemIndex].price = medicine.price * quantity; //Update price of item
+
+        if (cart.items[itemIndex].price > oldItemTotalPrice) 
         cart.totalPrice += (cart.items[itemIndex].price - oldItemTotalPrice) * (quantity - oldItemQuantity);
-      else //If new price is less than old price
-        cart.totalPrice -= (oldItemTotalPrice - cart.items[itemIndex].price) * (oldItemQuantity - quantity);
+        else 
+          cart.totalPrice -= (oldItemTotalPrice - cart.items[itemIndex].price) * (oldItemQuantity - quantity);
 
-      await cart.save();
+          await cart.save();
+      }
+
       res.json(cart);
     } else {
       res.status(404).json({ error: 'Item not found' });
@@ -145,5 +144,3 @@ exports.updateQuantityOfItem = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
