@@ -7,6 +7,7 @@ import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 const ViewCart = () => {
   const [res, setRes] = useState(null);
   const [patientUsername, setPatientUsername] = useState('');
+  const [outOfStock, setOutOfStock] = useState(false);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const ViewCart = () => {
         },
       });
       setRes(response);
+
     } catch (error) {
       console.error('Error fetching cart:', error.response?.data?.error || error.message);
     }
@@ -63,6 +65,8 @@ const ViewCart = () => {
         medicineId: medicineId,
         quantity: quantity
       });
+
+      setOutOfStock(false);
   
       setRes((prevRes) => {
         const updatedItems = prevRes.data.items.map((item) => {
@@ -96,6 +100,9 @@ const ViewCart = () => {
         };
       });
     } catch (error) {
+      if(error.response?.data?.error === 'This medicine is out of stock'){
+        setOutOfStock(true);
+      }
       console.error('Error updating quantity:', error.response?.data?.error || error.message);
     }
   };
@@ -124,7 +131,8 @@ const ViewCart = () => {
                     <FontAwesomeIcon icon={faMinus} />
                 </button>
                 <span style={{ margin: '0 10px' }}>{item.quantity}</span>
-                <button onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity + 1)}>
+                <button onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity + 1)}
+                        disabled={outOfStock}>
                     <FontAwesomeIcon icon={faPlus} />
                 </button>
                 <button onClick={() => handleRemoveItem(item.medicineId._id)}>

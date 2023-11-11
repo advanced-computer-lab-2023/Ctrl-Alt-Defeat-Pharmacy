@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const AddToCart = () => {
   const [res, setRes] = useState(null);
+  const [error, setError] = useState(null);
   const [patientUsername, setPatientUsername] = useState('');
   const [medicineName, setMedicineName] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -18,10 +19,15 @@ const AddToCart = () => {
         quantity: quantityValue,
       });
       setRes(response);
+      setError(null);
 
-      console.log(response.data); 
     } catch (error) {
-      console.error('Error:', error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+        setRes(null);
+      } else {
+        console.error('Error:', error.message);
+      }
     }
   };
 
@@ -46,6 +52,7 @@ const AddToCart = () => {
         <br />
         <button type="submit">Add Medicine</button>
       </form>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       {res && <div>New Item added to the cart</div>}
     </div>
   );
