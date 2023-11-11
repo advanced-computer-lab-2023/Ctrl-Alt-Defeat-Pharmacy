@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const PharmacistSchema = new mongoose.Schema({
+const pharmacistSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -41,6 +42,12 @@ const PharmacistSchema = new mongoose.Schema({
   },
 });
 
-const Pharmacist = mongoose.model('Pharmacist', PharmacistSchema);
+pharmacistSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 12);
+
+  next();
+});
+
+const Pharmacist = mongoose.model('Pharmacist', pharmacistSchema);
 
 module.exports = Pharmacist;
