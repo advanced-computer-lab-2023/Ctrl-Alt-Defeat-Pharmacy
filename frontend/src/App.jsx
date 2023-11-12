@@ -19,6 +19,8 @@ import Login from "./components/Login";
 import AdminHome from "./components/AdminHome";
 import PharmacistHome from "./components/PharmacistHome";
 import PatientHome from "./components/PatientHome";
+import Checkout from "./components/Checkout";
+import ViewOrder from "./components/ViewOrder";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -39,26 +41,28 @@ function App() {
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
           <Route path="/patients/home" element={<PatientHome />} />
           <Route path="patients/medicines" element={<GetAllMedicine />} />
+          <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
+          <Route path="patients/addToCart" element={<AddToCart />} />
         </Routes>
       </BrowserRouter>
 
       {/* OLD COMPONENTS PLACEMENT BEFORE NAVIGATION */}
-      {/* <AddAdmin />
+      {/* <AddAdmin /> Done
+      <hr />s
+      <RemovePatients /> Done
       <hr />
-      <RemovePatients />
+      <RemovePharmacists /> Done
       <hr />
-      <RemovePharmacists />
-      <hr />
-      <ViewPendingPharmacists />
+      <ViewPendingPharmacists /> Done
       <hr />
       <ViewMedicineQuantitySales />
       <hr />
-      <PatientRegister />
+      <PatientRegister /> Done
       <hr />
-      <PharmacistRegister />
+      <PharmacistRegister /> Done
       <hr />
-      <GetAllMedicine />
+      <GetAllMedicine /> Done
       <hr />
       <PharmacistDetails />
       <hr />
@@ -72,7 +76,7 @@ function App() {
       <hr />
       <AddToCart />
       <hr />
-      <ViewCart /> */}
+      <ViewCart /> Done */}
     </div>
   );
 }

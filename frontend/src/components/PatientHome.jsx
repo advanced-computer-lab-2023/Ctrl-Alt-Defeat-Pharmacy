@@ -9,7 +9,7 @@ function PatientHome() {
 
   const handleLogout = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/auth/logout",
+      "http://localhost:8000/api/v1/auth/logout", [],
       { withCredentials: true }
     );
     console.log(response.data);
@@ -17,7 +17,7 @@ function PatientHome() {
 
   const showData = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/auth/getMe",
+      "http://localhost:8000/api/v1/auth/getMe",[],
       { withCredentials: true }
     );
     console.log(response.data);
@@ -44,6 +44,21 @@ function PatientHome() {
         <li>
           <Link to="/patients/medicines" onClick={navigate('/patients/medicines')}>
             View All Medicines
+          </Link>
+        </li>
+        <li>
+          <Link to="/patients/addToCart" onClick={navigate('/patients/addToCart')}>
+            Add to Cart
+          </Link>
+        </li>
+        <li>
+          <Link to="/patients/viewCart" onClick={navigate('/patients/viewCart')}>
+            View Cart
+          </Link>
+        </li>
+        <li>
+          <Link to="/patients/viewOrder" onClick={navigate('/patients/viewOrder')}>
+            View Order
           </Link>
         </li>
       </ul>

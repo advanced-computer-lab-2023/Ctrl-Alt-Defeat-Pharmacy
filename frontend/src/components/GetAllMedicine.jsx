@@ -8,7 +8,7 @@ function GetAllMedicine() {
   const handleClick = async (e) => {
     e.preventDefault();
     const allMedicines = await Axios.get(
-      "http://localhost:8000/api/v1/pharmacy/getAllMedicine"
+      "http://localhost:8000/api/v1/pharmacy/getAllMedicine" ,[],{withCredentials: true}
     );
     setMedicines(allMedicines.data.data);
   };
@@ -16,7 +16,7 @@ function GetAllMedicine() {
   const handleFilter = async (e) => {
     e.preventDefault();
     const filteredMedicines = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`
+      `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`,[],{withCredentials: true}
     );
     setMedicines(filteredMedicines.data.data);
   };

@@ -9,7 +9,7 @@ function GetMedicineByName() {
     e.preventDefault();
 
     const medicineSearched = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${medicineName}`
+      `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${medicineName}`,[],{withCredentials: true}
     );
     console.log(medicineSearched.data.data);
     setMedicine(medicineSearched.data.data);

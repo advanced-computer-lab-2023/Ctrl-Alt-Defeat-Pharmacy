@@ -11,7 +11,7 @@ function AddMedicine() {
     quantity: "",
     medicalUse: "",
     ingredients: [""],
-  });
+  },[],{withCredentials: true});
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;

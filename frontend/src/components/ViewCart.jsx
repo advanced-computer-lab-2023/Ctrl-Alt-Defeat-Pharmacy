@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-
-const ViewCart = () => {
+const ViewCart = ({ patientUsername }) => {
   const [res, setRes] = useState(null);
-  const [patientUsername, setPatientUsername] = useState('');
   const [outOfStock, setOutOfStock] = useState(false);
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
+  useEffect(() => {
+    if (patientUsername) {
+      handleSubmit();
+    }
+  }, [patientUsername]);
+
+  const handleSubmit = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`, {
-        params: {
-          patientUsername: patientUsername,
-        },
+      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,{
+        withCredentials: true,
       });
       setRes(response);
-
     } catch (error) {
       console.error('Error fetching cart:', error.response?.data?.error || error.message);
     }
@@ -27,10 +26,8 @@ const ViewCart = () => {
 
   const handleRemoveItem = async (medicineId) => {
     try {
-        await axios.put(`http://localhost:8000/api/v1/patient/removeFromCart`, {
-          patientUsername: patientUsername,
-          medicineId: medicineId
-        });
+        await axios.put(`http://localhost:8000/api/v1/patient/removeFromCart`, { medicineId: medicineId
+        }, [] ,{ withCredentials: true });
   
         setRes((prevRes) => {
             const updatedItems = prevRes.data.items.filter((item) => item.medicineId._id !== medicineId);
@@ -61,10 +58,9 @@ const ViewCart = () => {
   const handleUpdateQuantity = async (medicineId, quantity) => {
     try {
       await axios.put(`http://localhost:8000/api/v1/patient/updateQuantity`, {
-        patientUsername: patientUsername,
         medicineId: medicineId,
         quantity: quantity
-      });
+      }, [] ,{ withCredentials: true });
 
       setOutOfStock(false);
   
@@ -111,15 +107,8 @@ const ViewCart = () => {
 
   return (
     <div>
-      <h1>View Cart</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Patient Username:
-          <input type="text" value={patientUsername} onChange={(e) => setPatientUsername(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">View Cart</button>
-      </form>
+      <h1>My Cart</h1>
+      <br />
       {res && res.data.items.length > 0 ?(
         <div>
             {res.data.items.map((item) => (
@@ -144,7 +133,7 @@ const ViewCart = () => {
             <div>Total: ${res.data.totalPrice}</div>
         </div>
     ): (
-        <div>Cart is empty</div>
+        <div>Your Cart is empty</div>
       )}
     </div>
   );

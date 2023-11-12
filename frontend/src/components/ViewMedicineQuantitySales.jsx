@@ -7,7 +7,7 @@ const ViewMedicineQuantitySales = () => {
   const fetchMedicineQuantitySales = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/pharmacist/quantities"
+        "http://localhost:8000/api/v1/pharmacist/quantities",[], { withCredentials: true }
       );
       setMedicineData(response.data.data);
 

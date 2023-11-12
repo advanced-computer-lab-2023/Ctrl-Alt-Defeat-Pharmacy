@@ -4,7 +4,6 @@ import axios from 'axios';
 const AddToCart = () => {
   const [res, setRes] = useState(null);
   const [error, setError] = useState(null);
-  const [patientUsername, setPatientUsername] = useState('');
   const [medicineName, setMedicineName] = useState('');
   const [quantity, setQuantity] = useState('');
 
@@ -14,10 +13,9 @@ const AddToCart = () => {
 
     try {
       const response = await axios.post('http://localhost:8000/api/v1/patient/addToCart', {
-        patientUsername,
         medicineName,
         quantity: quantityValue,
-      });
+      }, [] ,{ withCredentials: true });
       setRes(response);
       setError(null);
 
@@ -35,11 +33,6 @@ const AddToCart = () => {
     <div>
       <h1>Add a medicine to Cart</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Patient Username:
-          <input type="text" value={patientUsername} onChange={(e) => setPatientUsername(e.target.value)} />
-        </label>
-        <br />
         <label>
           Medicine Name:
           <input type="text" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} />

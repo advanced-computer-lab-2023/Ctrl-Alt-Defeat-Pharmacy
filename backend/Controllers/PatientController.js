@@ -1,6 +1,7 @@
 const Patient = require('../Models/Patient');
 const Medicine = require('../Models/Medicine');
 const Cart = require('../Models/Cart');
+const Order = require('../Models/Order');
 
 exports.registerPatient = async (req, res) => {
   const newPatient = await Patient.create(req.body);
@@ -12,7 +13,8 @@ exports.registerPatient = async (req, res) => {
 
 exports.addOverTheCounterMedicine = async (req, res) => {
   try {
-    const { patientUsername, medicineName, quantity } = req.body;
+    const patientUsername = req.user.username;
+    const { medicineName, quantity } = req.body;
 
     if (!quantity || quantity == null || quantity == undefined || quantity == '' || quantity == 0) {
       quantity = 1;
@@ -72,7 +74,7 @@ exports.addOverTheCounterMedicine = async (req, res) => {
 
 exports.viewCart = async (req, res) => {
   try {
-    const { patientUsername } = req.query;
+    const { patientUsername } = req.user.username;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id }).populate('items.medicineId');
     if (!cart) {
@@ -86,7 +88,8 @@ exports.viewCart = async (req, res) => {
 
 exports.removeItemFromCart = async (req, res) => {
   try {
-    const { patientUsername, medicineId } = req.body;
+    const { patientUsername } = req.user.username;
+    const { medicineId } = req.body;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
     const medicine = await Medicine.findOne({ _id: medicineId });
@@ -115,7 +118,8 @@ exports.removeItemFromCart = async (req, res) => {
 
 exports.updateQuantityOfItem = async (req, res) => {
   try {
-    const { patientUsername, medicineId, quantity } = req.body;
+    const { patientUsername } = req.user.username; 
+    const { medicineId, quantity } = req.body;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
 
@@ -174,5 +178,120 @@ exports.updateQuantityOfItem = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.Checkout = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ patientId: req.params.patientId }).exec();
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    const patientId = cart.patientId;
+    const itemsAdded = cart.items;
+    const totalPriceTemp = itemsAdded.reduce((total, item) => {
+      const medicinePrice = item.medicineId.price || 0;
+      return total + medicinePrice * item.quantity;
+    }, 0);
+
+    const selectedAddressId = req.body.selectedAddressId;
+    const newAddress = req.body.newAddress;
+
+    let deliveryAddress;
+    if (selectedAddressId) {
+      deliveryAddress = await Patient.findById(patientId)
+        .select('addresses')
+        .then(patient => patient?.addresses.id(selectedAddressId));
+    } else if (newAddress) {
+      const patient = await Patient.findById(patientId);
+      if (!patient) {
+        return res.status(404).json({ message: 'Patient not found' });
+      }
+      patient.addresses.push(newAddress);
+      await patient.save();
+      deliveryAddress = newAddress;
+    } else {
+      return res.status(400).json({ message: 'Please provide either a selected address or a new address.' });
+    }
+
+    const newOrder = new Order({
+      patient: patientId,
+      items: itemsAdded,
+      totalPrice: totalPriceTemp,
+      deliveryAddress,
+    });
+
+    const savedOrder = await newOrder.save();
+
+    cart.items = [];
+    await cart.save();
+
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.addAddress = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.patientId);
+
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    const newAddress = req.body;
+    patient.addresses.push(newAddress);
+    await patient.save();
+
+    res.status(201).json({ message: 'Address added successfully', patient });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.getAddresses = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.patientId);
+
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    res.status(200).json({ addresses: patient.addresses });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.viewOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) {
+      return res.status(404).json({ message: 'order not found' });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.cancelOrder = async (req, res) => {
+  try {
+    await Order.findByIdAndUpdate(req.params.orderId, { status: 'cancelled' });
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
