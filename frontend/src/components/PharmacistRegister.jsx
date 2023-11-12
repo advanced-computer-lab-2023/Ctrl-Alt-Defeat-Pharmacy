@@ -24,7 +24,7 @@ function DoctorRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await Axios.post(
-      "http://localhost:8000/api/v1/pharmacy/pharmacists/register",
+      "http://localhost:8000/api/v1/pharmacist/register",
       formData
     );
     setRes(response.data);

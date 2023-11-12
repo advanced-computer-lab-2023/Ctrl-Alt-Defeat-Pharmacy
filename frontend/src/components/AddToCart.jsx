@@ -13,7 +13,7 @@ const AddToCart = () => {
     const quantityValue = parseInt(quantity, 10);
 
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/pharmacy/addToCart`, {
+      const response = await axios.post('http://localhost:8000/api/v1/patient/addToCart', {
         patientUsername,
         medicineName,
         quantity: quantityValue,

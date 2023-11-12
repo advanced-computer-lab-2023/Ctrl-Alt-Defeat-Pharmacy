@@ -9,7 +9,7 @@ function PharmacistDetails() {
   const handleClick = async (e) => {
     e.preventDefault();
     const pharmacistInfo = await Axios.get(
-      "http://localhost:8000/api/v1/pharmacy/pharmacist/" + username
+      "http://localhost:8000/api/v1/admin/pharmacistView/" + username
     );
     setPharmacist(pharmacistInfo.data.data);
   };

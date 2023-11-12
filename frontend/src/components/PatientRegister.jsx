@@ -42,7 +42,7 @@ function PatientRegister() {
       },
     };
     const response = await Axios.post(
-      "http://localhost:8000/api/v1/pharmacy/patients/register",
+      "http://localhost:8000/api/v1/patient/register",
       data
     );
     setRes(response);

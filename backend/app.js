@@ -5,6 +5,9 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const connectToMongoDB = require('./config.js');
 const pharmacyRouter = require('./Routes/PharmacyRoutes.js');
+const patientRouter = require('./Routes/PatientRoutes.js');
+const pharmacistRouter = require('./Routes/PharmacistRoutes.js');
+const adminRouter = require('./Routes/AdminRoutes.js');
 const authRouter = require('./Routes/AuthRoutes.js');
 const port = process.env.PORT || 4000;
 
@@ -22,4 +25,7 @@ app.listen(port, () => {
 });
 
 app.use('/api/v1/pharmacy', pharmacyRouter);
+app.use('/api/v1/patient', patientRouter);
+app.use('/api/v1/pharmacist', pharmacistRouter);
+app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/auth', authRouter);

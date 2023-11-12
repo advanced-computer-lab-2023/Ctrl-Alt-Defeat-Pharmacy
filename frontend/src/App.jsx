@@ -30,23 +30,16 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/patients/register" element={<PatientRegister />} />
-          <Route
-            path="/pharmacists/register"
-            element={<PharmacistRegister />}
-          />
+          <Route path="/pharmacists/register"element={<PharmacistRegister />} />
           <Route path="/admins/home" element={<AdminHome />} />
           <Route path="/admins/addAdmin" element={<AddAdmin />} />
-          <Route
-            path="/admins/removePharmacist"
-            element={<RemovePharmacists />}
-          />
+          <Route path="/admins/removePharmacist" element={<RemovePharmacists />}/>
           <Route path="/admins/removePatient" element={<RemovePatients />} />
-          <Route
-            path="/admins/viewPendingPharmacists"
-            element={<ViewPendingPharmacists />}
-          />
+          <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
           <Route path="/patients/home" element={<PatientHome />} />
+          <Route path="patients/medicines" element={<GetAllMedicine />} />
+          <Route path="patients/viewCart" element={<ViewCart />} />
         </Routes>
       </BrowserRouter>
 

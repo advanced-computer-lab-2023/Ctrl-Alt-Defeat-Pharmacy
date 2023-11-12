@@ -8,7 +8,7 @@ function GetAllMedicine() {
   const handleClick = async (e) => {
     e.preventDefault();
     const allMedicines = await Axios.get(
-      "http://localhost:8000/api/v1/pharmacy/medicine"
+      "http://localhost:8000/api/v1/pharmacy/getAllMedicine"
     );
     setMedicines(allMedicines.data.data);
   };
