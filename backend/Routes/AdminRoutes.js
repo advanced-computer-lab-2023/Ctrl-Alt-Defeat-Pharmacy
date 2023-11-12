@@ -1,5 +1,7 @@
 const express = require('express');
 const AdminstratorController = require('./../Controllers/AdminstratorController');
+const { protect , restrictTo } = require('../Middlewares/authMiddlewares');
+
 
 const router = express.Router();
 router.route('/addAdmin').post(protect,restrictTo('admin'),AdminstratorController.addAdmin);

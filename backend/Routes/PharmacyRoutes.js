@@ -1,5 +1,7 @@
 const express = require('express');
 const MedicineController = require('./../Controllers/MedicineController');
+const { protect } = require('../Middlewares/authMiddlewares');
+
 
 const router = express.Router();
 
