@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function PatientHome() {
   const [patient, setPatient] = useState(null);
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     const response = await axios.get(
       "http://localhost:8000/api/v1/auth/logout",
@@ -19,6 +23,7 @@ function PatientHome() {
     console.log(response.data);
     setPatient(response.data.loggedIn);
   };
+
   return (
     <div>
       <h2>welcome, patient!</h2>
@@ -34,6 +39,11 @@ function PatientHome() {
         <li>
           <Link to="/" onClick={handleLogout}>
             Logout
+          </Link>
+        </li>
+        <li>
+          <Link to="/patients/medicines" onClick={navigate('/patients/medicines')}>
+            View All Medicines
           </Link>
         </li>
       </ul>

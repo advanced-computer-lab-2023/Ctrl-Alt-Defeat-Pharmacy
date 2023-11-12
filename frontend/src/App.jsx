@@ -38,6 +38,8 @@ function App() {
           <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
           <Route path="/patients/home" element={<PatientHome />} />
+          <Route path="patients/medicines" element={<GetAllMedicine />} />
+          <Route path="patients/viewCart" element={<ViewCart />} />
         </Routes>
       </BrowserRouter>
 
