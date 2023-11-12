@@ -22,6 +22,18 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     const medicine = await Medicine.findOne({ name: medicineName });
     const price = medicine.price * quantity;
 
+    if (medicine.quantity == 0) {
+      return res.status(400).json({ error: 'This medicine is out of stock' });
+    }
+    else if(quantity > medicine.quantity){
+      return res.status(400).json({ error: 'Quantity is more than available' });
+    }
+    else{
+      medicine.quantity -= quantity;
+      await medicine.save();
+    }
+
+
     if (!patient) {
       return res.status(404).json({ error: 'Patient not found' });
     }
@@ -49,6 +61,8 @@ exports.addOverTheCounterMedicine = async (req, res) => {
       cart.totalPrice += price;
     }
 
+    
+
     await cart.save();
     res.status(201).json(cart);
   } catch (err) {
@@ -75,13 +89,15 @@ exports.removeItemFromCart = async (req, res) => {
     const { patientUsername, medicineId } = req.body;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
-
-    console.log(patient);
+    const medicine = await Medicine.findOne({ _id: medicineId });
 
     const itemIndex = cart.items.findIndex(item => item.medicineId.toString() === medicineId);
+    
     if (itemIndex !== -1) {
       const removedItem = cart.items.splice(itemIndex, 1)[0];
       cart.totalPrice -= removedItem.price;
+      medicine.quantity += removedItem.quantity;
+      await medicine.save();
       await cart.save();
 
       if (cart.items.length == 0) {
@@ -112,20 +128,35 @@ exports.updateQuantityOfItem = async (req, res) => {
 
       const oldItemQuantity = cart.items[itemIndex].quantity;
       const oldItemTotalPrice = cart.items[itemIndex].price;
+      
+      if(quantity > oldItemQuantity){
+        if (medicine.quantity == 0) {
+          return res.status(400).json({ error: 'This medicine is out of stock' });
+        }
+        medicine.quantity -= (quantity - oldItemQuantity);
+        await medicine.save();
+      }
+      else if(quantity < oldItemQuantity){
+        medicine.quantity += (oldItemQuantity - quantity);
+        await medicine.save();
+      }
 
-      cart.items[itemIndex].quantity = quantity; //Update quantity of item
-      if (cart.items[itemIndex].quantity == 0) {
+
+      //Updating the quantity of the medicine in the cart and in stock
+      cart.items[itemIndex].quantity = quantity; 
+      
+      if (cart.items[itemIndex].quantity == 0) {  //Checking if the quantity of the medicine in the cart is 0
         cart.totalPrice -= oldItemTotalPrice;
         cart.items.splice(itemIndex, 1);
         await cart.save();
 
-        if (cart.items.length == 0) {
+        if (cart.items.length == 0) { //Deleting the cart if it is empty
           cart.totalPrice = 0;
-          await Cart.deleteOne({ _id: cart._id }); // delete cart
+          await Cart.deleteOne({ _id: cart._id }); 
         }
       } 
-      else {
-        cart.items[itemIndex].price = medicine.price * quantity; //Update price of item
+      else { //Updating the price of the medicine in the cart and the total price of the cart
+        cart.items[itemIndex].price = medicine.price * quantity; 
 
         if (cart.items[itemIndex].price > oldItemTotalPrice) 
         cart.totalPrice += (cart.items[itemIndex].price - oldItemTotalPrice) * (quantity - oldItemQuantity);
@@ -134,6 +165,7 @@ exports.updateQuantityOfItem = async (req, res) => {
 
           await cart.save();
       }
+    
 
       res.json(cart);
     } else {
