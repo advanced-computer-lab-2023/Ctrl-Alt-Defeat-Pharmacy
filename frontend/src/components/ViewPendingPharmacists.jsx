@@ -8,7 +8,7 @@ const ViewPendingPharmacists = () => {
   const fetchPendingPharmacists = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/Pharmacy/pendingRequests"
+        "http://localhost:8000/api/v1/admin/pendingRequests"
       );
       setPendingPharmacists(response.data.data);
     } catch (error) {

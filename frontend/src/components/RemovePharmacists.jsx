@@ -7,7 +7,7 @@ const RemovePharmacists = () => {
 
   const handleRemovePharmacist = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/Pharmacy/pharmacist/${username}`);
+      await axios.delete(`http://localhost:8000/api/v1/admin/removePharmacist/${username}`);
       setUsername('');
     } catch (error) {
       console.error('Error removing pharmacist:', error);

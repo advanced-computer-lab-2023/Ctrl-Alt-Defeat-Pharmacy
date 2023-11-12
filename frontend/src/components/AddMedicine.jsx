@@ -43,7 +43,7 @@ function AddMedicine() {
     };
 
     const response = await axios.post(
-      "http://localhost:8000/api/v1/pharmacy/medicine",
+      "http://localhost:8000/api/v1/pharmacist/addMedicine",
       medicine
     );
     setRes(response);

@@ -8,7 +8,7 @@ const RemovePatients = () => {
   const handleRemovePatient = async () => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/Pharmacy/patient/${username}`
+        `http://localhost:8000/api/v1/admin/removePatient/${username}`
       );
       setUsername("");
     } catch (error) {

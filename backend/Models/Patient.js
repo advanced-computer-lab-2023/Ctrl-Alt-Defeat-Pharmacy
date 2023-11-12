@@ -42,12 +42,12 @@ const patientSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    prescriptions: {
-      type: [String],
-    },
     relationToPatient: {
       type: String,
       required: true,
+    },
+    prescriptions: {
+      type: [String],
     },
   },
 });
