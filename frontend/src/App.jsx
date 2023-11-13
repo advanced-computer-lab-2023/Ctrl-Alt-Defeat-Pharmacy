@@ -4,8 +4,7 @@ import RemovePatients from "./components/RemovePatients";
 import RemovePharmacists from "./components/RemovePharmacists";
 import ViewPendingPharmacists from "./components/ViewPendingPharmacists";
 import ViewMedicineQuantitySales from "./components/ViewMedicineQuantitySales";
-import GetAllMedicine from "./components/GetAllMedicine";
-import GetMedicineByName from "./components/GetMedicineByName";
+import MedicinesPage from "./components/MedicinePage";
 import PatientDetails from "./components/PatientDetails";
 import PharmacistDetails from "./components/PharmacistDetails";
 import PatientRegister from "./components/PatientRegister";
@@ -23,6 +22,7 @@ import Checkout from "./components/Checkout";
 import ViewOrder from "./components/ViewOrder";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+
 function App() {
   return (
     <div className="App">
@@ -33,14 +33,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/patients/register" element={<PatientRegister />} />
           <Route path="/pharmacists/register"element={<PharmacistRegister />} />
+          {/* Admin  */}
           <Route path="/admins/home" element={<AdminHome />} />
           <Route path="/admins/addAdmin" element={<AddAdmin />} />
           <Route path="/admins/removePharmacist" element={<RemovePharmacists />}/>
           <Route path="/admins/removePatient" element={<RemovePatients />} />
           <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
+          {/* Pharmacist */}
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
+          {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
-          <Route path="patients/medicines" element={<GetAllMedicine />} />
+          <Route path="patients/medicines" element={<MedicinesPage />} />
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/addToCart" element={<AddToCart />} />

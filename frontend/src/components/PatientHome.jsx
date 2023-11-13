@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import "../Css/PatientHome.css"; 
 
 function PatientHome() {
   const [patient, setPatient] = useState(null);
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/auth/logout", [],
-      { withCredentials: true }
+      "http://localhost:8000/api/v1/auth/logout", { withCredentials: true }
     );
     console.log(response.data);
   };
 
   const showData = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/auth/getMe",[],
+      "http://localhost:8000/api/v1/auth/getMe",
       { withCredentials: true }
     );
     console.log(response.data);
@@ -26,42 +24,31 @@ function PatientHome() {
 
   return (
     <div>
-      <h2>welcome, patient!</h2>
-      <button onClick={showData}>show me</button>
-      {patient && (
-        <div>
-          <p>name: {patient.name}</p>
-          <p>username: {patient.username}</p>
-          <p>email: {patient.email}</p>
-        </div>
-      )}
-      <ul>
-        <li>
-          <Link to="/" onClick={handleLogout}>
-            Logout
-          </Link>
-        </li>
-        <li>
-          <Link to="/patients/medicines" onClick={navigate('/patients/medicines')}>
-            View All Medicines
-          </Link>
-        </li>
-        <li>
-          <Link to="/patients/addToCart" onClick={navigate('/patients/addToCart')}>
-            Add to Cart
-          </Link>
-        </li>
-        <li>
-          <Link to="/patients/viewCart" onClick={navigate('/patients/viewCart')}>
-            View Cart
-          </Link>
-        </li>
-        <li>
-          <Link to="/patients/viewOrder" onClick={navigate('/patients/viewOrder')}>
-            View Order
-          </Link>
-        </li>
-      </ul>
+      <div className="top-navigation">
+        <Link to="/" className="logo">Logo</Link>
+        <Link to="/patients/home">Home</Link>
+        <Link to="/patients/medicines">Medicines</Link>
+        <Link to="/patients/viewOrder">Orders</Link>
+        <Link to="/patients/addToCart">AddToCart</Link>
+        <Link to="/patients/viewCart">Cart</Link>
+        <Link to="/" className="right" onClick={handleLogout}>Logout</Link>
+      </div>
+
+      <div className="center-content">
+        <h2>Welcome to Ctrl-Alt-Defeat Pharmacy</h2>
+      </div>
+
+      <div>
+        <h2>Welcome, patient!</h2>
+        <button onClick={showData}>show me</button>
+        {patient && (
+          <div>
+            <p>name: {patient.name}</p>
+            <p>username: {patient.username}</p>
+            <p>email: {patient.email}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

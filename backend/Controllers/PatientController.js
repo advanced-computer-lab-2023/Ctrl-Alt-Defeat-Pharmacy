@@ -13,7 +13,7 @@ exports.registerPatient = async (req, res) => {
 
 exports.addOverTheCounterMedicine = async (req, res) => {
   try {
-    const patientUsername = req.user.username;
+    const { username: patientUsername } = req.user;
     const { medicineName, quantity } = req.body;
 
     if (!quantity || quantity == null || quantity == undefined || quantity == '' || quantity == 0) {
@@ -74,7 +74,7 @@ exports.addOverTheCounterMedicine = async (req, res) => {
 
 exports.viewCart = async (req, res) => {
   try {
-    const { patientUsername } = req.user.username;
+    const { username: patientUsername } = req.user;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id }).populate('items.medicineId');
     if (!cart) {
@@ -88,7 +88,7 @@ exports.viewCart = async (req, res) => {
 
 exports.removeItemFromCart = async (req, res) => {
   try {
-    const { patientUsername } = req.user.username;
+    const { username: patientUsername } = req.user;
     const { medicineId } = req.body;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });
@@ -118,7 +118,7 @@ exports.removeItemFromCart = async (req, res) => {
 
 exports.updateQuantityOfItem = async (req, res) => {
   try {
-    const { patientUsername } = req.user.username; 
+    const { username: patientUsername } = req.user;
     const { medicineId, quantity } = req.body;
     const patient = await Patient.findOne({ username: patientUsername });
     const cart = await Cart.findOne({ patientId: patient._id });

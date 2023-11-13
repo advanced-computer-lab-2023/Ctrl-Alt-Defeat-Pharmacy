@@ -8,16 +8,13 @@ const ViewCart = ({ patientUsername }) => {
   const [outOfStock, setOutOfStock] = useState(false);
 
   useEffect(() => {
-    if (patientUsername) {
-      handleSubmit();
-    }
-  }, [patientUsername]);
+    handleSubmit();
+  }, []);
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,{
-        withCredentials: true,
-      });
+      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,
+      { withCredentials: true,});
       setRes(response);
     } catch (error) {
       console.error('Error fetching cart:', error.response?.data?.error || error.message);
@@ -27,7 +24,7 @@ const ViewCart = ({ patientUsername }) => {
   const handleRemoveItem = async (medicineId) => {
     try {
         await axios.put(`http://localhost:8000/api/v1/patient/removeFromCart`, { medicineId: medicineId
-        }, [] ,{ withCredentials: true });
+        } ,{ withCredentials: true });
   
         setRes((prevRes) => {
             const updatedItems = prevRes.data.items.filter((item) => item.medicineId._id !== medicineId);
@@ -60,7 +57,7 @@ const ViewCart = ({ patientUsername }) => {
       await axios.put(`http://localhost:8000/api/v1/patient/updateQuantity`, {
         medicineId: medicineId,
         quantity: quantity
-      }, [] ,{ withCredentials: true });
+      } ,{ withCredentials: true });
 
       setOutOfStock(false);
   

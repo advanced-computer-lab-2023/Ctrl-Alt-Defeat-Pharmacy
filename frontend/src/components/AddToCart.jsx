@@ -15,7 +15,7 @@ const AddToCart = () => {
       const response = await axios.post('http://localhost:8000/api/v1/patient/addToCart', {
         medicineName,
         quantity: quantityValue,
-      }, [] ,{ withCredentials: true });
+      } ,{ withCredentials: true });
       setRes(response);
       setError(null);
 
