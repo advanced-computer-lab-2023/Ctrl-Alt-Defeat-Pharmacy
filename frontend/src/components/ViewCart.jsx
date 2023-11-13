@@ -13,8 +13,7 @@ const ViewCart = ({ patientUsername }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,
-      { withCredentials: true,});
+      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,{ withCredentials: true,});
       setRes(response);
     } catch (error) {
       console.error('Error fetching cart:', error.response?.data?.error || error.message);

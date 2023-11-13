@@ -15,8 +15,7 @@ function PatientHome() {
 
   const showData = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/auth/getMe",
-      { withCredentials: true }
+      "http://localhost:8000/api/v1/auth/getMe",{ withCredentials: true }
     );
     console.log(response.data);
     setPatient(response.data.loggedIn);

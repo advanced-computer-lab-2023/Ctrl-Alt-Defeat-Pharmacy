@@ -14,7 +14,7 @@ const AddAdmin = () => {
         {
           username,
           password,
-        },[],{withCredentials: true}
+        },{withCredentials: true}
       );
 
       console.log("Admin added successfully:", response.data);

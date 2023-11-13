@@ -25,7 +25,7 @@ function DoctorRegister() {
     e.preventDefault();
     const response = await Axios.post(
       "http://localhost:8000/api/v1/pharmacist/register",
-      formData ,[],{withCredentials: true}
+      formData ,{withCredentials: true}
     );
     setRes(response.data);
     setTimeout(() => navigate("/login"), 3000);

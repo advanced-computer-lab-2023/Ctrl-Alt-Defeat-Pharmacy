@@ -11,7 +11,7 @@ const ViewOrder = () => {
 
     try {
       const response = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/viewOrder/${orderId}`,[],{withCredentials: true}
+        `http://localhost:8000/api/v1/pharmacy/viewOrder/${orderId}`,{withCredentials: true}
       );
       setOrder(response.data);
       setError(null);

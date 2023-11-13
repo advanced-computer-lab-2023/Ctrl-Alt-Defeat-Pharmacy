@@ -16,13 +16,13 @@ const Checkout = ({ patientId }) => {
     try {
       // Fetch cart details
       const cartResponse = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/viewCart/${patientId}` ,[],{withCredentials: true}
+        `http://localhost:8000/api/v1/pharmacy/viewCart/${patientId}` ,{withCredentials: true}
       );
       const cartData = cartResponse.data;
 
       // Fetch patient addresses
       const addressesResponse = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/getAddresses/${patientId}`,[],{withCredentials: true}
+        `http://localhost:8000/api/v1/pharmacy/getAddresses/${patientId}`,{withCredentials: true}
       );
       const addressesData = addressesResponse.data;
 
@@ -72,7 +72,7 @@ const Checkout = ({ patientId }) => {
 
       const response = await Axios.post(
         `/api/checkout/${patientId}`,
-        requestData ,[],{withCredentials: true}
+        requestData ,{withCredentials: true}
       );
 
       if (!response.data) {
