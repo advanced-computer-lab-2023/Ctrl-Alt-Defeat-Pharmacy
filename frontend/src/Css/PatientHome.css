@@ -6,7 +6,7 @@ body {
 }
 
 .top-navigation {
-  background-color: #4caf50;
+  background-color: #0071BC;
   overflow: hidden;
 }
 
@@ -56,7 +56,6 @@ body {
   font-weight: bold;
 }
 
-/* Styles for Add Address section */
 form {
   display: flex;
   flex-direction: column;
@@ -73,7 +72,7 @@ input {
 }
 
 button {
-  background-color: #4caf50;
+  background-color: #0071BC;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -82,7 +81,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #004B82;
 }
 
 .main-container {

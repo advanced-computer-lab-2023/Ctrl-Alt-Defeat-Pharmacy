@@ -1,22 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../Css/Home.css";
 
 function Home() {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <h1>welcome to ctrl-alt-defeat pharmacy, Guest!</h1>
-      <Link to="/patients/register">register as patient</Link>
-      <Link to="/pharmacists/register">register as pharmacist</Link>
-      <Link to="/login">login</Link>
+    <div className="home-container">
+      <h1 className="title">Welcome to Ctrl-Alt-Defeat Pharmacy, Guest!</h1>
+      <Link to="/patients/register" className="link">
+        Register as Patient
+      </Link>
+      <Link to="/pharmacists/register" className="link">
+        Register as Pharmacist
+      </Link>
+      <Link to="/login" className="link">
+        Login
+      </Link>
     </div>
   );
 }

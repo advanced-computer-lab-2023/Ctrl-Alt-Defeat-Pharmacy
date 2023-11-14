@@ -46,8 +46,6 @@ const Checkout = () => {
         return;
       }
 
-      // You can add similar checks for the payment option if needed.
-
       const response = await Axios.post(
         "http://localhost:8000/api/v1/patient/checkout",
         { addressId: selectedAddressId },
@@ -71,7 +69,7 @@ const Checkout = () => {
   return (
     <div>
     <div className="top-navigation">
-      <Link to="/" className="logo">Logo</Link>
+      <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
       <Link to="/patients/home">Home</Link>
       <Link to="/patients/medicines">Medicines</Link>
       <Link to="/patients/viewOrder">Orders</Link>
@@ -79,18 +77,20 @@ const Checkout = () => {
     </div>
     <div className="checkout-container">
       <div className="checkout-section">
-          <>
-            <h3>Your Cart</h3>
-            <ul>
-              {cart.items.map((item) => (
-                <li key={item.medicineId._id} className="checkout-item">
-                  <strong>Name: {item.medicineId.name}</strong>
-                  <p>Quantity: {item.quantity}</p>
-                  <img src={item.medicineId.picture} alt={item.medicineId.name} className="medicine-picture" />
-                </li>
-              ))}
-            </ul>
-          </>
+        <h3>Your Cart</h3>
+        {cart.items && cart.items.length > 0 ? (
+          <ul>
+            {cart.items.map((item) => (
+              <li key={item.medicineId._id} className="checkout-item">
+                <strong>Name: {item.medicineId.name}</strong>
+                <p>Quantity: {item.quantity}</p>
+                <img src={item.medicineId.picture} alt={item.medicineId.name} className="medicine-picture" />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Your cart is empty</p>
+        )}
       </div>
 
       <div className="checkout-section">
@@ -109,7 +109,7 @@ const Checkout = () => {
         <h3> Pay With</h3>
         <div>
         <input type="radio" id="cash" name="payment" value="cash"  />
-        <label htmlFor="cash">Cash</label>
+        <h htmlFor="cash">Cash</h>
         </div>
         <div>
         <input type="radio" id="card" name="payment" value="card" />

@@ -89,25 +89,11 @@ function PatientHome() {
       }
     }
   };
-
-  // const handleRemoveAddress = async (addressId) => {  
-  //   try {
-  //     const response = await Axios.delete("http://localhost:8000/api/v1/patient/removeAddress", {
-  //       addressId: addressId},
-  //       {withCredentials: true}
-  //     );
-  //     console.log(response.data);
-  //     setAddresses(addresses.filter((address) => address._id !== addressId));
-  //   } catch (error) {
-  //     console.error("Error removing address:", error.response?.data?.error || error.message);
-  //   }
-  // }
   
-
   return (
     <div>
       <div className="top-navigation">
-        <Link to="/" className="logo">Logo</Link>
+        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
         <Link to="/patients/home">Home</Link>
         <Link to="/patients/medicines">Medicines</Link>
         <Link to="/patients/viewOrder">Orders</Link>

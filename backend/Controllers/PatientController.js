@@ -206,7 +206,6 @@ exports.Checkout = async (req, res) => {
     const savedOrder = await newOrder.save();
     cart.items = [];
     await cart.deleteOne();
-    await cart.save();
 
 
     res.status(201).json(savedOrder);
@@ -235,41 +234,6 @@ exports.addAddress = async (req, res) => {
   }
 };
 
-// exports.removeAddress = async (req, res) => {
-//   try {
-//     const patient = await Patient.findById(req.user._id);
-
-//     if (!patient) {
-//       return res.status(404).json({ message: 'Patient not found' });
-//     }
-
-//     const addressId = req.body ? req.body.addressId : null;
-
-//     if (!addressId) {
-//       return res.status(400).json({ message: 'Invalid request payload' });
-//     }
-
-//     // Log the received addressId for debugging
-//     console.log('Received addressId:', addressId);
-
-//     // Attempt to remove the address
-//     await patient.addresses.id(addressId).remove();
-    
-//     // Save the changes
-//     await patient.save();
-
-//     // Respond with success
-//     res.status(204).json({ message: 'Address removed successfully' });
-//   } catch (error) {
-//     // Log the specific error for debugging
-//     console.error('Error:', error.message);
-
-//     // Respond with a generic error message
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// }
-
-
 exports.getAddresses = async (req, res) => {
   try {
     const patient = await Patient.findById(req.user._id);
@@ -287,7 +251,7 @@ exports.getAddresses = async (req, res) => {
 
 exports.viewOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.orderId);
+    const order = await Order.findById(req.params.orderId).populate('items.medicineId');
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
@@ -302,8 +266,14 @@ exports.viewOrder = async (req, res) => {
 
 exports.cancelOrder = async (req, res) => {
   try {
-    await Order.findByIdAndUpdate(req.params.orderId, { status: 'cancelled' });
-
+    const order = await Order.findByIdAndUpdate(req.params.orderId, { status: 'cancelled' });
+    
+    order.items.forEach(async item => {
+      const medicine = await Medicine.findById(item.medicineId);
+      medicine.quantity += item.quantity;
+      await medicine.save();
+    });
+    
     res.status(204).json({
       status: 'success',
       data: null,

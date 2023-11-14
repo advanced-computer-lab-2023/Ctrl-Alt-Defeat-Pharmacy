@@ -20,7 +20,8 @@ function Login() {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/auth/login",
-        { username: formData.username, password: formData.password },{withCredentials: true}
+        { username: formData.username, password: formData.password },
+        { withCredentials: true }
       );
       console.log(response);
       if (response.data.role === "admin") {
@@ -37,32 +38,34 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      {message && <div>{message}</div>}
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <div>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Username:</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        {message && <div>{message}</div>}
+      </div>
     </div>
   );
 }

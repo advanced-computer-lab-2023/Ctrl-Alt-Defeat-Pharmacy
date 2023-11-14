@@ -128,13 +128,13 @@ const ViewCart = () => {
   return (
     <div>
       <div className="top-navigation">
-          <Link to="/" className="logo">Logo</Link>
+          <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
           <Link to="/patients/home">Home</Link>
           <Link to="/patients/medicines">Medicines</Link>
           <Link to="/patients/viewOrder">Orders</Link>
           <Link to="/patients/viewCart">Cart</Link>
       </div>   
-      <div className="container">
+      <div className="cart-container">
         <h1>My Cart</h1>
         <br />
         {res && res.data.items.length > 0 ? (
