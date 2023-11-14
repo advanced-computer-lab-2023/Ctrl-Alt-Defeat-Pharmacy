@@ -11,7 +11,6 @@ import PatientRegister from "./components/PatientRegister";
 import PharmacistRegister from "./components/PharmacistRegister";
 import AddMedicine from "./components/AddMedicine";
 import EditMedicine from "./components/EditMedicine";
-import AddToCart from "./components/AddToCart";
 import ViewCart from "./components/ViewCart";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -46,7 +45,7 @@ function App() {
           <Route path="patients/medicines" element={<MedicinesPage />} />
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
-          <Route path="patients/addToCart" element={<AddToCart />} />
+          <Route path="patients/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
 
