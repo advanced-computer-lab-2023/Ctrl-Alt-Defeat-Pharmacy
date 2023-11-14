@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router";
 
-function DoctorRegister() {
+function PharmacistRegister() {
   const navigate = useNavigate();
   const [res, setRes] = useState(null);
+  const [message, setMessage] = useState(null); 
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -28,6 +29,17 @@ function DoctorRegister() {
       formData ,{withCredentials: true}
     );
     setRes(response.data);
+    setFormData({
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      dateOfBirth: "",
+      hourlyRate: "",
+      affiliation: "",
+      educationalBackground: "",
+    })
+    setMessage("You request has been sent to the admin for approval");
     setTimeout(() => navigate("/login"), 3000);
   };
 
@@ -116,10 +128,11 @@ function DoctorRegister() {
           />
         </div>
         <button type="submit">Register</button>
+      
       </form>
-      {res && <div>pharmacist request sent</div>}
+      {res && <div>{message}</div>}
     </div>
   );
 }
 
-export default DoctorRegister;
+export default PharmacistRegister;

@@ -4,7 +4,8 @@ import RemovePatients from "./components/RemovePatients";
 import RemovePharmacists from "./components/RemovePharmacists";
 import ViewPendingPharmacists from "./components/ViewPendingPharmacists";
 import ViewMedicineQuantitySales from "./components/ViewMedicineQuantitySales";
-import MedicinesPage from "./components/MedicinePage";
+import PatientMedicinePage from "./components/PatientMedicinePage";
+import MedicinePage from "./components/MedicinePage";
 import PatientDetails from "./components/PatientDetails";
 import PharmacistDetails from "./components/PharmacistDetails";
 import PatientRegister from "./components/PatientRegister";
@@ -38,15 +39,18 @@ function App() {
           <Route path="/admins/removePharmacist" element={<RemovePharmacists />}/>
           <Route path="/admins/removePatient" element={<RemovePatients />} />
           <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
+          <Route path= "admins/patientDetails" element={<PatientDetails />} />
+          <Route path= "admins/pharmacistDetails" element={<PharmacistDetails />} />
+          <Route path="/admins/medicines" element={<MedicinePage />} />
           {/* Pharmacist */}
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
           <Route path="/pharmacists/viewMedicineQuantitySales" element={<ViewMedicineQuantitySales />} />
           <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
           <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
-          <Route path="/pharmacists/medicines" element={<MedicinesPage />} />
+          <Route path="/pharmacists/medicines" element={<MedicinePage />} />
           {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
-          <Route path="patients/medicines" element={<MedicinesPage />} />
+          <Route path="patients/medicines" element={<PatientMedicinePage />} />
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/checkout" element={<Checkout />} />
@@ -62,7 +66,7 @@ function App() {
       <hr />
       <ViewPendingPharmacists /> Done
       <hr />
-      <ViewMedicineQuantitySales />
+      <ViewMedicineQuantitySales /> Done
       <hr />
       <PatientRegister /> Done
       <hr />

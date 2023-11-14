@@ -22,15 +22,12 @@ exports.addAdmin = async (req, res) => {
 
 exports.removePatient = async (req, res) => {
   try {
-    const deletedPatient = await Patient.findOneAndDelete({ username: req.params.id });
+    const deletedPatient = await Patient.findOneAndDelete({ username: req.params.username});
 
     if (!deletedPatient) {
       return res.status(404).json({ message: 'Patient not found' });
     }
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
+    res.status(204).json(deletedPatient)
   } catch (err) {
     res.status(404).json({
       status: 'fail',
@@ -41,7 +38,7 @@ exports.removePatient = async (req, res) => {
 
 exports.removePharmacist = async (req, res) => {
   try {
-    const deltedPharmacist = await Pharmacist.findOneAndDelete({ username: req.params.id });
+    const deltedPharmacist = await Pharmacist.findOneAndDelete({ username: req.params.username });
 
     if (!deltedPharmacist) {
       return res.status(404).json({ message: 'Pharmacist not found' });
@@ -61,7 +58,7 @@ exports.removePharmacist = async (req, res) => {
 
 exports.viewPendingPharmacists = async (req, res) => {
   try {
-    const pendingPharmacists = await Pharmacist.find({ isRegistered: false });
+    const pendingPharmacists = await Pharmacist.find({ registrationStatus: 'pending' });
     if (!pendingPharmacists || pendingPharmacists.length === 0) {
       return res.status(404).json({ message: 'No Pending requests' });
     }
@@ -118,31 +115,19 @@ exports.getPatient = async (req, res) => {
 
 exports.approvePharmacist = async (req, res) => {
   try {
-    // Extract pharmacist username from the request body
     const { username } = req.body;
 
-    // Find the pharmacist by username
     const existingPharmacist = await Pharmacist.findOne({ username });
 
     // If Pharmacist not found, respond with a 404 error
     if (!existingPharmacist) {
-      return res.status(404).json({ error: 'Doctor not found' });
-    }
-
-    // Check if the Pharmacist is already accepted
-    if (
-      existingPharmacist.registrationStatus === 'accepted' ||
-      existingPharmacist.registrationStatus === 'partially accepted'
-    ) {
-      // If the Pharmacist is already approved, respond with a 400 Bad Request
-      return res.status(400).json({ error: 'Doctor is already approved' });
+      return res.status(404).json({ error: 'Pharmacist not found' });
     }
 
     // Update the Pharmacist's registrationStatus to "partially accepted"
     const updatedPharmacist = await Pharmacist.findOneAndUpdate(
       { username },
-      { registrationStatus: 'partially accepted' },
-      { new: true }
+      { registrationStatus: 'accepted' },
     );
 
     // Respond with the updated doctor
@@ -153,3 +138,30 @@ exports.approvePharmacist = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.rejectPharmacist = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    const existingPharmacist = await Pharmacist.findOne({ username });
+
+    // If Pharmacist not found, respond with a 404 error
+    if (!existingPharmacist) {
+      return res.status(404).json({ error: 'Pharmacist not found' });
+    }
+
+    // Update the Pharmacist's registrationStatus to "partially accepted"
+    const updatedPharmacist = await Pharmacist.findOneAndUpdate(
+      { username },
+      { registrationStatus: 'rejected' },
+    );
+
+    // Respond with the updated pharmacist
+    res.json(updatedPharmacist);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error('Error approving doctor:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+

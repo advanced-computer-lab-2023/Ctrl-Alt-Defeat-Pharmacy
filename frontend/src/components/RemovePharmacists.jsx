@@ -4,13 +4,16 @@ import axios from 'axios';
 
 const RemovePharmacists = () => {
   const [username, setUsername] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleRemovePharmacist = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/removePharmacist/${username}`,[],{withCredentials: true});
+      await axios.delete(`http://localhost:8000/api/v1/admin/removePharmacist/${username}`,{withCredentials: true});
       setUsername('');
+      setMessage('Pharmacist removed successfully');
     } catch (error) {
       console.error('Error removing pharmacist:', error);
+      setMessage('Error removing pharmacist');
     }
   };
 
@@ -25,6 +28,7 @@ const RemovePharmacists = () => {
         onChange={(e) => setUsername(e.target.value)}
       />
       <button onClick={handleRemovePharmacist}>Remove Pharmacist</button>
+      <p>{message}</p>
     </div>
   );
 };
