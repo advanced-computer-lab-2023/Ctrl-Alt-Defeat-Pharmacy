@@ -1,9 +1,34 @@
+// const Admin = require('../Models/Admin');
+// const Pharmacist = require('../Models/Pharmacist');
 const Patient = require('../Models/Patient');
 const Medicine = require('../Models/Medicine');
 const Cart = require('../Models/Cart');
 const Order = require('../Models/Order');
 
+// const findByUsername = async username => {
+//   let user;
+
+//   user = await Admin.findOne({ username });
+//   if (user) return { user, role: 'admin' };
+
+//   user = await Patient.findOne({ username });
+//   if (user) return { user, role: 'patient' };
+
+//   user = await Pharmacist.findOne({ username });
+//   if (user) return { user, role: 'pharmacist' };
+
+//   return {};
+// };
+
 exports.registerPatient = async (req, res) => {
+  // const { user } = await findByUsername(req.body.username);
+  // if (user) {
+  //   res.status(200).json({
+  //     status: 'failed',
+  //     message: 'username already exists',
+  //   });
+  //   return;
+  // }
   const newPatient = await Patient.create(req.body);
   res.status(201).json({
     message: 'patient created successfully',

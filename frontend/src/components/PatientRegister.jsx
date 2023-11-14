@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 function PatientRegister() {
   const navigate = useNavigate();
   const [res, setRes] = useState(null);
+  const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -41,12 +42,20 @@ function PatientRegister() {
         relationToPatient: formData.relationToPatient,
       },
     };
+    console.log("response 1");
     const response = await Axios.post(
       "http://localhost:8000/api/v1/patient/register",
-      data ,{withCredentials: true}
+      data,
+      { withCredentials: true }
     );
-    setRes(response);
-    setTimeout(() => navigate("/login"), 3000);
+    console.log("response");
+    if (response.data.status == "failed") {
+      setErr(true);
+    } else {
+      setErr(false);
+      setRes(response);
+      setTimeout(() => navigate("/login"), 3000);
+    }
   };
 
   return (
@@ -160,6 +169,7 @@ function PatientRegister() {
         <button type="submit">Register</button>
       </form>
       {res && <div>patient registered</div>}
+      {err && <div>username already exists</div>}
     </div>
   );
 }

@@ -19,8 +19,11 @@ import PharmacistHome from "./components/PharmacistHome";
 import PatientHome from "./components/PatientHome";
 import Checkout from "./components/Checkout";
 import ViewOrder from "./components/ViewOrder";
+import VerifyOTP from "./components/VerifyOTP";
+import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
+import ChangePassword from "./components/ChangePassword";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 
 function App() {
   return (
@@ -31,16 +34,32 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/patients/register" element={<PatientRegister />} />
-          <Route path="/pharmacists/register"element={<PharmacistRegister />} />
+          <Route
+            path="/pharmacists/register"
+            element={<PharmacistRegister />}
+          />
+          <Route path="/verifyOTP/:username" element={<VerifyOTP />} />
+          <Route path="/forgetPassword" element={<ForgetPassword />} />
+          <Route path="/resetPassword/:username" element={<ResetPassword />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
           {/* Admin  */}
           <Route path="/admins/home" element={<AdminHome />} />
           <Route path="/admins/addAdmin" element={<AddAdmin />} />
-          <Route path="/admins/removePharmacist" element={<RemovePharmacists />}/>
+          <Route
+            path="/admins/removePharmacist"
+            element={<RemovePharmacists />}
+          />
           <Route path="/admins/removePatient" element={<RemovePatients />} />
-          <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
+          <Route
+            path="/admins/viewPendingPharmacists"
+            element={<ViewPendingPharmacists />}
+          />
           {/* Pharmacist */}
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
-          <Route path="/pharmacists/viewMedicineQuantitySales" element={<ViewMedicineQuantitySales />} />
+          <Route
+            path="/pharmacists/viewMedicineQuantitySales"
+            element={<ViewMedicineQuantitySales />}
+          />
           <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
           <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
           <Route path="/pharmacists/medicines" element={<MedicinesPage />} />

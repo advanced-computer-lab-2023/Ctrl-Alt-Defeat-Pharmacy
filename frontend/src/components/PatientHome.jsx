@@ -10,7 +10,7 @@ function PatientHome() {
   const [newStreet, setNewStreet] = useState("");
   const [newCity, setNewCity] = useState("");
   const [newCountry, setNewCountry] = useState("");
-  const [ message, setMessage ] = useState("");
+  const [message, setMessage] = useState("");
 
   // Fetch addresses on component mount
   useEffect(() => {
@@ -20,24 +20,36 @@ function PatientHome() {
   // Function to fetch patient addresses
   const fetchAddresses = async () => {
     try {
-      const response = await Axios.get("http://localhost:8000/api/v1/patient/getAddresses", {
-        withCredentials: true,
-      });
+      const response = await Axios.get(
+        "http://localhost:8000/api/v1/patient/getAddresses",
+        {
+          withCredentials: true,
+        }
+      );
       setAddresses(response.data.addresses);
     } catch (error) {
-      console.error("Error fetching addresses:", error.response?.data?.message || error.message);
+      console.error(
+        "Error fetching addresses:",
+        error.response?.data?.message || error.message
+      );
     }
   };
 
   // Function to handle patient logout
   const handleLogout = async () => {
-    const response = await Axios.get("http://localhost:8000/api/v1/auth/logout", { withCredentials: true });
+    const response = await Axios.get(
+      "http://localhost:8000/api/v1/auth/logout",
+      { withCredentials: true }
+    );
     console.log(response.data);
   };
 
   // Function to show patient data
   const showData = async () => {
-    const response = await Axios.get("http://localhost:8000/api/v1/auth/getMe", { withCredentials: true });
+    const response = await Axios.get(
+      "http://localhost:8000/api/v1/auth/getMe",
+      { withCredentials: true }
+    );
     console.log(response.data);
     setPatient(response.data.loggedIn);
   };
@@ -89,7 +101,7 @@ function PatientHome() {
       }
     }
   };
-  
+
   return (
     <div>
       <div className="top-navigation">
@@ -98,7 +110,12 @@ function PatientHome() {
         <Link to="/patients/medicines">Medicines</Link>
         <Link to="/patients/viewOrder">Orders</Link>
         <Link to="/patients/viewCart">Cart</Link>
-        <Link to="/" className="right" onClick={handleLogout}>Logout</Link>
+        <li>
+          <Link to="/changePassword">change password</Link>
+        </li>
+        <Link to="/" className="right" onClick={handleLogout}>
+          Logout
+        </Link>
       </div>
       <div className="main-container">
         <div className="welcome-section">
@@ -135,7 +152,9 @@ function PatientHome() {
               onChange={handleNewCountryChange}
             />
             <button type="submit">Add</button>
-            <div><p>{message}</p></div>
+            <div>
+              <p>{message}</p>
+            </div>
           </form>
         </div>
 
@@ -151,11 +170,10 @@ function PatientHome() {
                 {/* <button className="remove-Button" onClick={() => handleRemoveAddress(address._id)}>Remove</button> */}
               </ul>
             </div>
-
           ))}
         </div>
       </div>
-  </div>
+    </div>
   );
 }
 
