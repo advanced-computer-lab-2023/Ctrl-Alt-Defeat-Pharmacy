@@ -9,9 +9,39 @@ const Checkout = () => {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   useEffect(() => {
+    const checkout = async () => {
+    const url = new URL(window.location.href);
+    const queryParams = new URLSearchParams(url.search);
+    const success = queryParams.get('success');
+    const addressId = queryParams.get('addressId');
+    if( !success ) return;
+
+    try {
+      const response = await Axios.post(
+        "http://localhost:8000/api/v1/patient/checkout",
+        { addressId },
+        { withCredentials: true }
+      );
+
+      if (!response.data) {
+        throw new Error("Checkout failed");
+      }
+
+      setCheckoutMessage(`Order placed successfully. Order ID: ${response.data._id}`);
+      setSelectedAddressId("");
+      fetchData();
+      window.history.replaceState({}, document.title, "/patients/healthPackages");
+
+    } catch (error) {
+      console.error("Error during checkout:", error.message);
+      setCheckoutMessage("Failed to place the order. Please try again.");
+    }
+  };
     fetchData();
+    checkout();
   }, []);
 
   const fetchData = async () => {
@@ -38,16 +68,10 @@ const Checkout = () => {
     setSelectedAddressId(e.target.value);
   };
 
-  const handleCheckout = async (e) => {
-    e.preventDefault();
+  const handleCheckout = async () => {
     try {
-      if (!selectedAddressId) {
-        setCheckoutMessage("Please select a delivery address.");
-        return;
-      }
-
       const response = await Axios.post(
-        "http://localhost:8000/api/v1/patient/checkout",
+        "http://localhost:8000/api/v1/patient/createStripeCheckoutSession",
         { addressId: selectedAddressId },
         { withCredentials: true }
       );
@@ -56,15 +80,51 @@ const Checkout = () => {
         throw new Error("Checkout failed");
       }
 
-      setCheckoutMessage(`Order placed successfully. Order ID: ${response.data._id}`);
-      setSelectedAddressId("");
-      fetchData();
+      window.location = response.data.url;
 
     } catch (error) {
       console.error("Error during checkout:", error.message);
       setCheckoutMessage("Failed to place the order. Please try again.");
     }
   };
+
+  const pay = async (e) => {
+    e.preventDefault();
+    if (!selectedAddressId) {
+        setCheckoutMessage("Please select a delivery address.");
+        return;
+    }
+
+    if(paymentMethod === 'card') {
+      handleCheckout();
+    } else {
+      try {
+        const response = await Axios.post(
+          "http://localhost:8000/api/v1/patient/checkout",
+          { addressId: selectedAddressId, withWallet: paymentMethod === 'wallet' },
+          { withCredentials: true }
+        );
+
+        if (!response.data) {
+          throw new Error("Checkout failed");
+        }
+
+        if(response.data.error) {
+          setCheckoutMessage(response.data.error);
+          return;
+        }
+
+        setCheckoutMessage(`Order placed successfully. Order ID: ${response.data._id}`);
+        setSelectedAddressId("");
+        fetchData();
+
+      } catch (error) {
+        console.error("Error during checkout:", error.message);
+        setCheckoutMessage("Failed to place the order. Please try again.");
+      }
+    }
+  }
+
 
   return (
     <div>
@@ -108,12 +168,37 @@ const Checkout = () => {
       <div className="checkout-section">
         <h3> Pay With</h3>
         <div>
-        <input type="radio" id="cash" name="payment" value="cash"  />
-        <h htmlFor="cash">Cash</h>
+        <input 
+          type="radio"
+          checked={paymentMethod === 'cash'}
+          id="cash" 
+          name="payment" 
+          value="cash" 
+          onChange={(e) => setPaymentMethod(e.target.value)} 
+        />
+        <label htmlFor="cash">Cash on delivery</label>
         </div>
         <div>
-        <input type="radio" id="card" name="payment" value="card" />
-        <label htmlFor="card">Card</label>
+        <input 
+          type="radio" 
+          checked={paymentMethod === 'card'}
+          id="card" 
+          name="payment" 
+          value="card" 
+          onChange={(e) => setPaymentMethod(e.target.value)} 
+        />
+        <label htmlFor="card">Credit Card</label>
+        </div>
+        <div>
+        <input 
+          type="radio" 
+          checked={paymentMethod === 'wallet'}
+          id="wallet" 
+          name="payment" 
+          value="wallet" 
+          onChange={(e) => setPaymentMethod(e.target.value)} 
+        />
+        <label htmlFor="wallet">Wallet</label>
         </div>
       </div>
 
@@ -126,7 +211,7 @@ const Checkout = () => {
       </div>
 
       <div>
-        <button onClick={handleCheckout} className="checkout-button">
+        <button onClick={pay} className="checkout-button">
           Place Order
         </button>
         {checkoutMessage && <p className="checkout-message">{checkoutMessage}</p>}

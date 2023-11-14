@@ -184,8 +184,56 @@ exports.updateQuantityOfItem = async (req, res) => {
   }
 };
 
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+
+exports.createStripeCheckoutSession = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ patientId: req.user._id }).populate('items.medicineId');
+    const { addressId } = req.body;
+    let line_items = cart.items.map(item => ({
+      price_data: {
+        currency: 'egp',
+        product_data: {
+          name: item.medicineId.name,
+        },
+        unit_amount: Math.floor(item.medicineId.price * 100),
+      },
+      quantity: item.quantity,
+    }));
+
+    line_items = [
+      ...line_items,
+      { price_data: { currency: 'egp', product_data: { name: 'Delivery Fees' }, unit_amount: 500 }, quantity: 1 },
+      {
+        price_data: {
+          currency: 'egp',
+          product_data: { name: 'Service fees' },
+          unit_amount: Math.floor(cart.totalPrice * 0.05 * 100),
+        },
+        quantity: 1,
+      },
+    ];
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      customer_email: req.user.email,
+      client_reference_id: req.user._id,
+      success_url: `http://localhost:5173/patients/checkout?addressId=${addressId}&success=true`,
+      cancel_url: 'http://localhost:5173/patients/checkout',
+    });
+
+    res.status(200).json({ url: session.url });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 exports.Checkout = async (req, res) => {
   try {
+    const { withWallet } = req.body;
     const patientId = req.user._id;
     const patient = await Patient.findOne({ _id: patientId });
     const cart = await Cart.findOne({ patientId: req.user._id });
@@ -207,6 +255,14 @@ exports.Checkout = async (req, res) => {
     const totalPrice = Math.floor((cart.totalPrice + 5 + cart.totalPrice * 0.05) * 100) / 100;
     const selectedAddressId = req.body.addressId;
     const deliveryAddress = req.user.addresses.find(address => address._id.toString() === selectedAddressId.toString());
+
+    if (withWallet) {
+      if (patient.wallet < totalPrice) {
+        return res.status(200).json({ error: 'Insufficient funds in your wallet' });
+      }
+      patient.wallet -= totalPrice;
+      await patient.save();
+    }
 
     if (!deliveryAddress) {
       return res.status(400).json({ message: 'Invalid request payload' });
