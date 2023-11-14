@@ -19,6 +19,8 @@ import PharmacistHome from "./components/PharmacistHome";
 import PatientHome from "./components/PatientHome";
 import Checkout from "./components/Checkout";
 import ViewOrder from "./components/ViewOrder";
+import FileUpload from "./components/FileUpload";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 
@@ -44,6 +46,7 @@ function App() {
           <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
           <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
           <Route path="/pharmacists/medicines" element={<MedicinesPage />} />
+          <Route path="/pharmacists/fileUpload" element={<FileUpload/>} />
           {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
           <Route path="patients/medicines" element={<MedicinesPage />} />

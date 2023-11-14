@@ -75,3 +75,24 @@ exports.updateMedicine = async (req, res) => {
     });
   }
 };
+exports.uploadDocuments = async (req, res) => {
+  const uploadedFiles = req.files ;
+
+  try {
+    const fileInformation = [];
+
+    // Loop through the uploaded files and save their information
+    for (const file of uploadedFiles) {
+      // Here, you can save the file information in the pharmacist model or any other place as needed
+      const fileData = {
+        filename: file.originalname,
+        path: file.path, // This is the local path where the file is saved
+      };
+      fileInformation.push(fileData);
+    }
+    res.json({ message: 'Documents uploaded successfully.' });
+  } catch (error) {
+    console.error('Error handling file upload:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};

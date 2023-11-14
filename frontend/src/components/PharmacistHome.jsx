@@ -28,6 +28,8 @@ function PharmacistHome() {
       <br />
       <Link to="/pharmacists/viewMedicineQuantitySales">View Medicine Quantity Sales</Link>
       <br/>
+      <Link to="/pharmacists/fileUpload">FileUpload</Link>
+      <br/>
     </div>
   );
 }
