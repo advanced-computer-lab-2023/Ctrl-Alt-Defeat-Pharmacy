@@ -66,6 +66,10 @@ const patientSchema = new mongoose.Schema({
       },
     },
   ],
+  wallet: {
+    type: Number,
+    default: 0,
+  },
 });
 
 patientSchema.pre('save', async function (next) {

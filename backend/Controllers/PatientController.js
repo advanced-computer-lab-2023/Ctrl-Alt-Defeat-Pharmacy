@@ -13,24 +13,19 @@ exports.registerPatient = async (req, res) => {
 
 exports.addOverTheCounterMedicine = async (req, res) => {
   try {
-
     const { medicineName, quantity } = req.body;
 
-    
     const medicine = await Medicine.findOne({ name: medicineName });
     const price = medicine.price * quantity;
 
     if (medicine.quantity == 0) {
       return res.status(400).json({ error: 'This medicine is out of stock' });
-    }
-    else if(quantity > medicine.quantity){
+    } else if (quantity > medicine.quantity) {
       return res.status(400).json({ error: 'Quantity is more than available' });
-    }
-    else{
+    } else {
       medicine.quantity -= quantity;
       await medicine.save();
     }
-
 
     if (!medicine) {
       return res.status(404).json({ error: 'Medicine not found' });
@@ -39,7 +34,7 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     const cart = await Cart.findOne({ patientId: req.user._id });
 
     if (!cart) {
-      const newCart = new Cart({ patientId: req.user._id , items: [], totalPrice: 0 });
+      const newCart = new Cart({ patientId: req.user._id, items: [], totalPrice: 0 });
       newCart.items.push({ medicineId: medicine._id, quantity, price });
       newCart.totalPrice += price;
       await newCart.save();
@@ -78,11 +73,11 @@ exports.viewCart = async (req, res) => {
 exports.removeItemFromCart = async (req, res) => {
   try {
     const { medicineId } = req.body;
-    const cart = await Cart.findOne({ patientId: req.user._id  });
+    const cart = await Cart.findOne({ patientId: req.user._id });
     const medicine = await Medicine.findOne({ _id: medicineId });
 
     const itemIndex = cart.items.findIndex(item => item.medicineId.toString() === medicineId);
-    
+
     if (itemIndex !== -1) {
       const removedItem = cart.items.splice(itemIndex, 1)[0];
       cart.totalPrice -= removedItem.price;
@@ -105,9 +100,8 @@ exports.removeItemFromCart = async (req, res) => {
 
 exports.updateQuantityOfItem = async (req, res) => {
   try {
-   
     const { medicineId, quantity } = req.body;
-    const cart = await Cart.findOne({ patientId: req.user._id  });
+    const cart = await Cart.findOne({ patientId: req.user._id });
 
     const itemIndex = cart.items.findIndex(item => item.medicineId.toString() === medicineId);
     if (itemIndex !== -1) {
@@ -118,44 +112,42 @@ exports.updateQuantityOfItem = async (req, res) => {
 
       const oldItemQuantity = cart.items[itemIndex].quantity;
       const oldItemTotalPrice = cart.items[itemIndex].price;
-      
-      if(quantity > oldItemQuantity){
+
+      if (quantity > oldItemQuantity) {
         if (medicine.quantity == 0) {
           return res.status(400).json({ error: 'This medicine is out of stock' });
         }
-        medicine.quantity -= (quantity - oldItemQuantity);
+        medicine.quantity -= quantity - oldItemQuantity;
+        await medicine.save();
+      } else if (quantity < oldItemQuantity) {
+        medicine.quantity += oldItemQuantity - quantity;
         await medicine.save();
       }
-      else if(quantity < oldItemQuantity){
-        medicine.quantity += (oldItemQuantity - quantity);
-        await medicine.save();
-      }
-
 
       //Updating the quantity of the medicine in the cart and in stock
-      cart.items[itemIndex].quantity = quantity; 
-      
-      if (cart.items[itemIndex].quantity == 0) {  //Checking if the quantity of the medicine in the cart is 0
+      cart.items[itemIndex].quantity = quantity;
+
+      if (cart.items[itemIndex].quantity == 0) {
+        //Checking if the quantity of the medicine in the cart is 0
         cart.totalPrice -= oldItemTotalPrice;
         cart.items.splice(itemIndex, 1);
         await cart.save();
 
-        if (cart.items.length == 0) { //Deleting the cart if it is empty
+        if (cart.items.length == 0) {
+          //Deleting the cart if it is empty
           cart.totalPrice = 0;
-          await Cart.deleteOne({ _id: cart._id }); 
+          await Cart.deleteOne({ _id: cart._id });
         }
-      } 
-      else { //Updating the price of the medicine in the cart and the total price of the cart
-        cart.items[itemIndex].price = medicine.price * quantity; 
+      } else {
+        //Updating the price of the medicine in the cart and the total price of the cart
+        cart.items[itemIndex].price = medicine.price * quantity;
 
-        if (cart.items[itemIndex].price > oldItemTotalPrice) 
-        cart.totalPrice += (cart.items[itemIndex].price - oldItemTotalPrice) * (quantity - oldItemQuantity);
-        else 
-          cart.totalPrice -= (oldItemTotalPrice - cart.items[itemIndex].price) * (oldItemQuantity - quantity);
+        if (cart.items[itemIndex].price > oldItemTotalPrice)
+          cart.totalPrice += (cart.items[itemIndex].price - oldItemTotalPrice) * (quantity - oldItemQuantity);
+        else cart.totalPrice -= (oldItemTotalPrice - cart.items[itemIndex].price) * (oldItemQuantity - quantity);
 
-          await cart.save();
+        await cart.save();
       }
-    
 
       res.json(cart);
     } else {
@@ -167,9 +159,56 @@ exports.updateQuantityOfItem = async (req, res) => {
   }
 };
 
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+
+exports.createStripeCheckoutSession = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ patientId: req.user._id }).populate('items.medicineId');
+    const { addressId } = req.body;
+    let line_items = cart.items.map(item => ({
+      price_data: {
+        currency: 'egp',
+        product_data: {
+          name: item.medicineId.name,
+        },
+        unit_amount: Math.floor(item.medicineId.price * 100),
+      },
+      quantity: item.quantity,
+    }));
+
+    line_items = [
+      ...line_items,
+      { price_data: { currency: 'egp', product_data: { name: 'Delivery Fees' }, unit_amount: 500 }, quantity: 1 },
+      {
+        price_data: {
+          currency: 'egp',
+          product_data: { name: 'Service fees' },
+          unit_amount: Math.floor(cart.totalPrice * 0.05 * 100),
+        },
+        quantity: 1,
+      },
+    ];
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      customer_email: req.user.email,
+      client_reference_id: req.user._id,
+      success_url: `http://localhost:5173/patients/checkout?addressId=${addressId}&success=true`,
+      cancel_url: 'http://localhost:5173/patients/checkout',
+    });
+
+    res.status(200).json({ url: session.url });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 exports.Checkout = async (req, res) => {
   try {
-    
+    const { withWallet } = req.body;
     const patientId = req.user._id;
     const patient = await Patient.findOne({ _id: patientId });
     const cart = await Cart.findOne({ patientId: req.user._id });
@@ -183,7 +222,7 @@ exports.Checkout = async (req, res) => {
       medicine.sales += item.quantity;
       medicine.save();
     });
-    
+
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
     }
@@ -192,14 +231,20 @@ exports.Checkout = async (req, res) => {
     const selectedAddressId = req.body.addressId;
     const deliveryAddress = req.user.addresses.find(address => address._id.toString() === selectedAddressId.toString());
 
+    if (withWallet) {
+      if (patient.wallet < totalPrice) {
+        return res.status(200).json({ error: 'Insufficient funds in your wallet' });
+      }
+      patient.wallet -= totalPrice;
+      await patient.save();
+    }
+
     if (!deliveryAddress) {
       return res.status(400).json({ message: 'Invalid request payload' });
     }
 
     console.log(items);
 
-  
-     
     const newOrder = new Order({
       patient: patient,
       items: items,
@@ -210,12 +255,10 @@ exports.Checkout = async (req, res) => {
       },
       totalPrice: totalPrice,
     });
-    
 
     const savedOrder = await newOrder.save();
     cart.items = [];
     await cart.deleteOne();
-
 
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -272,18 +315,17 @@ exports.viewOrder = async (req, res) => {
   }
 };
 
-
 exports.cancelOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.orderId, { status: 'cancelled' });
-    
+
     order.items.forEach(async item => {
       const medicine = await Medicine.findById(item.medicineId);
       medicine.quantity += item.quantity;
       medicine.sales -= item.quantity;
       await medicine.save();
     });
-    
+
     res.status(204).json({
       status: 'success',
       data: null,
