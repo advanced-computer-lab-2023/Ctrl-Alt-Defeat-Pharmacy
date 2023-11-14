@@ -2,12 +2,11 @@ const Pharmacist = require('../Models/Pharmacist');
 const Medicine = require('../Models/Medicine');
 
 exports.registerPharmacist = async (req, res) => {
-  const newDoctor = await Pharmacist.create(req.body);
-
-  newDoctor.registrationStatus = undefined;
+  const newPharmacist = await Pharmacist.create(req.body);
+  newPharmacist.registrationStatus = 'pending';
   res.status(201).json({
     message: 'pending approval of the new pharmacist',
-    data: newDoctor,
+    data: newPharmacist,
   });
 };
 

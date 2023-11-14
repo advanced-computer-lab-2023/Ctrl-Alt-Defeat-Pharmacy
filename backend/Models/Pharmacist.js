@@ -38,7 +38,7 @@ const pharmacistSchema = new mongoose.Schema({
   },
   registrationStatus: {
     type: String,
-    enum: ['pending', 'accepted', 'partially accepted'],
+    enum: ['pending', 'accepted', 'rejected'],
     default: 'pending',
   },
   otp: {

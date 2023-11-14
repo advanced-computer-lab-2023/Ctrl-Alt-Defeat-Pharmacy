@@ -17,30 +17,26 @@ function AdminHome() {
         <li>
           <Link to="/admins/addAdmin">Add Admin</Link>
         </li>
-        {/* <li>
-          <Link to="/admin/removeAdmin">Remove Admin</Link>
-        </li> */}
         <li>
           <Link to="/admins/removePharmacist">Remove Pharmacist</Link>
         </li>
         <li>
-          <Link to="/admins/removePatient">Remove Patient</Link>
+          <Link to="/admins/removePatient"> Remove Patient</Link>
         </li>
         <li>
           <Link to="/admins/viewPendingPharmacists">
             View Pending Pharmacists
           </Link>
         </li>
-        {/* 
         <li>
-          <Link to="/admin/addPackage">Add Package</Link>
+          <Link to="/admins/patientDetails">View Patient Details</Link>
         </li>
         <li>
-          <Link to="/admin/updatePackage">Update Package</Link>
+          <Link to="/admins/pharmacistDetails">View Pharmacist Details</Link>
         </li>
         <li>
-          <Link to="/admin/deletePackage">Delete Package</Link>
-        </li> */}
+          <Link to="/admins/medicines">View Medicines</Link>
+        </li>  
         <li>
           <Link to="/changePassword">change password</Link>
         </li>
