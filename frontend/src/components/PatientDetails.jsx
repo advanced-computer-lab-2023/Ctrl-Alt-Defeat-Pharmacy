@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 function PatientDetails() {
   const [username, setUsername] = useState("");
@@ -7,7 +8,8 @@ function PatientDetails() {
   const handleClick = async (e) => {
     e.preventDefault();
     const patientInfo = await Axios.get(
-      "http://localhost:8000/api/v1/admin/patientView/" + username ,{withCredentials: true}
+      "http://localhost:8000/api/v1/admin/patientView/" + username,
+      { withCredentials: true }
     );
     setPatient(patientInfo.data.data);
   };
@@ -46,6 +48,8 @@ function PatientDetails() {
           </ul>
         </div>
       )}
+      <br />
+      <Link to="/admins/home">home</Link>
     </div>
   );
 }

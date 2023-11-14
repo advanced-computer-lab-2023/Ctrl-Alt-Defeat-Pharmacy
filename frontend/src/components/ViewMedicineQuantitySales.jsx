@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ViewMedicineQuantitySales = () => {
   const [medicineData, setMedicineData] = useState([]);
@@ -7,7 +8,8 @@ const ViewMedicineQuantitySales = () => {
   const fetchMedicineQuantitySales = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/pharmacist/quantities", { withCredentials: true }
+        "http://localhost:8000/api/v1/pharmacist/quantities",
+        { withCredentials: true }
       );
       setMedicineData(response.data.data);
 
@@ -54,6 +56,8 @@ const ViewMedicineQuantitySales = () => {
           </li>
         ))}
       </ul>
+      <br />
+      <Link to="/pharmacists/home">home</Link>
     </div>
   );
 };

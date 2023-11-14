@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
-import "../Css/Order.css"; 
+import "../Css/Order.css";
 
 const ViewOrder = () => {
   const [orderId, setOrderId] = useState("");
@@ -48,13 +48,13 @@ const ViewOrder = () => {
   return (
     <div>
       <div className="top-navigation">
-          <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-          <Link to="/patients/home">Home</Link>
-          <Link to="/patients/medicines">Medicines</Link>
-          <Link to="/patients/viewOrder">Orders</Link>
-          <Link to="/patients/viewCart">Cart</Link>
-        </div>
-      <div className="checkout-container"> 
+        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
+        <Link to="/patients/home">Home</Link>
+        <Link to="/patients/medicines">Medicines</Link>
+        <Link to="/patients/viewOrder">Orders</Link>
+        <Link to="/patients/viewCart">Cart</Link>
+      </div>
+      <div className="checkout-container">
         <h2>View Order</h2>
         <form onSubmit={handleViewOrder}>
           <label>
@@ -107,7 +107,12 @@ const ViewOrder = () => {
 
             <div>
               {order.status !== "cancelled" && (
-                <button onClick={handleCancelOrder} className="button-container">Cancel Order</button>
+                <button
+                  onClick={handleCancelOrder}
+                  className="button-container"
+                >
+                  Cancel Order
+                </button>
               )}
             </div>
           </div>
@@ -115,7 +120,9 @@ const ViewOrder = () => {
 
         {error && <p>{error}</p>}
       </div>
-    </div>  
+      <br />
+      <Link to="/patients/home">home</Link>
+    </div>
   );
 };
 

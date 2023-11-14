@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ViewPendingPharmacists = () => {
   const [pendingPharmacists, setPendingPharmacists] = useState([]);
@@ -60,12 +61,18 @@ const ViewPendingPharmacists = () => {
             <p>Hourly Rate: {pharmacist.hourlyRate}</p>
             <p>Affiliation: {pharmacist.affiliation}</p>
             <p>Educational Background: {pharmacist.educationalBackground}</p>
-            <button onClick={() => handleApprove(pharmacist.username)}>Approve</button>
+            <button onClick={() => handleApprove(pharmacist.username)}>
+              Approve
+            </button>
             <span> </span>
-            <button onClick={() => handleReject(pharmacist.username)}>Reject</button>
+            <button onClick={() => handleReject(pharmacist.username)}>
+              Reject
+            </button>
           </li>
         ))}
       </ul>
+      <br />
+      <Link to="/admins/home">home</Link>
     </div>
   );
 };

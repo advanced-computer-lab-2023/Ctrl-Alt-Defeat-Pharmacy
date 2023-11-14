@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 function PatientRegister() {
   const navigate = useNavigate();
@@ -168,6 +169,7 @@ function PatientRegister() {
         </div>
         <button type="submit">Register</button>
       </form>
+      <Link to="/">home</Link>
       {res && <div>patient registered</div>}
       {err && <div>username already exists</div>}
     </div>

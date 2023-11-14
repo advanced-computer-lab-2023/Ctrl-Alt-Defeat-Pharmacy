@@ -72,6 +72,8 @@ function Login() {
           <button type="submit">Login</button>
         </form>
         <Link to="/forgetPassword">forgot password</Link>
+        <br />
+        <Link to="/">home</Link>
         {message && <div>{message}</div>}
       </div>
     </div>
