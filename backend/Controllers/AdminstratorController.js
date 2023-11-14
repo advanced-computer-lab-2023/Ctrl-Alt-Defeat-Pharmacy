@@ -115,3 +115,41 @@ exports.getPatient = async (req, res) => {
     });
   }
 };
+
+exports.approvePharmacist = async (req, res) => {
+  try {
+    // Extract pharmacist username from the request body
+    const { username } = req.body;
+
+    // Find the pharmacist by username
+    const existingPharmacist = await Pharmacist.findOne({ username });
+
+    // If Pharmacist not found, respond with a 404 error
+    if (!existingPharmacist) {
+      return res.status(404).json({ error: 'Doctor not found' });
+    }
+
+    // Check if the Pharmacist is already accepted
+    if (
+      existingPharmacist.registrationStatus === 'accepted' ||
+      existingPharmacist.registrationStatus === 'partially accepted'
+    ) {
+      // If the Pharmacist is already approved, respond with a 400 Bad Request
+      return res.status(400).json({ error: 'Doctor is already approved' });
+    }
+
+    // Update the Pharmacist's registrationStatus to "partially accepted"
+    const updatedPharmacist = await Pharmacist.findOneAndUpdate(
+      { username },
+      { registrationStatus: 'partially accepted' },
+      { new: true }
+    );
+
+    // Respond with the updated doctor
+    res.json(updatedPharmacist);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error('Error approving doctor:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};

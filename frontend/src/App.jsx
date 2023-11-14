@@ -40,6 +40,10 @@ function App() {
           <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
           {/* Pharmacist */}
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
+          <Route path="/pharmacists/viewMedicineQuantitySales" element={<ViewMedicineQuantitySales />} />
+          <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
+          <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
+          <Route path="/pharmacists/medicines" element={<MedicinesPage />} />
           {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
           <Route path="patients/medicines" element={<MedicinesPage />} />

@@ -174,7 +174,16 @@ exports.Checkout = async (req, res) => {
     const patient = await Patient.findOne({ _id: patientId });
     const cart = await Cart.findOne({ patientId: req.user._id });
     const items = cart.items.map(item => ({ medicineId: item.medicineId, quantity: item.quantity, price: item.price }));
+    //TODO: update the medicines sales
+    const medicineIds = items.map(item => item.medicineId);
+    const medicines = await Medicine.find({ _id: { $in: medicineIds } });
 
+    medicines.forEach(medicine => {
+      const item = items.find(item => item.medicineId.toString() === medicine._id.toString());
+      medicine.sales += item.quantity;
+      medicine.save();
+    });
+    
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
     }
@@ -271,6 +280,7 @@ exports.cancelOrder = async (req, res) => {
     order.items.forEach(async item => {
       const medicine = await Medicine.findById(item.medicineId);
       medicine.quantity += item.quantity;
+      medicine.sales -= item.quantity;
       await medicine.save();
     });
     

@@ -10,5 +10,6 @@ router.route('/removePatient/:id').delete(protect,restrictTo('admin'),Adminstrat
 router.route('/pendingRequests').get(protect,restrictTo('admin'),AdminstratorController.viewPendingPharmacists);
 router.route('/pharmacistView/:id').get(protect,restrictTo('admin'),AdminstratorController.getPharmacist);
 router.route('/patientView/:id').get(protect,restrictTo('admin'),AdminstratorController.getPatient);
+router.route('/approvePharmacist/:id').patch(protect,restrictTo('admin'),AdminstratorController.approvePharmacist);
 
 module.exports = router;
