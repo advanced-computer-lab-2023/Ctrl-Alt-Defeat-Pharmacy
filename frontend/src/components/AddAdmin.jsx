@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const AddAdmin = () => {
   const [username, setUsername] = useState("");
@@ -15,7 +16,8 @@ const AddAdmin = () => {
         {
           username,
           password,
-        },{withCredentials: true}
+        },
+        { withCredentials: true }
       );
       setUsername("");
       setPassword("");
@@ -53,6 +55,7 @@ const AddAdmin = () => {
         <button type="submit">Add Admin</button>
         <p>{message}</p>
       </form>
+      <Link to="/admins/home">home</Link>
     </div>
   );
 };

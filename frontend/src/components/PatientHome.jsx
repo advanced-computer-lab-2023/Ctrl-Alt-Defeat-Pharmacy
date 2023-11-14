@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
 
 function PatientHome() {
-  // State declarations
   const [patient, setPatient] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [newStreet, setNewStreet] = useState("");
@@ -12,12 +11,10 @@ function PatientHome() {
   const [newCountry, setNewCountry] = useState("");
   const [message, setMessage] = useState("");
 
-  // Fetch addresses on component mount
   useEffect(() => {
     fetchAddresses();
   }, []);
 
-  // Function to fetch patient addresses
   const fetchAddresses = async () => {
     try {
       const response = await Axios.get(
@@ -35,7 +32,6 @@ function PatientHome() {
     }
   };
 
-  // Function to handle patient logout
   const handleLogout = async () => {
     const response = await Axios.get(
       "http://localhost:8000/api/v1/auth/logout",
@@ -44,7 +40,6 @@ function PatientHome() {
     console.log(response.data);
   };
 
-  // Function to show patient data
   const showData = async () => {
     const response = await Axios.get(
       "http://localhost:8000/api/v1/auth/getMe",
@@ -54,7 +49,6 @@ function PatientHome() {
     setPatient(response.data.loggedIn);
   };
 
-  // Functions to handle input changes for adding a new address
   const handleNewStreetChange = (e) => {
     setNewStreet(e.target.value);
   };
@@ -67,7 +61,6 @@ function PatientHome() {
     setNewCountry(e.target.value);
   };
 
-  // Function to handle adding a new address
   const handleAddAddress = async (e) => {
     e.preventDefault();
     try {

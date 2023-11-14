@@ -1,6 +1,7 @@
 // PharmacistDetails.js
 import React, { useState } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 function PharmacistDetails() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,8 @@ function PharmacistDetails() {
   const handleClick = async (e) => {
     e.preventDefault();
     const pharmacistInfo = await Axios.get(
-      "http://localhost:8000/api/v1/admin/pharmacistView/" + username ,{withCredentials: true}
+      "http://localhost:8000/api/v1/admin/pharmacistView/" + username,
+      { withCredentials: true }
     );
     setPharmacist(pharmacistInfo.data.data);
   };
@@ -43,6 +45,8 @@ function PharmacistDetails() {
           </ul>
         </div>
       )}
+      <br />
+      <Link to="/admins/home">home</Link>
     </div>
   );
 }

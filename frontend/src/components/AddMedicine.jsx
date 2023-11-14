@@ -1,17 +1,22 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function AddMedicine() {
   const [res, setRes] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    picture: "",
-    price: "",
-    description: "",
-    quantity: "",
-    medicalUse: "",
-    ingredients: [""],
-  },[],{withCredentials: true});
+  const [formData, setFormData] = useState(
+    {
+      name: "",
+      picture: "",
+      price: "",
+      description: "",
+      quantity: "",
+      medicalUse: "",
+      ingredients: [""],
+    },
+    [],
+    { withCredentials: true }
+  );
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -44,7 +49,8 @@ function AddMedicine() {
 
     const response = await axios.post(
       "http://localhost:8000/api/v1/pharmacist/addMedicine",
-      medicine,{withCredentials: true}
+      medicine,
+      { withCredentials: true }
     );
     setRes(response);
   };
@@ -131,6 +137,7 @@ function AddMedicine() {
         </div>
         <button type="submit">Add Medicine</button>
       </form>
+      <Link to="/admins/home">home</Link>
       {res && <div>new medicine added</div>}
     </div>
   );
