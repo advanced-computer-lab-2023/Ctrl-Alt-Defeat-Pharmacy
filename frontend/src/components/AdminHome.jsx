@@ -38,6 +38,9 @@ function AdminHome() {
           <Link to="/admins/medicines">View Medicines</Link>
         </li>  
         <li>
+          <Link to="/changePassword">change password</Link>
+        </li>
+        <li>
           <Link to="/" onClick={handleLogout}>
             Logout
           </Link>

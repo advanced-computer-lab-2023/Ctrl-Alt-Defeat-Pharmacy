@@ -12,7 +12,19 @@ function PharmacistHome() {
     console.log(response.data);
   };
  
-  return ( 
+  const showData = async () => {
+    try {
+      const response = await Axios.get(
+        "http://localhost:8000/api/v1/auth/getMe",
+        { withCredentials: true }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  return (
     <div>
       <h1>Pharmacist Home</h1>
       <h3>Hello, Pharmacist</h3>
@@ -28,6 +40,8 @@ function PharmacistHome() {
       <Link to="/" onClick={handleLogout}>
         Logout
       </Link>
+      <br />
+      <Link to="/changePassword">change password</Link>
     </div>
   );
 }
