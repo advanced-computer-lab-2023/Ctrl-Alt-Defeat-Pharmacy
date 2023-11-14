@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+  }
+  
+  .checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+  h1 {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+  
+  .checkout-item {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: 0.2s;
+    position: relative;
+  }
+  
+  .checkout-item:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .checkout-item strong {
+    font-size: 16px;
+  }
+  
+  .checkout-section {
+    margin-bottom: 20px;
+  }
+  
+  .checkout-section select,
+  .checkout-section input[type="radio"] {
+    margin-right: 8px;
+  }
+  
+  .checkout-section label {
+    margin-right: 15px;
+  }
+  
+  .checkout-button {
+    padding: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0071BC;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    transition: 0.2s;
+  }
+  
+  .checkout-button:hover {
+    background-color: #004B82;
+  }
+  
+  .medicine-picture {
+    width: 70px;
+    height: auto; 
+    margin-right: 10px;
+  }

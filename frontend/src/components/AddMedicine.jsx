@@ -11,7 +11,7 @@ function AddMedicine() {
     quantity: "",
     medicalUse: "",
     ingredients: [""],
-  });
+  },[],{withCredentials: true});
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -44,7 +44,7 @@ function AddMedicine() {
 
     const response = await axios.post(
       "http://localhost:8000/api/v1/pharmacist/addMedicine",
-      medicine
+      medicine,{withCredentials: true}
     );
     setRes(response);
   };

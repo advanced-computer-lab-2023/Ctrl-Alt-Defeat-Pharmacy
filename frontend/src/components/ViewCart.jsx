@@ -1,36 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom";
+import "../Css/PatientHome.css"; 
+import "../Css/Cart.css";
+import { useNavigate } from "react-router-dom";
 
 
 const ViewCart = () => {
   const [res, setRes] = useState(null);
-  const [patientUsername, setPatientUsername] = useState('');
   const [outOfStock, setOutOfStock] = useState(false);
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`, {
-        params: {
-          patientUsername: patientUsername,
-        },
-      });
+      const response = await axios.get(`http://localhost:8000/api/v1/patient/viewCart`,{ withCredentials: true,});
       setRes(response);
 
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching cart:', error.response?.data?.error || error.message);
+      setIsLoading(false);
     }
   };
 
   const handleRemoveItem = async (medicineId) => {
     try {
-        await axios.put(`http://localhost:8000/api/v1/patient/removeFromCart`, {
-          patientUsername: patientUsername,
-          medicineId: medicineId
-        });
+        await axios.put(`http://localhost:8000/api/v1/patient/removeFromCart`, { medicineId: medicineId
+        } ,{ withCredentials: true });
   
         setRes((prevRes) => {
             const updatedItems = prevRes.data.items.filter((item) => item.medicineId._id !== medicineId);
@@ -61,10 +64,9 @@ const ViewCart = () => {
   const handleUpdateQuantity = async (medicineId, quantity) => {
     try {
       await axios.put(`http://localhost:8000/api/v1/patient/updateQuantity`, {
-        patientUsername: patientUsername,
         medicineId: medicineId,
         quantity: quantity
-      });
+      } ,{ withCredentials: true });
 
       setOutOfStock(false);
   
@@ -106,48 +108,80 @@ const ViewCart = () => {
       console.error('Error updating quantity:', error.response?.data?.error || error.message);
     }
   };
-  
-  
 
+  if (isLoading ) {
+    return (
+      <div>
+        <div className="top-navigation">
+          <Link to="/" className="logo">Logo</Link>
+          <Link to="/patients/home">Home</Link>
+          <Link to="/patients/medicines">Medicines</Link>
+          <Link to="/patients/viewOrder">Orders</Link>
+          <Link to="/patients/viewCart">Cart</Link>
+      </div>
+        <div className="container">
+          <h2 className='loading'>Loading cart...</h2>  
+        </div>  
+      </div>
+    )
+  }
   return (
     <div>
-      <h1>View Cart</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Patient Username:
-          <input type="text" value={patientUsername} onChange={(e) => setPatientUsername(e.target.value)} />
-        </label>
+      <div className="top-navigation">
+          <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
+          <Link to="/patients/home">Home</Link>
+          <Link to="/patients/medicines">Medicines</Link>
+          <Link to="/patients/viewOrder">Orders</Link>
+          <Link to="/patients/viewCart">Cart</Link>
+      </div>   
+      <div className="cart-container">
+        <h1>My Cart</h1>
         <br />
-        <button type="submit">View Cart</button>
-      </form>
-      {res && res.data.items.length > 0 ?(
-        <div>
+        {res && res.data.items.length > 0 ? (
+          <div>
             {res.data.items.map((item) => (
-            <div key={item._id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                <div style={{ marginRight: '10px' }}>Medicine: {item.medicineId.name}</div>
-                <div style={{ marginRight: '10px' }}>Price: ${item.price}</div>
-                <div>
-                <button onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity - 1)}>
-                    <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span style={{ margin: '0 10px' }}>{item.quantity}</span>
-                <button onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity + 1)}
-                        disabled={outOfStock}>
-                    <FontAwesomeIcon icon={faPlus} />
-                </button>
-                <button onClick={() => handleRemoveItem(item.medicineId._id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                </button>
+              <div key={item._id} className="cart-item">
+                <div className="medicine-details">
+                  <div className="medicine-info">
+                    <img src={item.medicineId.picture} alt={item.medicineId.name} className="medicine-picture" />
+                    <div>
+                      <div>{item.medicineId.name}</div>
+                      <div>Price: ${item.price}</div>
+                    </div>
+                  </div>
+                  <div className="quantity-actions">
+                    <button style={{ margin: '0 10px' }} onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity - 1)}>
+                      <FontAwesomeIcon icon={faMinus} />
+                    </button>
+                    <span style={{ margin: '0 10px' }}>{item.quantity}</span>
+                    <button style={{ margin: '0 10px' }} onClick={() => handleUpdateQuantity(item.medicineId._id, item.quantity + 1)} 
+                    /*disabled={outOfStock}*/>
+                      <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                    <button className="trash-button" style={{ margin: '0 10px' }} onClick={() => handleRemoveItem(item.medicineId._id)} >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
                 </div>
-            </div>
+              </div>
             ))}
-            <div>Total: ${res.data.totalPrice}</div>
-        </div>
-    ): (
-        <div>Cart is empty</div>
-      )}
-    </div>
+            <div className="cart-total">Total: ${res.data.totalPrice}</div>
+            <button className="checkout-button" onClick={() =>navigate('/patients/checkout')}>
+              Checkout
+            </button>
+
+          </div>
+        ) : (
+          <div className="empty-cart">Your Cart is empty</div>
+        )}
+      </div>
+    </div>  
   );
 };
 
+
 export default ViewCart;
+
+
+
+

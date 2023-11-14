@@ -33,6 +33,9 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  prescriptions: {
+    type: [String],
+  },
   emergencyContact: {
     fullName: {
       type: String,
@@ -46,15 +49,29 @@ const patientSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    prescriptions: {
-      type: [String],
-    },
   },
+  addresses: [
+    {
+      street: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 patientSchema.pre('save', async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
-
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 12);
+  }
   next();
 });
 

@@ -36,15 +36,17 @@ const pharmacistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isRegistered: {
-    type: Boolean,
-    default: false,
+  registrationStatus: {
+    type: String,
+    enum: ['pending', 'accepted', 'partially accepted'],
+    default: 'pending',
   },
 });
 
 pharmacistSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
   this.password = await bcrypt.hash(this.password, 12);
-
+  }
   next();
 });
 

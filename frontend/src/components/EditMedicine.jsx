@@ -24,7 +24,7 @@ function EditMedicine() {
     );
     const response = await Axios.patch(
       `http://localhost:8000/api/v1/pharmacist/editMedicine/${formData.name}`,
-      formDataWithoutEmptyValues
+      formDataWithoutEmptyValues ,{withCredentials: true}
     );
     setRes(response);
   };

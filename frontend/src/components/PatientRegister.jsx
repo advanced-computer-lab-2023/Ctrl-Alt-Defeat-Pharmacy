@@ -43,7 +43,7 @@ function PatientRegister() {
     };
     const response = await Axios.post(
       "http://localhost:8000/api/v1/patient/register",
-      data
+      data ,{withCredentials: true}
     );
     setRes(response);
     setTimeout(() => navigate("/login"), 3000);
