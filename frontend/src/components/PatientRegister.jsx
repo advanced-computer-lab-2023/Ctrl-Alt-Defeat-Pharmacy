@@ -36,6 +36,7 @@ function PatientRegister() {
       dateOfBirth: formData.dob,
       gender: formData.gender,
       mobileNumber: formData.phoneNumber,
+      nationalId: formData.nationalId,
       emergencyContact: {
         fullName: formData.emergencyContactName,
         mobileNumber: formData.emergencyContactNumber,
@@ -126,6 +127,16 @@ function PatientRegister() {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+        </div>
+        <div>
+          <label>National ID:</label>
+          <input
+            type="tel"
+            name="nationalId"
+            value={formData.nationalId}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div>
           <label>Phone Number:</label>
