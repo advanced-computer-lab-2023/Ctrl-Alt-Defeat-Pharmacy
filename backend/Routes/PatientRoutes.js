@@ -29,4 +29,5 @@ router.route('/getAllMedicines').get(protect,restrictTo('patient'),PatientContro
 router.route('/medicine/searchByNames/:name').get(protect,restrictTo('patient'),PatientController.getMedicineByName);
 router.route('/medicine/searchByMedicalUses/:medicalUse').get(protect,restrictTo('patient'),PatientController.getMedicineByMedicalUse);
 
+
 module.exports = router;

@@ -46,31 +46,40 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     if (!medicine) {
       return res.status(404).json({ error: 'Medicine not found' });
     }
-
-    
+//check if it is a prescription medicine 
     if (medicine.prescription) {
-      const patient = await Patient.findById(patientId);
+      const patient = await Patient.findById(patientId).populate('prescriptions.medicines');
 
       if (!patient) {
         return res.status(404).json({ error: 'Patient not found' });
       }
 
-      // needs edit to check if the medicine is in the patient's prescriptions
-      const hasMedicineInPrescriptions = patient.prescriptions.includes(medicineName);
+      const hasMedicineInPrescriptions = patient.prescriptions.some(prescription =>
+        prescription.medicines.some(prescribedMedicine =>
+          prescribedMedicine.name === medicineName
+        )
+      );
+
       if (!hasMedicineInPrescriptions) {
         return res.status(400).json({ error: 'This medicine is not in your recent prescriptions' });
       }
     }
+
     const price = medicine.price * quantity;
+
     if (medicine.quantity === 0) {
       return res.status(400).json({ error: 'This medicine is out of stock' });
-    } else if (quantity > medicine.quantity) {
-      return res.status(400).json({ error: 'Quantity is more than available' });
-    } else {
-      medicine.quantity -= quantity;
-      await medicine.save();
     }
 
+    if (quantity > medicine.quantity) {
+      return res.status(400).json({ error: 'Quantity is more than available' });
+    }
+
+    // Deduct quantity from available stock
+    medicine.quantity -= quantity;
+    await medicine.save();
+
+    // Check if the patient has a cart
     const cart = await Cart.findOne({ patientId });
 
     if (!cart) {
@@ -80,7 +89,10 @@ exports.addOverTheCounterMedicine = async (req, res) => {
       await newCart.save();
       return res.status(201).json(newCart);
     }
+
+    // Check if the medicine is already in the cart
     const existingItem = cart.items.find(item => item.medicineId.toString() === medicine._id.toString());
+
     if (existingItem) {
       existingItem.quantity += quantity;
       existingItem.price += price;
@@ -93,9 +105,11 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     await cart.save();
     res.status(201).json(cart);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 
 exports.viewCart = async (req, res) => {
