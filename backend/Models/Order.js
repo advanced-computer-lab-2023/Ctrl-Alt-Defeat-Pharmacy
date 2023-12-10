@@ -26,6 +26,7 @@ const orderSchema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   Date: { type: Date, default: Date.now },
   status: { type: String, default: 'Pending' },
+  paymentMethod: { type: String, default: 'Cash on Delivery' },
 });
 
 const Order = mongoose.model('Order', orderSchema);

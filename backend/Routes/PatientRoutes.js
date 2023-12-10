@@ -21,5 +21,12 @@ router.route('/getAddresses').get(protect, restrictTo('patient'), PatientControl
 // router.route('/removeAddress').delete(protect,restrictTo('patient'),PatientController.removeAddress);
 router.route('/viewOrder/:orderId').get(protect, restrictTo('patient'), PatientController.viewOrder);
 router.route('/cancelOrder/:orderId').put(protect, restrictTo('patient'), PatientController.cancelOrder);
+router.route('/viewAllOrders').get(protect, restrictTo('patient'), PatientController.viewAllOrders);
+router.route('/viewWallet').get(protect, restrictTo('patient'), PatientController.viewWallet);
+
+//extra s for archeive orders
+router.route('/getAllMedicines').get(protect,restrictTo('patient'),PatientController.getAllMedicine);
+router.route('/medicine/searchByNames/:name').get(protect,restrictTo('patient'),PatientController.getMedicineByName);
+router.route('/medicine/searchByMedicalUses/:medicalUse').get(protect,restrictTo('patient'),PatientController.getMedicineByMedicalUse);
 
 module.exports = router;
