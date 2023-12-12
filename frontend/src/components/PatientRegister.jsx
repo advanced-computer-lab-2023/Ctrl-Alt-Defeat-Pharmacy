@@ -45,7 +45,7 @@ function PatientRegister() {
     };
     console.log("response 1");
     const response = await Axios.post(
-      "http://localhost:8000/api/v1/patient/register",
+      "http://localhost:4000/api/v1/patient/register",
       data,
       { withCredentials: true }
     );

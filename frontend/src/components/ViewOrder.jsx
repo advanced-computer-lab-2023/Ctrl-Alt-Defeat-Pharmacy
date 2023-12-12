@@ -14,7 +14,7 @@ const ViewOrder = () => {
 
     try {
       const response = await Axios.get(
-        `http://localhost:8000/api/v1/patient/viewOrder/${orderId}`,
+        `http://localhost:4000/api/v1/patient/viewOrder/${orderId}`,
         { withCredentials: true }
       );
       console.log(response.data);
@@ -29,7 +29,7 @@ const ViewOrder = () => {
   const handleCancelOrder = async () => {
     try {
       const response = await Axios.put(
-        `http://localhost:8000/api/v1/patient/cancelOrder/${orderId}`,
+        `http://localhost:4000/api/v1/patient/cancelOrder/${orderId}`,
         [],
         { withCredentials: true }
       );

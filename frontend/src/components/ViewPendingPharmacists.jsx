@@ -8,7 +8,7 @@ const ViewPendingPharmacists = () => {
   const fetchPendingPharmacists = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/admin/pendingRequests",
+        "http://localhost:4000/api/v1/admin/pendingRequests",
         { withCredentials: true }
       );
       setPendingPharmacists(response.data.data);
@@ -24,7 +24,7 @@ const ViewPendingPharmacists = () => {
   const handleApprove = async (pharmacistUsername) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/admin/approvePharmacist`,
+        `http://localhost:4000/api/v1/admin/approvePharmacist`,
         { username: pharmacistUsername },
         { withCredentials: true }
       );
@@ -38,7 +38,7 @@ const ViewPendingPharmacists = () => {
   const handleReject = async (pharmacistUsername) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/admin/rejectPharmacist`,
+        `http://localhost:4000/api/v1/admin/rejectPharmacist`,
         { username: pharmacistUsername },
         { withCredentials: true }
       );

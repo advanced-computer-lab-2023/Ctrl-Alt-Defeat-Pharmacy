@@ -24,7 +24,7 @@ function EditMedicine() {
       Object.entries(formData).filter(([_, value]) => value !== "")
     );
     const response = await Axios.patch(
-      `http://localhost:8000/api/v1/pharmacist/editMedicine/${formData.name}`,
+      `http://localhost:4000/api/v1/pharmacist/editMedicine/${formData.name}`,
       formDataWithoutEmptyValues,
       { withCredentials: true }
     );

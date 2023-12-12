@@ -48,7 +48,7 @@ function AddMedicine() {
     };
 
     const response = await axios.post(
-      "http://localhost:8000/api/v1/pharmacist/addMedicine",
+      "http://localhost:4000/api/v1/pharmacist/addMedicine",
       medicine,
       { withCredentials: true }
     );

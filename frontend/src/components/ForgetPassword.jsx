@@ -11,7 +11,7 @@ const ForgetPassword = () => {
 
   const handleSubmit = async () => {
     const res = await axios.post(
-      "http://localhost:8000/api/v1/auth/forgetPassword",
+      "http://localhost:4000/api/v1/auth/forgetPassword",
       { username },
       { withCredentials: true }
     );

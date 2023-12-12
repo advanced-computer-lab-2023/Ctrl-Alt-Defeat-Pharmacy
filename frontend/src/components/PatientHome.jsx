@@ -18,7 +18,7 @@ function PatientHome() {
   const fetchAddresses = async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:8000/api/v1/patient/getAddresses",
+        "http://localhost:4000/api/v1/patient/getAddresses",
         {
           withCredentials: true,
         }
@@ -34,7 +34,7 @@ function PatientHome() {
 
   const handleLogout = async () => {
     const response = await Axios.get(
-      "http://localhost:8000/api/v1/auth/logout",
+      "http://localhost:4000/api/v1/auth/logout",
       { withCredentials: true }
     );
     console.log(response.data);
@@ -42,7 +42,7 @@ function PatientHome() {
 
   const showData = async () => {
     const response = await Axios.get(
-      "http://localhost:8000/api/v1/auth/getMe",
+      "http://localhost:4000/api/v1/auth/getMe",
       { withCredentials: true }
     );
     console.log(response.data);
@@ -65,7 +65,7 @@ function PatientHome() {
     e.preventDefault();
     try {
       const response = await Axios.post(
-        "http://localhost:8000/api/v1/patient/addAddress",
+        "http://localhost:4000/api/v1/patient/addAddress",
         {
           street: newStreet,
           city: newCity,

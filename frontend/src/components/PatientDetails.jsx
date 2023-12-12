@@ -8,7 +8,7 @@ function PatientDetails() {
   const handleClick = async (e) => {
     e.preventDefault();
     const patientInfo = await Axios.get(
-      "http://localhost:8000/api/v1/admin/patientView/" + username,
+      "http://localhost:4000/api/v1/admin/patientView/" + username,
       { withCredentials: true }
     );
     setPatient(patientInfo.data.data);

@@ -3,19 +3,18 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 
 function PharmacistHome() {
-
   const handleLogout = async () => {
     const response = await Axios.get(
-      "http://localhost:8000/api/v1/auth/logout",
+      "http://localhost:4000/api/v1/auth/logout",
       { withCredentials: true }
     );
     console.log(response.data);
   };
- 
+
   const showData = async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:8000/api/v1/auth/getMe",
+        "http://localhost:4000/api/v1/auth/getMe",
         { withCredentials: true }
       );
       console.log(response.data);
@@ -35,8 +34,10 @@ function PharmacistHome() {
       <br />
       <Link to="/pharmacists/editMedicine">Edit Medicine</Link>
       <br />
-      <Link to="/pharmacists/viewMedicineQuantitySales">View Medicine Quantity Sales</Link>
-      <br/>
+      <Link to="/pharmacists/viewMedicineQuantitySales">
+        View Medicine Quantity Sales
+      </Link>
+      <br />
       <Link to="/" onClick={handleLogout}>
         Logout
       </Link>

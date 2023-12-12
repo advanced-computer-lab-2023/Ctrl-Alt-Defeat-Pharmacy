@@ -18,7 +18,7 @@ const ChangePassword = () => {
 
   const handleSave = async () => {
     const res = await axios.post(
-      "http://localhost:8000/api/v1/auth/changePassword",
+      "http://localhost:4000/api/v1/auth/changePassword",
       { currentPassword, newPassword },
       { withCredentials: true }
     );

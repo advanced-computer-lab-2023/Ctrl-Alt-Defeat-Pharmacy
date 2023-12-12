@@ -14,7 +14,7 @@ const ResetPassword = () => {
 
   const handleSave = async () => {
     const res = await axios.post(
-      `http://localhost:8000/api/v1/auth/resetPassword/${username}`,
+      `http://localhost:4000/api/v1/auth/resetPassword/${username}`,
       { password: newPassword },
       { withCredentials: true }
     );

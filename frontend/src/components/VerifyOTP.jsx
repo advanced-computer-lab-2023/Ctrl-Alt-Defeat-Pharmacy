@@ -12,7 +12,7 @@ const VerifyOTP = () => {
 
   const handleSubmit = async () => {
     const res = await axios.post(
-      `http://localhost:8000/api/v1/auth/verifyOTP/${username}`,
+      `http://localhost:4000/api/v1/auth/verifyOTP/${username}`,
       { otp },
       { withCredentials: true }
     );

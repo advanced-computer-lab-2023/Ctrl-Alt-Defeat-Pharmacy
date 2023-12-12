@@ -11,7 +11,7 @@ function PatientMedicinesPage() {
 
   const fetchMedicines = async () => {
     const response = await Axios.get(
-      "http://localhost:8000/api/v1/pharmacy/getAllMedicine",
+      "http://localhost:4000/api/v1/pharmacy/getAllMedicine",
       { withCredentials: true }
     );
     setMedicines(response.data.data);
@@ -23,7 +23,7 @@ function PatientMedicinesPage() {
 
   const handleFilter = async () => {
     const filteredMedicines = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`,
+      `http://localhost:4000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`,
       { withCredentials: true }
     );
     setMedicines(filteredMedicines.data.data);
@@ -31,7 +31,7 @@ function PatientMedicinesPage() {
 
   const handleSearch = async () => {
     const searchedMedicines = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${searchTerm}`,
+      `http://localhost:4000/api/v1/pharmacy/medicine/searchByName/${searchTerm}`,
       { withCredentials: true }
     );
     setMedicines(searchedMedicines.data.data);

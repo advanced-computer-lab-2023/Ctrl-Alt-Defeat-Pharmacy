@@ -10,7 +10,7 @@ const RemovePharmacists = () => {
   const handleRemovePharmacist = async () => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/admin/removePharmacist/${username}`,
+        `http://localhost:4000/api/v1/admin/removePharmacist/${username}`,
         { withCredentials: true }
       );
       setUsername("");

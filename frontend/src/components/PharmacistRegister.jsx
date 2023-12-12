@@ -26,7 +26,7 @@ function PharmacistRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await Axios.post(
-      "http://localhost:8000/api/v1/pharmacist/register",
+      "http://localhost:4000/api/v1/pharmacist/register",
       formData,
       { withCredentials: true }
     );

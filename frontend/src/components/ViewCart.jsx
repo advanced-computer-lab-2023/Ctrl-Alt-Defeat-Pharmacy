@@ -20,7 +20,7 @@ const ViewCart = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/patient/viewCart`,
+        `http://localhost:4000/api/v1/patient/viewCart`,
         { withCredentials: true }
       );
       setRes(response);
@@ -38,7 +38,7 @@ const ViewCart = () => {
   const handleRemoveItem = async (medicineId) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/patient/removeFromCart`,
+        `http://localhost:4000/api/v1/patient/removeFromCart`,
         { medicineId: medicineId },
         { withCredentials: true }
       );
@@ -77,7 +77,7 @@ const ViewCart = () => {
   const handleUpdateQuantity = async (medicineId, quantity) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/patient/updateQuantity`,
+        `http://localhost:4000/api/v1/patient/updateQuantity`,
         {
           medicineId: medicineId,
           quantity: quantity,
