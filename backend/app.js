@@ -23,7 +23,6 @@ connectToMongoDB();
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
-
 app.use('/api/v1/pharmacy', pharmacyRouter);
 app.use('/api/v1/patient', patientRouter);
 app.use('/api/v1/pharmacist', pharmacistRouter);
