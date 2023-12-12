@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import "../Css/MedicinePage.css";
 import "../Css/PatientHome.css";
-import { Link } from "react-router-dom";
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
@@ -83,7 +82,6 @@ function PatientMedicinesPage() {
           </div>
         )}
       </div>
-      {/* <Link to="/admins/home">home</Link> */}
     </div>
   );
 }

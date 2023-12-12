@@ -131,7 +131,6 @@ function PatientMedicinesPage() {
         )}
       </div>
       <br />
-      <Link to="/patients/home">home</Link>
     </div>
   );
 }

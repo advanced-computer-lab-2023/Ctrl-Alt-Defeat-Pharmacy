@@ -30,6 +30,10 @@ h1 {
 .filter-section,
 .search-section {
   width: 48%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .filter-button,
@@ -39,7 +43,7 @@ h1 {
   padding: 8px;
   font-size: 14px;
   cursor: pointer;
-  background-color: #0071BC;
+  background-color: #0071bc;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -51,7 +55,7 @@ h1 {
 .view-all-button:hover,
 .search-button:hover,
 .add-to-cart-button:hover {
-  background-color: #004B82; /* Change color on hover */
+  background-color: #004b82; /* Change color on hover */
 }
 
 .view-all-button {
@@ -63,7 +67,7 @@ h1 {
 }
 
 .view-all-button:hover {
-  background-color: #004B82;
+  background-color: #004b82;
 }
 
 .search-section input,

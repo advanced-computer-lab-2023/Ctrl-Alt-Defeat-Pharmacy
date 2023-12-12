@@ -2,6 +2,20 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
+import {
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import LockIcon from "@mui/icons-material/Lock";
 
 function PatientHome() {
   const [patient, setPatient] = useState(null);
@@ -38,6 +52,12 @@ function PatientHome() {
       { withCredentials: true }
     );
     console.log(response.data);
+  };
+
+  const [showSideNav, setShowSideNav] = useState(false);
+
+  const handleToggleSideNav = () => {
+    setShowSideNav(!showSideNav);
   };
 
   const showData = async () => {
@@ -97,18 +117,86 @@ function PatientHome() {
 
   return (
     <div>
-      <div className="top-navigation">
-        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-        <Link to="/patients/home">Home</Link>
-        <Link to="/patients/medicines">Medicines</Link>
-        <Link to="/patients/viewOrder">Orders</Link>
-        <Link to="/patients/viewCart">Cart</Link>
-        <li>
-          <Link to="/changePassword">change password</Link>
-        </li>
-        <Link to="/" className="right" onClick={handleLogout}>
-          Logout
-        </Link>
+      <div>
+        <div className="top-navigation">
+          <IconButton onClick={handleToggleSideNav}>
+            <MenuIcon />
+          </IconButton>
+          <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
+        </div>
+
+        <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
+          <List>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/home"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/medicines"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <LocalPharmacyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Medicines" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/viewOrder"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Orders" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/viewCart"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cart" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/changePassword"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <LockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Change password" />
+            </ListItem>
+            <hr className="hr" />
+            <ListItem
+              button
+              component={Link}
+              to="/"
+              className="right"
+              onClick={handleLogout}
+            >
+              <ListItemIcon>
+                <LockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          </List>
+        </Drawer>
       </div>
       <div className="main-container">
         <div className="welcome-section">
