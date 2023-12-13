@@ -102,16 +102,18 @@ function PatientMedicinesPage() {
           </div>
         </div>
 
+        <h2>Available Medicines</h2>
         {medicines && (
           <div>
-            <h2>List of Available Medicines</h2>
             <ul className="medicine-list">
               {medicines.map((medicine) => (
                 <li key={medicine._id} className="medicine-item">
-                  <strong>Name: {medicine.name}</strong>
-                  <p>Price: ${medicine.price}</p>
                   <img src={medicine.picture} alt="pic" width="150px" />
-                  <p>Description: {medicine.description}</p>
+                  <strong>{medicine.name}</strong>
+                  <p>
+                    <br /> {medicine.description}
+                  </p>
+                  <p>Starts from ${medicine.price}</p>
                   <button
                     className="add-to-cart-button"
                     onClick={() => addToCart(medicine.name)}
