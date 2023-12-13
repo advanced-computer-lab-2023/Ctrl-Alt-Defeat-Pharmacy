@@ -3,6 +3,8 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/MedicinePage.css";
 import "../Css/PatientHome.css";
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
@@ -114,12 +116,22 @@ function PatientMedicinesPage() {
                     <br /> {medicine.description}
                   </p>
                   <p>Starts from ${medicine.price}</p>
-                  <button
-                    className="add-to-cart-button"
-                    onClick={() => addToCart(medicine.name)}
-                  >
-                    Add to Cart
-                  </button>
+
+                  {medicine.quantity > 0 ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="add-to-cart-button"
+                      onClick={() => addToCart(medicine.name)}
+                      startIcon={<AddIcon />}
+                    >
+                      Add to Cart
+                    </Button>
+                  ) : (
+                    <Button variant="contained" color="grey" disabled>
+                      Unavailable
+                    </Button>
+                  )}
                   <div className="cart-message">
                     {medicineMessages[medicine.name]?.message}
                   </div>

@@ -107,9 +107,7 @@ h1 {
 }
 
 .add-to-cart-button {
-  /* position: absolute; Position absolute for overlay */
-  bottom: 20px; /* Adjust bottom distance */
-  right: 20px; /* Adjust right distance */
+  position: absolute; /* Position absolute for overlay */
 }
 
 .cart-message {
