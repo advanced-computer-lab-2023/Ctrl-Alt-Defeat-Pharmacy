@@ -16,6 +16,7 @@ import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LockIcon from "@mui/icons-material/Lock";
+import TopNavigation from "./TopNavigation";
 
 function PatientHome() {
   const [patient, setPatient] = useState(null);
@@ -118,13 +119,7 @@ function PatientHome() {
   return (
     <div>
       <div>
-        <div className="top-navigation">
-          <IconButton onClick={handleToggleSideNav}>
-            <MenuIcon />
-          </IconButton>
-          <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-        </div>
-
+        <TopNavigation />
         <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
           <List>
             <ListItem

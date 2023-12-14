@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
 import "../Css/MedicinePage.css";
 import "../Css/PatientHome.css";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
   TextField,
   InputAdornment,
   IconButton,
-  MenuItem,
   Autocomplete,
-  InputLabel,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import TopNavigation from "./TopNavigation";
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
@@ -24,6 +22,7 @@ function PatientMedicinesPage() {
   const allMedicalUses = [
     ...new Set(medicines.map((medicine) => medicine.medicalUse)),
   ];
+  const [res, setRes] = useState(null);
 
   const fetchMedicines = async () => {
     const response = await Axios.get(
@@ -36,6 +35,9 @@ function PatientMedicinesPage() {
   useEffect(() => {
     fetchMedicines();
   }, []);
+  useEffect(() => {
+    viewCart();
+  }, []);
 
   const handleFilter = async (value) => {
     setMedicalUseFilter(value);
@@ -46,9 +48,6 @@ function PatientMedicinesPage() {
     setMedicines(filteredMedicines.data.data);
   };
 
-  const handleClearFilter = () => {
-    setMedicalUseFilter("");
-  };
   const handleSearch = async (value) => {
     setSearchTerm(value);
     const searchedMedicines = await Axios.get(
@@ -57,6 +56,113 @@ function PatientMedicinesPage() {
     );
     setMedicines(searchedMedicines.data.data);
   };
+  const viewCart = async () => {
+    try {
+      const response = await Axios.get(
+        `http://localhost:8000/api/v1/patient/viewCart`,
+        { withCredentials: true }
+      );
+      setRes(response);
+    } catch (error) {
+      console.error(
+        "Error fetching cart:",
+        error.response?.data?.error || error.message
+      );
+    }
+  };
+
+  const handleUpdateQuantity = async (medicineId, quantity) => {
+    try {
+      await Axios.put(
+        `http://localhost:8000/api/v1/patient/updateQuantity`,
+        {
+          medicineId: medicineId,
+          quantity: quantity,
+        },
+        { withCredentials: true }
+      );
+
+      setRes((prevRes) => {
+        const updatedItems = prevRes.data.items.map((item) => {
+          if (item.medicineId._id === medicineId) {
+            if (quantity <= 0) {
+              return null;
+            }
+
+            const newPrice = item.medicineId.price * quantity;
+
+            return {
+              ...item,
+              quantity,
+              price: newPrice,
+            };
+          }
+          return item;
+        });
+
+        const updatedItems2 = updatedItems.filter((item) => item !== null);
+
+        const updatedTotalPrice = updatedItems2.reduce(
+          (total, item) => total + item.price,
+          0
+        );
+
+        return {
+          ...prevRes,
+          data: {
+            ...prevRes.data,
+            items: updatedItems2,
+            totalPrice: updatedTotalPrice,
+          },
+        };
+      });
+    } catch (error) {
+      console.error(
+        "Error updating quantity:",
+        error.response?.data?.error || error.message
+      );
+    }
+  };
+
+  // const removeFromCart = async (medicineId) => {
+  //   try {
+  //     await Axios.put(
+  //       `http://localhost:8000/api/v1/patient/removeFromCart`,
+  //       { medicineId: medicineId },
+  //       { withCredentials: true }
+  //     );
+
+  //     setRes((prevRes) => {
+  //       const updatedItems = prevRes.data.items.filter(
+  //         (item) => item.medicineId._id !== medicineId
+  //       );
+
+  //       const updatedTotalPrice = updatedItems.reduce(
+  //         (total, item) => total + item.price,
+  //         0
+  //       );
+
+  //       if (updatedItems.length === 0) {
+  //         return null;
+  //       } else {
+  //         return {
+  //           ...prevRes,
+  //           data: {
+  //             ...prevRes.data,
+  //             items: updatedItems,
+  //             totalPrice: updatedTotalPrice,
+  //           },
+  //         };
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error(
+  //       "Error removing item from cart:",
+  //       error.response?.data?.error || error.message
+  //     );
+  //   }
+  //   viewCart();
+  // };
 
   const addToCart = async (medicineName) => {
     try {
@@ -83,17 +189,50 @@ function PatientMedicinesPage() {
         console.error("Error:", error.message);
       }
     }
+    viewCart();
+  };
+
+  const renderCartControls = (medicineName) => {
+    const cartItem = res?.data?.items.find(
+      (item) => item.medicineId.name === medicineName
+    );
+
+    if (cartItem) {
+      return (
+        <div className="quantity-controls">
+          <IconButton onClick={() => addToCart(medicineName)}>
+            <AddIcon />
+          </IconButton>
+          <span>{cartItem.quantity}</span>
+          <IconButton
+            onClick={() =>
+              handleUpdateQuantity(
+                cartItem.medicineId._id,
+                cartItem.quantity - 1
+              )
+            }
+          >
+            <RemoveIcon />
+          </IconButton>
+        </div>
+      );
+    }
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        className="add-to-cart-button"
+        onClick={() => addToCart(medicineName)}
+        startIcon={<AddIcon />}
+      >
+        Add to Cart
+      </Button>
+    );
   };
 
   return (
     <div>
-      <div className="top-navigation">
-        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-        <Link to="/patients/home">Home</Link>
-        <Link to="/patients/medicines">Medicines</Link>
-        <Link to="/patients/viewOrder">Orders</Link>
-        <Link to="/patients/viewCart">Cart</Link>
-      </div>
+      <TopNavigation />
       <div className="medicine-container">
         <div className="filter-search-section">
           <div className="search-section">
@@ -154,15 +293,7 @@ function PatientMedicinesPage() {
                   </p>
 
                   {medicine.quantity > 0 ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className="add-to-cart-button"
-                      onClick={() => addToCart(medicine.name)}
-                      startIcon={<AddIcon />}
-                    >
-                      Add to Cart
-                    </Button>
+                    renderCartControls(medicine.name)
                   ) : (
                     <Button variant="contained" color="grey" disabled>
                       Unavailable
