@@ -15,8 +15,12 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LockIcon from "@mui/icons-material/Lock";
 import Axios from "axios";
+import "../Css/TopNavigation.css";
+import PropTypes from "prop-types";
 
 const TopNavigation = (props) => {
+  const { link } = props;
+
   const [showSideNav, setShowSideNav] = useState(false);
 
   const handleToggleSideNav = () => {
@@ -37,18 +41,19 @@ const TopNavigation = (props) => {
         <IconButton onClick={handleToggleSideNav}>
           <MenuIcon />
         </IconButton>
-        <Link to={props.link}>
-          <img
-            src="../src/assets/logo.png"
-            alt="Pharmacy Logo"
-            className="logo"
-          />
+        <Link to={link}>
+          <div className="logo-container">
+            <img
+              src="../src/assets/logo.png"
+              alt="Pharmacy Logo"
+              className="logo"
+            />
+          </div>
         </Link>
       </div>
       <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
         <List>
           <ListItem
-            button
             component={Link}
             to="/patients/home"
             onClick={handleToggleSideNav}
@@ -119,6 +124,10 @@ const TopNavigation = (props) => {
       </Drawer>
     </div>
   );
+};
+
+TopNavigation.propTypes = {
+  link: PropTypes.string.isRequired,
 };
 
 export default TopNavigation;

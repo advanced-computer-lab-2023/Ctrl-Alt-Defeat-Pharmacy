@@ -41,6 +41,9 @@ function PatientMedicinesPage() {
   useEffect(() => {
     fetchMedicalUses();
   }, []);
+  useEffect(() => {
+    viewCart();
+  }, []);
 
   const handleFilter = async (value) => {
     setMedicalUseFilter(value);
@@ -159,6 +162,9 @@ function PatientMedicinesPage() {
         error.response?.data?.error || error.message
       );
     }
+
+    viewCart();
+    fetchMedicalUses();
   };
 
   // const removeFromCart = async (medicineId) => {
@@ -229,42 +235,60 @@ function PatientMedicinesPage() {
     viewCart();
   };
 
-  const renderCartControls = (medicineName) => {
+  const renderCartControls = (medicineName, quantity, available) => {
     const cartItem = res?.data?.items.find(
       (item) => item.medicineId.name === medicineName
     );
 
-    if (cartItem) {
+    if (available || cartItem) {
+      if (cartItem) {
+        return (
+          <div className="quantity-controls">
+            <IconButton
+              disabled={quantity <= 0}
+              // style={iconButtonStyle}
+              onClick={() =>
+                handleUpdateQuantity(
+                  cartItem.medicineId._id,
+                  cartItem.quantity + 1
+                )
+              }
+            >
+              <AddIcon />
+            </IconButton>
+            <span>{cartItem.quantity}</span>
+            <IconButton
+              // style={iconButtonStyle}
+              onClick={() =>
+                handleUpdateQuantity(
+                  cartItem.medicineId._id,
+                  cartItem.quantity - 1
+                )
+              }
+            >
+              <RemoveIcon />
+            </IconButton>
+          </div>
+        );
+      }
       return (
-        <div className="quantity-controls">
-          <IconButton onClick={() => addToCart(medicineName)}>
-            <AddIcon />
-          </IconButton>
-          <span>{cartItem.quantity}</span>
-          <IconButton
-            onClick={() =>
-              handleUpdateQuantity(
-                cartItem.medicineId._id,
-                cartItem.quantity - 1
-              )
-            }
-          >
-            <RemoveIcon />
-          </IconButton>
-        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          className="add-to-cart-button"
+          onClick={() => addToCart(medicineName)}
+          startIcon={<AddIcon />}
+        >
+          Add to Cart
+        </Button>
+      );
+    } else {
+      return (
+        <Button variant="contained" color="grey" disabled>
+          Unavailable
+        </Button>
       );
     }
-    return (
-      <Button
-        variant="contained"
-        color="primary"
-        className="add-to-cart-button"
-        onClick={() => addToCart(medicineName)}
-        startIcon={<AddIcon />}
-      >
-        Add to Cart
-      </Button>
-    );
   };
 
   return (
@@ -314,9 +338,14 @@ function PatientMedicinesPage() {
             <ul className="medicine-list">
               {medicines.map((medicine) => (
                 <li key={medicine._id} className="medicine-item">
-                  <img src={medicine.picture} alt="pic" width="150px" />
+                  <img
+                    src={medicine.picture}
+                    alt="pic"
+                    width="150px"
+                    className="medicine-image"
+                  />
                   <strong>{medicine.name}</strong>
-                  <p style={{ color: "grey" }}>
+                  <p style={{ color: "grey", height: "60px" }}>
                     <br /> {medicine.description}
                     <br />
                     {medicine.quantity === 0 && (
@@ -329,13 +358,14 @@ function PatientMedicinesPage() {
                     Starts from ${medicine.price}
                   </p>
 
-                  {medicine.quantity > 0 ? (
-                    renderCartControls(medicine.name)
-                  ) : (
-                    <Button variant="contained" color="grey" disabled>
-                      Unavailable
-                    </Button>
-                  )}
+                  {medicine.quantity > 0
+                    ? renderCartControls(medicine.name, medicine.quantity, true)
+                    : renderCartControls(
+                        medicine.name,
+                        medicine.quantity,
+                        false
+                      )}
+
                   <div className="cart-message">
                     {medicineMessages[medicine.name]?.message}
                   </div>
