@@ -19,42 +19,79 @@ function PatientMedicinesPage() {
   const [medicalUseFilter, setMedicalUseFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [medicineMessages, setMedicineMessages] = useState({});
-  const allMedicalUses = [
-    ...new Set(medicines.map((medicine) => medicine.medicalUse)),
-  ];
+  // const allMedicalUses = [
+  //   ...new Set(medicines.map((medicine) => medicine.medicalUse)),
+  // ];
+  const [allMedicalUses, setAllMedicalUses] = useState([]);
   const [res, setRes] = useState(null);
 
-  const fetchMedicines = async () => {
+  const fetchMedicalUses = async () => {
     const response = await Axios.get(
       "http://localhost:8000/api/v1/pharmacy/getAllMedicine",
       { withCredentials: true }
     );
     setMedicines(response.data.data);
+    setAllMedicalUses(
+      Array.from(
+        new Set(response.data.data.map((medicine) => medicine.medicalUse))
+      )
+    );
   };
 
   useEffect(() => {
-    fetchMedicines();
-  }, []);
-  useEffect(() => {
-    viewCart();
+    fetchMedicalUses();
   }, []);
 
   const handleFilter = async (value) => {
     setMedicalUseFilter(value);
-    const filteredMedicines = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`,
-      { withCredentials: true }
-    );
-    setMedicines(filteredMedicines.data.data);
+    let filteredMedicines = medicines;
+    if (value !== null) {
+      filteredMedicines = await Axios.get(
+        `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${value}`,
+        { withCredentials: true }
+      );
+      setAllMedicalUses(
+        Array.from(
+          new Set(
+            filteredMedicines.data.data.map((medicine) => medicine.medicalUse)
+          )
+        )
+      );
+      filteredMedicines = filteredMedicines.data.data;
+    } else {
+      filteredMedicines = await Axios.get(
+        `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${"all"}`,
+        { withCredentials: true }
+      );
+      setAllMedicalUses(
+        Array.from(
+          new Set(
+            filteredMedicines.data.data.map((medicine) => medicine.medicalUse)
+          )
+        )
+      );
+      filteredMedicines = filteredMedicines.data.data;
+    }
+    setMedicines(filteredMedicines);
   };
 
   const handleSearch = async (value) => {
     setSearchTerm(value);
-    const searchedMedicines = await Axios.get(
-      `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${searchTerm}`,
-      { withCredentials: true }
-    );
-    setMedicines(searchedMedicines.data.data);
+    let searchedMedicines = medicines;
+    if (value !== "") {
+      searchedMedicines = await Axios.get(
+        `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${value}`,
+        { withCredentials: true }
+      );
+      searchedMedicines = searchedMedicines.data.data;
+    } else {
+      searchedMedicines = await Axios.get(
+        `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${"all"}`,
+        { withCredentials: true }
+      );
+      searchedMedicines = searchedMedicines.data.data;
+    }
+    setMedicines(searchedMedicines);
   };
   const viewCart = async () => {
     try {
@@ -232,7 +269,7 @@ function PatientMedicinesPage() {
 
   return (
     <div>
-      <TopNavigation />
+      <TopNavigation link="/patients/home" />
       <div className="medicine-container">
         <div className="filter-search-section">
           <div className="search-section">

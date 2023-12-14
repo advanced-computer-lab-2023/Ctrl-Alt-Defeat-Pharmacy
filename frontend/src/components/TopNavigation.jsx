@@ -15,9 +15,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LockIcon from "@mui/icons-material/Lock";
 import Axios from "axios";
-import "../assets/logo.png";
 
-const TopNavigation = () => {
+const TopNavigation = (props) => {
   const [showSideNav, setShowSideNav] = useState(false);
 
   const handleToggleSideNav = () => {
@@ -38,8 +37,12 @@ const TopNavigation = () => {
         <IconButton onClick={handleToggleSideNav}>
           <MenuIcon />
         </IconButton>
-        <Link to="/patients/home">
-          <img src="../assets/logo.png" alt="Pharmacy Logo" className="logo" />
+        <Link to={props.link}>
+          <img
+            src="../src/assets/logo.png"
+            alt="Pharmacy Logo"
+            className="logo"
+          />
         </Link>
       </div>
       <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
