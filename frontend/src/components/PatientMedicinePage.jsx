@@ -5,12 +5,25 @@ import "../Css/MedicinePage.css";
 import "../Css/PatientHome.css";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  MenuItem,
+  Autocomplete,
+  InputLabel,
+} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
   const [medicalUseFilter, setMedicalUseFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [medicineMessages, setMedicineMessages] = useState({});
+  const allMedicalUses = [
+    ...new Set(medicines.map((medicine) => medicine.medicalUse)),
+  ];
 
   const fetchMedicines = async () => {
     const response = await Axios.get(
@@ -24,7 +37,8 @@ function PatientMedicinesPage() {
     fetchMedicines();
   }, []);
 
-  const handleFilter = async () => {
+  const handleFilter = async (value) => {
+    setMedicalUseFilter(value);
     const filteredMedicines = await Axios.get(
       `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${medicalUseFilter}`,
       { withCredentials: true }
@@ -32,7 +46,11 @@ function PatientMedicinesPage() {
     setMedicines(filteredMedicines.data.data);
   };
 
-  const handleSearch = async () => {
+  const handleClearFilter = () => {
+    setMedicalUseFilter("");
+  };
+  const handleSearch = async (value) => {
+    setSearchTerm(value);
     const searchedMedicines = await Axios.get(
       `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${searchTerm}`,
       { withCredentials: true }
@@ -79,32 +97,42 @@ function PatientMedicinesPage() {
       <div className="medicine-container">
         <div className="filter-search-section">
           <div className="search-section">
-            <h2>Search for Medicine</h2>
-            <input
+            <TextField
               type="text"
-              placeholder="Enter Medicine Name"
+              placeholder="Search by Name"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton onClick={handleSearch}>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <button className="search-button" onClick={handleSearch}>
+            {/* <button className="search-button" onClick={handleSearch}>
               Search
-            </button>
+            </button> */}
           </div>
           <div className="filter-section">
-            <h2>Filter by Medical Use</h2>
-            <input
-              type="text"
-              placeholder="Enter Medical Use"
-              value={medicalUseFilter}
-              onChange={(e) => setMedicalUseFilter(e.target.value)}
-            />
-            <button className="filter-button" onClick={handleFilter}>
+            {/* <InputLabel id="Filter by Medical Use">
               Filter by Medical Use
-            </button>
+            </InputLabel> */}
+            <Autocomplete
+              value={medicalUseFilter}
+              onChange={(e, newValue) => handleFilter(newValue)}
+              options={allMedicalUses}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Medical Use" />
+              )}
+            />
           </div>
         </div>
 
-        <h2>Available Medicines</h2>
+        <h2 style={{ color: "grey" }}>Available Medicines</h2>
         {medicines && (
           <div>
             <ul className="medicine-list">
@@ -112,10 +140,18 @@ function PatientMedicinesPage() {
                 <li key={medicine._id} className="medicine-item">
                   <img src={medicine.picture} alt="pic" width="150px" />
                   <strong>{medicine.name}</strong>
-                  <p>
+                  <p style={{ color: "grey" }}>
                     <br /> {medicine.description}
+                    <br />
+                    {medicine.quantity === 0 && (
+                      <span style={{ color: "red" }}>
+                        Currently Unavailable
+                      </span>
+                    )}
                   </p>
-                  <p>Starts from ${medicine.price}</p>
+                  <p style={{ color: "#0076c0" }}>
+                    Starts from ${medicine.price}
+                  </p>
 
                   {medicine.quantity > 0 ? (
                     <Button
