@@ -6,30 +6,15 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-// import "../Css/PatientHome.css";
-// import "../Css/Cart.css";
-import { useNavigate } from "react-router-dom";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../Css/CheckoutTrial.css";
 
-// const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
-// const payments = [
-//   { name: "Card type", detail: "Visa" },
-//   { name: "Card holder", detail: "Mr John Smith" },
-//   { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
-//   { name: "Expiry date", detail: "04/2024" },
-// ];
-
 export default function Review() {
   const [res, setRes] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [outOfStock, setOutOfStock] = useState(false);
 
   useEffect(() => {
     handleSubmit();
@@ -54,45 +39,6 @@ export default function Review() {
   };
   const products = res?.data?.items || [];
 
-  const handleRemoveItem = async (medicineId) => {
-    try {
-      await axios.put(
-        `http://localhost:8000/api/v1/patient/removeFromCart`,
-        { medicineId: medicineId },
-        { withCredentials: true }
-      );
-
-      setRes((prevRes) => {
-        const updatedItems = prevRes.data.items.filter(
-          (item) => item.medicineId._id !== medicineId
-        );
-
-        const updatedTotalPrice = updatedItems.reduce(
-          (total, item) => total + item.price,
-          0
-        );
-
-        if (updatedItems.length === 0) {
-          return null;
-        } else {
-          return {
-            ...prevRes,
-            data: {
-              ...prevRes.data,
-              items: updatedItems,
-              totalPrice: updatedTotalPrice,
-            },
-          };
-        }
-      });
-    } catch (error) {
-      console.error(
-        "Error removing item from cart:",
-        error.response?.data?.error || error.message
-      );
-    }
-  };
-
   const handleUpdateQuantity = async (medicineId, quantity) => {
     try {
       await axios.put(
@@ -103,8 +49,6 @@ export default function Review() {
         },
         { withCredentials: true }
       );
-
-      setOutOfStock(false);
 
       setRes((prevRes) => {
         const updatedItems = prevRes.data.items.map((item) => {
@@ -141,9 +85,6 @@ export default function Review() {
         };
       });
     } catch (error) {
-      if (error.response?.data?.error === "This medicine is out of stock") {
-        setOutOfStock(true);
-      }
       console.error(
         "Error updating quantity:",
         error.response?.data?.error || error.message
@@ -182,7 +123,7 @@ export default function Review() {
 
             <div className="quantity-controls">
               <IconButton
-                disabled={product.quantity <= 0}
+                disabled={product.medicineId.quantity <= 0}
                 // style={iconButtonStyle}
                 onClick={() =>
                   handleUpdateQuantity(

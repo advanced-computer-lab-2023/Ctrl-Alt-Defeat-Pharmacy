@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
-import Review from "./CheckoutTrial";
+import Review from "./ViewCartHelper";
 import TopNavigation from "./TopNavigation";
 import { useNavigate } from "react-router-dom";
 

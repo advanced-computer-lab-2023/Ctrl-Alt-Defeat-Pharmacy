@@ -46,3 +46,9 @@
   /* Add spacing between the quantity and buttons */
   margin: 0 10px;
 }
+.quantity-controls button:disabled {
+  background-color: rgb(189, 188, 188);
+  /* Adjust the opacity or color for disabled state as needed */
+  color: rgba(255, 255, 255, 0.7); /* Adjust opacity as desired */
+  cursor: not-allowed;
+}
