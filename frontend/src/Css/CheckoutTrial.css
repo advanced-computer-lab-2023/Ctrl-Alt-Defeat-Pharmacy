@@ -1,0 +1,48 @@
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls button {
+  /* Add your button styles here */
+  /* Example styles */
+  background-color: #0076c0;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-controls span {
+  /* Add spacing between the quantity and buttons */
+  margin: 0 10px;
+}
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls button {
+  /* Add your button styles here */
+  /* Example styles */
+  background-color: #0076c0;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-controls span {
+  /* Add spacing between the quantity and buttons */
+  margin: 0 10px;
+}
