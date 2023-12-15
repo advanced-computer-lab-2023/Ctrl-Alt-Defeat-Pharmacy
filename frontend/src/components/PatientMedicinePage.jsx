@@ -368,9 +368,7 @@ function PatientMedicinesPage() {
                       </span>
                     )}
                     {medicine.quantity === 0 && (
-                      <span style={{ color: "red" }}>
-                        Currently Unavailable
-                      </span>
+                      <span style={{ color: "red" }}>Out of Stock</span>
                     )}
                   </p>
                   <p style={{ color: "#0076c0" }}>

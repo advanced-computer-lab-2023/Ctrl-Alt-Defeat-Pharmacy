@@ -64,6 +64,7 @@ export default function Checkout() {
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [orderID, setOrderID] = useState("");
   const [selectedPaymentMethodString, setSelectedPaymentMethodString] =
     useState("Cash");
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -90,17 +91,50 @@ export default function Checkout() {
 
     fetchAddresses();
   }, []);
+  React.useEffect(() => {
+    const checkout = async () => {
+      const url = new URL(window.location.href);
+      const queryParams = new URLSearchParams(url.search);
+      const success = queryParams.get("success");
+      const addressId = queryParams.get("addressId");
+      if (!success) return;
+
+      try {
+        const response = await Axios.post(
+          "http://localhost:8000/api/v1/patient/checkout",
+          { addressId },
+          { withCredentials: true }
+        );
+
+        if (!response.data) {
+          throw new Error("Checkout failed");
+        }
+
+        setCheckoutMessage(
+          `Order placed successfully. Order ID: ${response.data._id}`
+        );
+        setOrderID(response.data._id);
+
+        setActiveStep(3);
+        setSelectedAddressId("");
+        fetchData();
+        window.history.replaceState({}, document.title, "/patients/medicines");
+      } catch (error) {
+        console.error("Error during checkout:", error.message);
+        setCheckoutMessage("Failed to place the order. Please try again.");
+      }
+    };
+    fetchData();
+    checkout();
+  }, []);
   const handleAddressSelect = (selectedAddress) => {
     // Use the selected address in Checkout component
-    console.log("Selected Address:", selectedAddress);
     setSelectedAddressId(selectedAddress);
     setSelectedAddress(addresses[selectedAddress]);
-    console.log("Selected Address:", addresses[selectedAddress]);
     // You can set it in state or perform other operations with the selected address
   };
 
   const handlePaymentMethodSelect = (selectedPaymentMethod) => {
-    console.log("Selected Payment Method:", selectedPaymentMethod);
     setPaymentMethod(selectedPaymentMethod);
     if (selectedPaymentMethod === "cash") {
       setSelectedPaymentMethodString("Cash");
@@ -119,7 +153,7 @@ export default function Checkout() {
     try {
       const response = await Axios.post(
         "http://localhost:8000/api/v1/patient/createStripeCheckoutSession",
-        { addressId: selectedAddressId },
+        { addressId: selectedAddress._id },
         { withCredentials: true }
       );
 
@@ -167,7 +201,7 @@ export default function Checkout() {
         const response = await Axios.post(
           "http://localhost:8000/api/v1/patient/checkout",
           {
-            addressId: selectedAddressId,
+            addressId: selectedAddress._id,
             withWallet: paymentMethod === "wallet",
           },
           { withCredentials: true }
@@ -185,6 +219,8 @@ export default function Checkout() {
         setCheckoutMessage(
           `Order placed successfully. Order ID: ${response.data._id}`
         );
+        setOrderID(response.data._id);
+        setActiveStep(3);
         setSelectedAddressId("");
         fetchData();
       } catch (error) {
@@ -219,7 +255,7 @@ export default function Checkout() {
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
+                Your order number is #{orderID}. We have emailed your order
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>

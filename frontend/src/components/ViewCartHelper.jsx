@@ -90,6 +90,7 @@ export default function Review() {
         error.response?.data?.error || error.message
       );
     }
+    handleSubmit();
   };
 
   if (isLoading) {
@@ -151,7 +152,7 @@ export default function Review() {
               variant="body2"
               sx={{ width: "80px", display: "flex", justifyContent: "end" }}
             >
-              {product.medicineId.price * product.quantity}$
+              {(product.medicineId.price * product.quantity).toFixed(2)}$
             </Typography>
           </ListItem>
         ))}
