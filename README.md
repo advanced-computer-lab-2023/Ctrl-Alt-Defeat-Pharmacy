@@ -14,9 +14,7 @@ To run this project, you will need to add the following environment variables to
 
 
 ## Screenshots
-
-![App Screenshot](![sssssa](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ec7e807a-1279-477f-9895-3df98fadbd63)
-)
-
+batates so5na khales
+![sssssa](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/7b6a8dc6-5379-4457-9dda-a796aadd920f)
 
 ## tata
