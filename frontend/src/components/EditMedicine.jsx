@@ -83,7 +83,6 @@ function EditMedicine() {
         <button type="submit">Edit Medicine</button>
       </form>
       <br />
-      <Link to="/pharmacists/home">home</Link>
       {res && <div>medicine edited</div>}
     </div>
   );

@@ -1,7 +1,11 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   margin: 0;
+  background-image: url("../assets/pharmacy-drugstore-shelves-interior-blurred-600nw-2034905894.webp"); /* Replace 'path/to/your/image.jpg' with your image file path */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 h1 {
@@ -10,11 +14,66 @@ h1 {
   margin-bottom: 30px;
 }
 
+.medicine-image {
+  width: 150px; /* Adjust this value as needed */
+  height: 150px; /* Adjust this value to maintain aspect ratio */
+  object-fit: cover; /* Ensures the image covers the defined area */
+  /* Additional styles if required */
+}
+
+/* .quantity-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+} */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 160px; /* Adjust width as needed */
+  margin: 0 auto; /* Center the buttons */
+}
+
+.quantity-controls button {
+  background-color: #0076c0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 36.5px;
+  height: 36.5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quantity-controls button:disabled {
+  background-color: rgb(189, 188, 188);
+  /* Adjust the opacity or color for disabled state as needed */
+  color: rgba(255, 255, 255, 0.7); /* Adjust opacity as desired */
+  cursor: not-allowed;
+}
+.quantity-controls button:hover:enabled {
+  background-color: #004b82; /* Change color on hover */
+}
+.quantity-display {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .medicine-container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin-top: 10px;
+  margin: 10px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.782
+  ); /* Adjust the alpha value (last parameter) for transparency */
+  padding: 20px;
+  border-radius: 10px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -27,9 +86,21 @@ h1 {
   margin-bottom: 20px;
 }
 
+.search-section {
+  margin-left: 60px;
+  width: 416px;
+}
+
+.filter-section {
+  margin-right: 72px;
+}
+
 .filter-section,
 .search-section {
-  width: 48%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .filter-button,
@@ -39,7 +110,7 @@ h1 {
   padding: 8px;
   font-size: 14px;
   cursor: pointer;
-  background-color: #0071BC;
+  background-color: #0071bc;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -51,7 +122,7 @@ h1 {
 .view-all-button:hover,
 .search-button:hover,
 .add-to-cart-button:hover {
-  background-color: #004B82; /* Change color on hover */
+  background-color: #004b82; /* Change color on hover */
 }
 
 .view-all-button {
@@ -63,7 +134,7 @@ h1 {
 }
 
 .view-all-button:hover {
-  background-color: #004B82;
+  background-color: #004b82;
 }
 
 .search-section input,
@@ -74,15 +145,27 @@ h1 {
 .medicine-list {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .medicine-item {
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
   margin: 20px 0;
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 8px;
   transition: 0.2s;
   position: relative; /* Add relative positioning */
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+  width: 170px;
 }
 
 .medicine-item:hover {
@@ -96,8 +179,6 @@ h1 {
 
 .add-to-cart-button {
   position: absolute; /* Position absolute for overlay */
-  bottom: 20px; /* Adjust bottom distance */
-  right: 20px; /* Adjust right distance */
 }
 
 .cart-message {

@@ -49,7 +49,6 @@ function PatientDetails() {
         </div>
       )}
       <br />
-      <Link to="/admins/home">home</Link>
     </div>
   );
 }
