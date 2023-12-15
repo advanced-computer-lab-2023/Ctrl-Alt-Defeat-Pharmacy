@@ -9,7 +9,6 @@ import {
   ListItemText,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -39,9 +38,11 @@ const TopNavigation = (props) => {
   return (
     <div>
       <div className="top-navigation">
-        <IconButton onClick={handleToggleSideNav}>
-          <MenuIcon />
-        </IconButton>
+        <div className="drawerIcon-container">
+          <IconButton onClick={handleToggleSideNav}>
+            <MenuIcon />
+          </IconButton>
+        </div>
         <Link to={link}>
           <div className="logo-container">
             <img
@@ -61,16 +62,6 @@ const TopNavigation = (props) => {
       </div>
       <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
         <List>
-          <ListItem
-            component={Link}
-            to="/patients/home"
-            onClick={handleToggleSideNav}
-          >
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Account Details" />
-          </ListItem>
           <ListItem
             button
             component={Link}
@@ -103,6 +94,17 @@ const TopNavigation = (props) => {
               <ShoppingCartIcon />
             </ListItemIcon>
             <ListItemText primary="Cart" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/patients/home"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Account Details" />
           </ListItem>
           <ListItem
             button

@@ -7,6 +7,9 @@
   align-items: center;
   justify-content: center;
   background-color: white;
+  /* position: absolute;
+  top: 4px;
+  right: 49%; */
 }
 
 .logo {
@@ -17,6 +20,7 @@
 .top-navigation {
   display: flex;
   align-items: center;
+  height: 60px;
   /* Other styles */
 }
 
@@ -43,4 +47,9 @@
 .account-icon-container .MuiSvgIcon-root {
   color: white;
   font-size: 60px;
+}
+
+.drawerIcon-container .MuiSvgIcon-root {
+  color: white;
+  font-size: 30px;
 }
