@@ -217,7 +217,7 @@ export default function Review() {
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {res?.data?.totalPrice || 0}$
+            {(res?.data?.totalPrice || 0).toFixed(2)}$
           </Typography>
         </ListItem>
       </List>
