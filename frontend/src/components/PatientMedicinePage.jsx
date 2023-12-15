@@ -303,7 +303,7 @@ function PatientMedicinesPage() {
               type="text"
               placeholder="Search by Name"
               value={searchTerm}
-              sx={{ width: 300 }}
+              sx={{ width: 416 }}
               onChange={(e) => handleSearch(e.target.value)}
               InputProps={{
                 startAdornment: (
@@ -325,7 +325,7 @@ function PatientMedicinesPage() {
               value={medicalUseFilter}
               onChange={(e, newValue) => handleFilter(newValue)}
               options={allMedicalUses}
-              style={{ width: 300 }}
+              style={{ width: 416 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
