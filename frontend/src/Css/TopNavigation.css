@@ -1,6 +1,6 @@
 .logo-container {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
@@ -10,6 +10,37 @@
 }
 
 .logo {
-  width: 100%; /* Adjust the logo size */
+  width: 137%; /* Adjust the logo size */
   height: auto;
+}
+
+.top-navigation {
+  display: flex;
+  align-items: center;
+  /* Other styles */
+}
+
+.account-icon-container {
+  position: absolute;
+  right: 0;
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.account-icon-container a {
+  text-decoration: none;
+}
+
+.account-icon-container .MuiButtonBase-root {
+  width: 70px;
+  height: 70px;
+}
+
+.account-icon-container .MuiIconButton-root {
+  width: 100%;
+  height: 100%;
+}
+
+.account-icon-container .MuiSvgIcon-root {
+  color: white;
+  font-size: 60px;
 }

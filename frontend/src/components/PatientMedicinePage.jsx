@@ -13,6 +13,8 @@ import {
   Autocomplete,
 } from "@mui/material";
 import TopNavigation from "./TopNavigation";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList"; // Assuming this is the icon you want to use
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
@@ -266,7 +268,7 @@ function PatientMedicinesPage() {
                 )
               }
             >
-              <RemoveIcon />
+              {cartItem.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
             </IconButton>
           </div>
         );
@@ -293,7 +295,7 @@ function PatientMedicinesPage() {
 
   return (
     <div>
-      <TopNavigation link="/patients/home" />
+      <TopNavigation link="/patients/medicines" />
       <div className="medicine-container">
         <div className="filter-search-section">
           <div className="search-section">
@@ -301,13 +303,12 @@ function PatientMedicinesPage() {
               type="text"
               placeholder="Search by Name"
               value={searchTerm}
+              sx={{ width: 300 }}
               onChange={(e) => handleSearch(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IconButton onClick={handleSearch}>
-                      <SearchIcon />
-                    </IconButton>
+                    <SearchIcon />
                   </InputAdornment>
                 ),
               }}
@@ -326,13 +327,25 @@ function PatientMedicinesPage() {
               options={allMedicalUses}
               style={{ width: 300 }}
               renderInput={(params) => (
-                <TextField {...params} label="Medical Use" />
+                <TextField
+                  {...params}
+                  placeholder="Medical Use"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {""}
+                        <FilterListIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               )}
             />
           </div>
         </div>
 
-        <h2 style={{ color: "grey" }}>Available Medicines</h2>
+        {/* <h2 style={{ color: "grey" }}> Pharmacy</h2> */}
         {medicines && (
           <div>
             <ul className="medicine-list">
@@ -348,6 +361,12 @@ function PatientMedicinesPage() {
                   <p style={{ color: "grey", height: "60px" }}>
                     <br /> {medicine.description}
                     <br />
+                    <br />
+                    {medicine.quantity < 5 && medicine.quantity !== 0 && (
+                      <span style={{ color: "red" }}>
+                        {medicine.quantity} left in stock
+                      </span>
+                    )}
                     {medicine.quantity === 0 && (
                       <span style={{ color: "red" }}>
                         Currently Unavailable

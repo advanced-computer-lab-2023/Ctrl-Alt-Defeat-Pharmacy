@@ -17,6 +17,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import Axios from "axios";
 import "../Css/TopNavigation.css";
 import PropTypes from "prop-types";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const TopNavigation = (props) => {
   const { link } = props;
@@ -50,6 +51,13 @@ const TopNavigation = (props) => {
             />
           </div>
         </Link>
+        <div className="account-icon-container">
+          <Link to="/patients/home">
+            <IconButton>
+              <AccountCircleIcon />
+            </IconButton>
+          </Link>
+        </div>
       </div>
       <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
         <List>
@@ -61,7 +69,7 @@ const TopNavigation = (props) => {
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" />
+            <ListItemText primary="Account Details" />
           </ListItem>
           <ListItem
             button
@@ -72,7 +80,7 @@ const TopNavigation = (props) => {
             <ListItemIcon>
               <LocalPharmacyIcon />
             </ListItemIcon>
-            <ListItemText primary="Medicines" />
+            <ListItemText primary="Medications" />
           </ListItem>
           <ListItem
             button

@@ -119,7 +119,7 @@ function PatientHome() {
   return (
     <div>
       <div>
-        <TopNavigation />
+        <TopNavigation link="/patients/medicines" />
         <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
           <List>
             <ListItem
