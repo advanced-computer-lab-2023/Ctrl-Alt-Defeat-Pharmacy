@@ -1,9 +1,7 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -106,7 +104,7 @@ export default function Checkout() {
     setPaymentMethod(selectedPaymentMethod);
     if (selectedPaymentMethod === "cash") {
       setSelectedPaymentMethodString("Cash");
-    } else if (selectedPaymentMethod === "credit") {
+    } else if (selectedPaymentMethod === "card") {
       setSelectedPaymentMethodString("Credit Card");
     } else {
       setSelectedPaymentMethodString("Wallet");
@@ -156,7 +154,7 @@ export default function Checkout() {
   };
 
   const pay = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (!selectedAddressId) {
       setCheckoutMessage("Please select a delivery address.");
       return;
@@ -248,11 +246,11 @@ export default function Checkout() {
                   sx={{ mt: 3, ml: 1 }}
                 >
                   {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  {checkoutMessage && (
-                    <p className="checkout-message">{checkoutMessage}</p>
-                  )}
                 </Button>
               </Box>
+              {checkoutMessage && (
+                <p className="checkout-message">{checkoutMessage}</p>
+              )}
             </React.Fragment>
           )}
         </Paper>

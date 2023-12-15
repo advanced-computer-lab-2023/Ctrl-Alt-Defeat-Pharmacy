@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 
 export default function Review({ selectedAddress, selectedPaymentMethod }) {
   const [res, setRes] = useState(null);
-  const setIsLoading = useState(true);
+  const [cart, setCart] = useState({ totalPrice: 0 });
 
   useEffect(() => {
     handleSubmit();
@@ -23,17 +23,17 @@ export default function Review({ selectedAddress, selectedPaymentMethod }) {
         { withCredentials: true }
       );
       setRes(response);
-
-      setIsLoading(false);
+      setCart(response.data); // Set cart data
     } catch (error) {
       console.error(
         "Error fetching cart:",
         error.response?.data?.error || error.message
       );
-      setIsLoading(false);
     }
   };
+
   const products = res?.data?.items || [];
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -57,10 +57,29 @@ export default function Review({ selectedAddress, selectedPaymentMethod }) {
             </Typography>
           </ListItem>
         ))}
+        <ListItem sx={{ py: 1, px: 0 }}></ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Subtotal" />
+          <Typography variant="body2">
+            ${Math.floor(cart.totalPrice * 100) / 100}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Delivery fee" />
+          <Typography variant="body2">$5</Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Service fee" />
+          <Typography variant="body2">
+            ${Math.floor(cart.totalPrice * 0.05 * 100) / 100}
+          </Typography>
+        </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {(res?.data?.totalPrice || 0).toFixed(2)}$
+          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+            $
+            {Math.floor((cart.totalPrice + 5 + cart.totalPrice * 0.05) * 100) /
+              100}
           </Typography>
         </ListItem>
       </List>
@@ -95,6 +114,7 @@ export default function Review({ selectedAddress, selectedPaymentMethod }) {
     </React.Fragment>
   );
 }
+
 Review.propTypes = {
   selectedAddress: PropTypes.object.isRequired,
   selectedPaymentMethod: PropTypes.string.isRequired,
