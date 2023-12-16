@@ -15,7 +15,7 @@ import EditMedicine from "./components/EditMedicine";
 import ViewCart from "./components/ViewCart";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import AdminHome from "./components/AdminHome";
+import AdminHome from "./Pages/AdminHome";
 import PharmacistHome from "./components/PharmacistHome";
 import PatientHome from "./components/PatientHome";
 import Checkout from "./components/Checkout";
@@ -25,6 +25,12 @@ import ForgetPassword from "./components/ForgetPassword";
 import ResetPassword from "./components/ResetPassword";
 import ChangePassword from "./components/ChangePassword";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Chart from "./components/Chart";
+import Dashboard from "./components/Dashboard";
+import Deposits from "./components/Deposits";
+import ListItems from "./components/ListItems";
+import Title from "./components/Title";
+import Orders from "./components/Orders";
 
 function App() {
   return (
@@ -74,6 +80,13 @@ function App() {
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/checkout" element={<Checkout />} />
+          <Route path="admins/chart" element={<Chart />} />
+          <Route path="admins/dashboard" element={<Dashboard />} />
+          <Route path="admins/deposits" element={<Deposits />} />
+          <Route path="admins/listItems" element={<ListItems />} />
+          <Route path="admins/title" element={<Title />} />
+          <Route path="admins/orders" element={<Orders />} />
+
         </Routes>
       </BrowserRouter>
 
