@@ -39,50 +39,116 @@ try {
   console.error('Multer Error:', error);
 }
 
-calculateTotalSalesForMonth = async chosenMonth => {
+const calculateTotalSalesForMonth = async (chosenMonth, medicineId, startDate, endDate) => {
   try {
     const chosenDate = new Date(chosenMonth);
 
     const firstDayOfMonth = new Date(chosenDate.getFullYear(), chosenDate.getMonth(), 1);
-
     const lastDayOfMonth = new Date(chosenDate.getFullYear(), chosenDate.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    const totalSales = await Order.aggregate([
+    const start = startDate ? new Date(startDate) : firstDayOfMonth;
+    const end = endDate ? new Date(endDate) : lastDayOfMonth;
+
+    const matchStage = {
+      Date: {
+        $gte: start,
+        $lte: end,
+      },
+      status: { $ne: 'Cancelled' },
+    };
+
+    if (medicineId) {
+      matchStage['items.medicineId'] = medicineId;
+    }
+
+    const totalSalesByMedicine = await Order.aggregate([
       {
-        $match: {
-          Date: {
-            $gte: firstDayOfMonth,
-            $lte: lastDayOfMonth,
-          },
+        $match: matchStage,
+      },
+      {
+        $unwind: '$items',
+      },
+      {
+        $lookup: {
+          from: 'medicines',
+          localField: 'items.medicineId',
+          foreignField: '_id',
+          as: 'medicine',
         },
       },
       {
+        $unwind: '$medicine',
+      },
+      {
         $group: {
-          _id: null,
-          totalSales: { $sum: '$totalPrice' },
+          _id: '$medicine.name',
+          totalSales: { $sum: '$items.price' },
+          individualPrices: { $push: '$items.price' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          medicine: '$_id',
+          totalSales: 1,
+          individualPrices: 1,
         },
       },
     ]);
 
-    if (totalSales.length > 0) {
-      return totalSales[0].totalSales;
-    } else {
-      return 0;
-    }
+    const overallTotalSales = totalSalesByMedicine.reduce(
+      (accumulator, currentMedicine) => accumulator + currentMedicine.totalSales,
+      0
+    );
+
+    const includeIndividualPrices = !medicineId;
+
+    return { totalSalesByMedicine, overallTotalSales, includeIndividualPrices };
   } catch (error) {
     console.error('Error calculating total sales:', error);
     throw error;
   }
 };
+
 exports.getTotalSalesPerMonth = async (req, res) => {
   try {
     const { month } = req.params;
-    const totalSales = await calculateTotalSalesForMonth(month);
+    const { medicineName, startDate, endDate } = req.query;
+    let medicineId;
+    if (medicineName) {
+      const medicine = await Medicine.findOne({ name: medicineName });
+      if (medicine) {
+        medicineId = medicine._id;
+      }
+    }
+    const { totalSalesByMedicine, overallTotalSales, includeIndividualPrices } = await calculateTotalSalesForMonth(
+      month,
+      medicineId,
+      startDate,
+      endDate
+    );
 
-    res.status(200).json({
-      status: 'success',
-      totalSales,
-    });
+    if (includeIndividualPrices) {
+      res.status(200).json({
+        status: 'success',
+        totalSalesByMedicine,
+        overallTotalSales,
+      });
+    } else {
+      const filteredTotalSalesByMedicine = totalSalesByMedicine
+        .filter(medicine => medicine.medicine.toLowerCase() === medicineName.toLowerCase())
+        .map(medicine => ({
+          totalSales: medicine.totalSales,
+          individualPrices: medicine.individualPrices,
+          medicine: medicine.medicine,
+        }));
+
+      res.status(200).json({
+        status: 'success',
+        totalSalesByMedicine: filteredTotalSalesByMedicine,
+        overallTotalSales: filteredTotalSalesByMedicine[0]?.totalSales || 0,
+      });
+    }
   } catch (error) {
     res.status(404).json({
       status: 'fail',
@@ -126,6 +192,7 @@ exports.getMedicineQuantitySales = async (req, res) => {
     });
   }
 };
+
 exports.addMedicine = async (req, res) => {
   try {
     const existingMedicine = await Medicine.findOne({ name: req.body.name });
