@@ -291,6 +291,10 @@ Add these keys to .env file to run project
 ![WhatsApp Image 2023-12-16 at 5 44 14 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/20799534-931e-408a-bd38-a77f1d0bd86f)
 **The CheckOut**
 ![WhatsApp Image 2023-12-16 at 5 45 17 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ea09987a-cbff-416f-9ee8-11d4ed3b40ef)
+**Add a Medicine**
+![WhatsApp Image 2023-12-16 at 8 50 19 PM (1)](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/c0e1541d-c3e2-4952-ac03-8fc9c69f616f)
+**Edit a Medicine**
+![WhatsApp Image 2023-12-16 at 8 50 19 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/e5f2f0c5-65f4-428f-982a-ad45e810d9d8)
 
 
 
