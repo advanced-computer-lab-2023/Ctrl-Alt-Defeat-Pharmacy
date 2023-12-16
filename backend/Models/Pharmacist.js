@@ -7,6 +7,9 @@ const pharmacistSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  Documents: {
+    type: [String],
+  },
   name: {
     type: String,
     required: true,
