@@ -78,7 +78,7 @@ exports.updateMedicine = async (req, res) => {
 exports.viewWallet = async (req, res) => {
   try {
     const user = await Pharmacist.findById(req.user._id);
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
