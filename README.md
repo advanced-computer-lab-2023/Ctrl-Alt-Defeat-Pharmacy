@@ -243,6 +243,35 @@ npm run dev
 - nodemailer: 6.9.7
 - stripe : 14.4.0
 
+## ScreenShots
+**Navigation Bar and Drawer**
+![pic1](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ea813298-bd4e-4bc0-8e89-0d26980f6010)
+
+**View Medicine**
+
+![WhatsApp Image 2023-12-16 at 5 10 18 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/7f86bf2d-12d5-40aa-ac39-08bf0ad8091c)
+
+**Items in Cart**
+![WhatsApp Image 2023-12-16 at 5 42 37 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/2a0ff4bc-86d6-47e8-b7fe-1126e970f68c)
+**Selecting Shipping Address**
+![WhatsApp Image 2023-12-16 at 5 43 30 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/18ddf8dc-a186-4221-b025-1ccd99e2b490)
+**Selecting Payment Method**
+![WhatsApp Image 2023-12-16 at 5 43 46 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/3e5dd9ae-b7f4-41dd-832f-472a41fb1748)
+**Review Order**
+![WhatsApp Image 2023-12-16 at 5 44 14 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/20799534-931e-408a-bd38-a77f1d0bd86f)
+**The CheckOut**
+![WhatsApp Image 2023-12-16 at 5 45 17 PM](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ea09987a-cbff-416f-9ee8-11d4ed3b40ef)
+
+
+
+
+
+
+
+
+
+
+
 
 ## API Reference
 ### Patient's routes
