@@ -11,6 +11,19 @@ body {
   display: flex;
 }
 
+button {
+  background-color: #0071bc;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #004b82;
+}
+
 .top-navigation a {
   float: left;
   display: block;
