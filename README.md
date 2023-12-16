@@ -310,6 +310,10 @@ Add these keys to .env file to run project
 ## API Reference
 ### Patient's routes
 
+```http
+  /api/v1/patient
+```
+
 #### Register as Patient
 ```http
   POST /register
@@ -509,6 +513,9 @@ Add these keys to .env file to run project
 
 ### Admin's routes
 
+```http
+  /api/v1/admin
+```
 
 #### Accept a Pharmacist
 ```http
@@ -603,6 +610,10 @@ Add these keys to .env file to run project
 
 ### Pharamacy Routes
 
+```http
+ /api/v1/pharmacy
+```
+
 #### Get All Medicines
 
 ```http
@@ -641,6 +652,9 @@ Add these keys to .env file to run project
 | :-------- | :------- | :-------------------------------- |
 | `medicalUse`      | `string` | **Required**. medicalUse of medicine to fetch |
 ### Pharmacist Routes
+```http
+/api/v1/pharmacist
+```
 
 #### Register
 
@@ -719,6 +733,10 @@ Add these keys to .env file to run project
 | `id`      | `string` | **Required**. id of medicine to be editted
 
 ### Authentication Routes
+
+```http
+ /api/v1/auth
+```
 
 #### Login
 
