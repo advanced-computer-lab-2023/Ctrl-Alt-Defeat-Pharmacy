@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
-function DoctorRegister() {
+function PharmacistRegister() {
   const navigate = useNavigate();
   const [res, setRes] = useState(null);
+  const [message, setMessage] = useState(null);
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -25,9 +27,21 @@ function DoctorRegister() {
     e.preventDefault();
     const response = await Axios.post(
       "http://localhost:8000/api/v1/pharmacist/register",
-      formData ,{withCredentials: true}
+      formData,
+      { withCredentials: true }
     );
     setRes(response.data);
+    setFormData({
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      dateOfBirth: "",
+      hourlyRate: "",
+      affiliation: "",
+      educationalBackground: "",
+    });
+    setMessage("You request has been sent to the admin for approval");
     setTimeout(() => navigate("/login"), 3000);
   };
 
@@ -117,9 +131,10 @@ function DoctorRegister() {
         </div>
         <button type="submit">Register</button>
       </form>
-      {res && <div>pharmacist request sent</div>}
+      <Link to="/">home</Link>
+      {res && <div>{message}</div>}
     </div>
   );
 }
 
-export default DoctorRegister;
+export default PharmacistRegister;

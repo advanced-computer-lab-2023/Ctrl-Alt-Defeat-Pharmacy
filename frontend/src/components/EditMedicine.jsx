@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 function EditMedicine() {
   const [formData, setFormData] = useState({
@@ -24,7 +25,8 @@ function EditMedicine() {
     );
     const response = await Axios.patch(
       `http://localhost:8000/api/v1/pharmacist/editMedicine/${formData.name}`,
-      formDataWithoutEmptyValues ,{withCredentials: true}
+      formDataWithoutEmptyValues,
+      { withCredentials: true }
     );
     setRes(response);
   };
@@ -80,6 +82,7 @@ function EditMedicine() {
         </div>
         <button type="submit">Edit Medicine</button>
       </form>
+      <br />
       {res && <div>medicine edited</div>}
     </div>
   );

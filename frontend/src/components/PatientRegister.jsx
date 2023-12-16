@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 function PatientRegister() {
   const navigate = useNavigate();
   const [res, setRes] = useState(null);
+  const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -34,6 +36,7 @@ function PatientRegister() {
       dateOfBirth: formData.dob,
       gender: formData.gender,
       mobileNumber: formData.phoneNumber,
+      nationalId: formData.nationalId,
       emergencyContact: {
         fullName: formData.emergencyContactName,
         mobileNumber: formData.emergencyContactNumber,
@@ -41,12 +44,20 @@ function PatientRegister() {
         relationToPatient: formData.relationToPatient,
       },
     };
+    console.log("response 1");
     const response = await Axios.post(
       "http://localhost:8000/api/v1/patient/register",
-      data ,{withCredentials: true}
+      data,
+      { withCredentials: true }
     );
-    setRes(response);
-    setTimeout(() => navigate("/login"), 3000);
+    console.log("response");
+    if (response.data.status == "failed") {
+      setErr(true);
+    } else {
+      setErr(false);
+      setRes(response);
+      setTimeout(() => navigate("/login"), 3000);
+    }
   };
 
   return (
@@ -118,6 +129,16 @@ function PatientRegister() {
           </select>
         </div>
         <div>
+          <label>National ID:</label>
+          <input
+            type="tel"
+            name="nationalId"
+            value={formData.nationalId}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
           <label>Phone Number:</label>
           <input
             type="tel"
@@ -159,7 +180,9 @@ function PatientRegister() {
         </div>
         <button type="submit">Register</button>
       </form>
+      <Link to="/">home</Link>
       {res && <div>patient registered</div>}
+      {err && <div>username already exists</div>}
     </div>
   );
 }

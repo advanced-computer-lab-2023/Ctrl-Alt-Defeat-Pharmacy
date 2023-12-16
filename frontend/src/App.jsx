@@ -4,7 +4,8 @@ import RemovePatients from "./components/RemovePatients";
 import RemovePharmacists from "./components/RemovePharmacists";
 import ViewPendingPharmacists from "./components/ViewPendingPharmacists";
 import ViewMedicineQuantitySales from "./components/ViewMedicineQuantitySales";
-import MedicinesPage from "./components/MedicinePage";
+import PatientMedicinePage from "./components/PatientMedicinePage";
+import MedicinePage from "./components/MedicinePage";
 import PatientDetails from "./components/PatientDetails";
 import PharmacistDetails from "./components/PharmacistDetails";
 import PatientRegister from "./components/PatientRegister";
@@ -20,9 +21,11 @@ import PatientHome from "./components/PatientHome";
 import Checkout from "./components/Checkout";
 import ViewOrder from "./components/ViewOrder";
 import FileUpload from "./components/FileUpload";
-
+import VerifyOTP from "./components/VerifyOTP";
+import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
+import ChangePassword from "./components/ChangePassword";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 
 function App() {
   return (
@@ -33,23 +36,43 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/patients/register" element={<PatientRegister />} />
-          <Route path="/pharmacists/register"element={<PharmacistRegister />} />
+          <Route
+            path="/pharmacists/register"
+            element={<PharmacistRegister />}
+          />
+          <Route path="/verifyOTP/:username" element={<VerifyOTP />} />
+          <Route path="/forgetPassword" element={<ForgetPassword />} />
+          <Route path="/resetPassword/:username" element={<ResetPassword />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
           {/* Admin  */}
           <Route path="/admins/home" element={<AdminHome />} />
           <Route path="/admins/addAdmin" element={<AddAdmin />} />
-          <Route path="/admins/removePharmacist" element={<RemovePharmacists />}/>
+          <Route
+            path="/admins/removePharmacist"
+            element={<RemovePharmacists />}
+          />
           <Route path="/admins/removePatient" element={<RemovePatients />} />
           <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
+          <Route path= "admins/patientDetails" element={<PatientDetails />} />
+          <Route path= "admins/pharmacistDetails" element={<PharmacistDetails />} />
+          <Route path="/admins/medicines" element={<MedicinePage />} />
+          <Route
+            path="/admins/viewPendingPharmacists"
+            element={<ViewPendingPharmacists />}
+          />
           {/* Pharmacist */}
           <Route path="/pharmacists/home" element={<PharmacistHome />} />
-          <Route path="/pharmacists/viewMedicineQuantitySales" element={<ViewMedicineQuantitySales />} />
+          <Route
+            path="/pharmacists/viewMedicineQuantitySales"
+            element={<ViewMedicineQuantitySales />}
+          />
           <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
           <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
           <Route path="/pharmacists/medicines" element={<MedicinesPage />} />
           <Route path="/pharmacists/fileUpload" element={<FileUpload/>} />
           {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
-          <Route path="patients/medicines" element={<MedicinesPage />} />
+          <Route path="patients/medicines" element={<PatientMedicinePage />} />
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/checkout" element={<Checkout />} />
@@ -65,7 +88,7 @@ function App() {
       <hr />
       <ViewPendingPharmacists /> Done
       <hr />
-      <ViewMedicineQuantitySales />
+      <ViewMedicineQuantitySales /> Done
       <hr />
       <PatientRegister /> Done
       <hr />

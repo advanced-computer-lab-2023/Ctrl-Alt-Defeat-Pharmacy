@@ -1,9 +1,35 @@
+// const Admin = require('../Models/Admin');
+// const Pharmacist = require('../Models/Pharmacist');
 const Patient = require('../Models/Patient');
 const Medicine = require('../Models/Medicine');
 const Cart = require('../Models/Cart');
 const Order = require('../Models/Order');
+const APIFeatures = require('../helpers/apiFeatures');
+const prescriptions = require('../Models/Prescriptions');
+// const findByUsername = async username => {
+//   let user;
+
+//   user = await Admin.findOne({ username });
+//   if (user) return { user, role: 'admin' };
+
+//   user = await Patient.findOne({ username });
+//   if (user) return { user, role: 'patient' };
+
+//   user = await Pharmacist.findOne({ username });
+//   if (user) return { user, role: 'pharmacist' };
+
+//   return {};
+// };
 
 exports.registerPatient = async (req, res) => {
+  // const { user } = await findByUsername(req.body.username);
+  // if (user) {
+  //   res.status(200).json({
+  //     status: 'failed',
+  //     message: 'username already exists',
+  //   });
+  //   return;
+  // }
   const newPatient = await Patient.create(req.body);
   res.status(201).json({
     message: 'patient created successfully',
@@ -11,37 +37,64 @@ exports.registerPatient = async (req, res) => {
   });
 };
 
+const hasMedicineInPrescriptions = (prescription, medicineName) =>
+  prescription.medicines.some(prescribedMedicine => prescribedMedicine.name === medicineName);
+
 exports.addOverTheCounterMedicine = async (req, res) => {
   try {
     const { medicineName, quantity } = req.body;
-
+    const patientId = req.user._id;
+    const hasMedicineInPrescriptionss = false;
     const medicine = await Medicine.findOne({ name: medicineName });
-    const price = medicine.price * quantity;
-
-    if (medicine.quantity == 0) {
-      return res.status(400).json({ error: 'This medicine is out of stock' });
-    } else if (quantity > medicine.quantity) {
-      return res.status(400).json({ error: 'Quantity is more than available' });
-    } else {
-      medicine.quantity -= quantity;
-      await medicine.save();
-    }
 
     if (!medicine) {
       return res.status(404).json({ error: 'Medicine not found' });
     }
+    //check if it is a prescription medicine
+    if (medicine.prescription) {
+      const patient = await Patient.findOne({ _id: patientId });
+      const prescriptionss = await prescriptions.findOne({ patientId: patientId });
 
-    const cart = await Cart.findOne({ patientId: req.user._id });
+      if (!patient) {
+        return res.status(404).json({ error: 'Patient not found' });
+      }
+
+      if (prescriptionss) {
+        hasMedicineInPrescriptionss = hasMedicineInPrescriptions(prescriptionss, medicineName);
+      }
+      if (!hasMedicineInPrescriptionss) {
+        return res.status(400).json({ error: 'This medicine is not in your recent prescriptions' });
+      }
+    }
+
+    const price = medicine.price * quantity;
+
+    if (medicine.quantity === 0) {
+      return res.status(400).json({ error: 'This medicine is out of stock' });
+    }
+
+    if (quantity > medicine.quantity) {
+      return res.status(400).json({ error: 'Quantity is more than available' });
+    }
+
+    // Deduct quantity from available stock
+    medicine.quantity -= quantity;
+    await medicine.save();
+
+    // Check if the patient has a cart
+    const cart = await Cart.findOne({ patientId });
 
     if (!cart) {
-      const newCart = new Cart({ patientId: req.user._id, items: [], totalPrice: 0 });
+      const newCart = new Cart({ patientId, items: [], totalPrice: 0 });
       newCart.items.push({ medicineId: medicine._id, quantity, price });
       newCart.totalPrice += price;
       await newCart.save();
       return res.status(201).json(newCart);
     }
 
+    // Check if the medicine is already in the cart
     const existingItem = cart.items.find(item => item.medicineId.toString() === medicine._id.toString());
+
     if (existingItem) {
       existingItem.quantity += quantity;
       existingItem.price += price;
@@ -54,10 +107,10 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     await cart.save();
     res.status(201).json(cart);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 exports.viewCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ patientId: req.user._id }).populate('items.medicineId');
@@ -208,7 +261,7 @@ exports.createStripeCheckoutSession = async (req, res) => {
 
 exports.Checkout = async (req, res) => {
   try {
-    const { withWallet } = req.body;
+    const { paymentMethod } = req.body;
     const patientId = req.user._id;
     const patient = await Patient.findOne({ _id: patientId });
     const cart = await Cart.findOne({ patientId: req.user._id });
@@ -231,7 +284,7 @@ exports.Checkout = async (req, res) => {
     const selectedAddressId = req.body.addressId;
     const deliveryAddress = req.user.addresses.find(address => address._id.toString() === selectedAddressId.toString());
 
-    if (withWallet) {
+    if (paymentMethod === 'wallet') {
       if (patient.wallet < totalPrice) {
         return res.status(200).json({ error: 'Insufficient funds in your wallet' });
       }
@@ -254,6 +307,7 @@ exports.Checkout = async (req, res) => {
         country: deliveryAddress.country,
       },
       totalPrice: totalPrice,
+      paymentMethod,
     });
 
     const savedOrder = await newOrder.save();
@@ -325,6 +379,10 @@ exports.cancelOrder = async (req, res) => {
       medicine.sales -= item.quantity;
       await medicine.save();
     });
+    if (order.paymentMethod !== 'Cash on Delivery') {
+      const patient = await Patient.findById(order.patient);
+      patient.wallet += order.totalPrice;
+    }
 
     res.status(204).json({
       status: 'success',
@@ -333,5 +391,101 @@ exports.cancelOrder = async (req, res) => {
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+exports.viewAllOrders = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.user._id);
+
+    const allOrders = await Order.find({ patient: patient, status: { $ne: 'cancelled' } }).populate('items.medicineId');
+
+    res.status(200).json(allOrders);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+exports.viewWallet = async (req, res) => {
+  try {
+    const user = await Patient.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ wallet: user.wallet, message: 'Wallet balance retrieved successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+exports.viewAlternatives = async (req, res) => {
+  try {
+    const { medicineName } = req.params;
+
+    const originalMedicine = await Medicine.findOne({ name: medicineName });
+
+    if (!originalMedicine) {
+      return res.status(404).json({ status: 'fail', message: 'Medicine not found' });
+    }
+    const alternatives = await Medicine.find({
+      _id: { $ne: originalMedicine._id },
+      ingredients: { $in: originalMedicine.ingredients },
+      quantity: { $gt: 0 },
+      archive: false,
+    });
+    res.status(200).json({ status: 'success', data: alternatives });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
+  }
+};
+exports.getAllMedicine = async (req, res) => {
+  try {
+    const features = new APIFeatures(Medicine.find({ archive: false }), req.query).filter().sort();
+    const allMedicine = await features.query;
+
+    res.status(200).json({
+      status: 'success',
+      results: allMedicine.length,
+      data: allMedicine,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
+  }
+};
+
+exports.getMedicineByName = async (req, res) => {
+  try {
+    const substring = req.params.name;
+    const returnedMedicine =
+      substring == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ name: { $regex: substring, $options: 'i' }, archive: false }).exec();
+    res.status(200).json({
+      status: 'success',
+      data: returnedMedicine,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
+  }
+};
+
+exports.getMedicineByMedicalUse = async (req, res) => {
+  try {
+    const returnedMedicine =
+      req.params.medicalUse == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ medicalUse: req.params.medicalUse, archive: false });
+    res.status(200).json({
+      status: 'success',
+      data: returnedMedicine,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
   }
 };

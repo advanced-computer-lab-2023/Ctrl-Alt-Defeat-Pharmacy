@@ -2,18 +2,17 @@ const Pharmacist = require('../Models/Pharmacist');
 const Medicine = require('../Models/Medicine');
 
 exports.registerPharmacist = async (req, res) => {
-  const newDoctor = await Pharmacist.create(req.body);
-
-  newDoctor.registrationStatus = undefined;
+  const newPharmacist = await Pharmacist.create(req.body);
+  newPharmacist.registrationStatus = 'pending';
   res.status(201).json({
     message: 'pending approval of the new pharmacist',
-    data: newDoctor,
+    data: newPharmacist,
   });
 };
 
 exports.getMedicineQuantitySales = async (req, res) => {
   try {
-    const returnedMedicine = await Medicine.find().select('name quantity sales');
+    const returnedMedicine = await Medicine.find().select('picture name quantity sales');
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
@@ -75,6 +74,7 @@ exports.updateMedicine = async (req, res) => {
     });
   }
 };
+
 exports.uploadDocuments = async (req, res) => {
   const uploadedFiles = req.files ;
 
@@ -94,5 +94,21 @@ exports.uploadDocuments = async (req, res) => {
   } catch (error) {
     console.error('Error handling file upload:', error);
     res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+
+exports.viewWallet = async (req, res) => {
+  try {
+    const user = await Pharmacist.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ wallet: user.wallet, message: 'Wallet balance retrieved successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

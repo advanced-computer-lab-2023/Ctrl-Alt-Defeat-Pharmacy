@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -38,7 +38,14 @@ function Login() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <div>
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
@@ -64,6 +71,9 @@ function Login() {
           </div>
           <button type="submit">Login</button>
         </form>
+        <Link to="/forgetPassword">forgot password</Link>
+        <br />
+        <Link to="/">home</Link>
         {message && <div>{message}</div>}
       </div>
     </div>

@@ -2,47 +2,74 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
+import {
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import LockIcon from "@mui/icons-material/Lock";
+import TopNavigation from "./TopNavigation";
 
 function PatientHome() {
-  // State declarations
   const [patient, setPatient] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [newStreet, setNewStreet] = useState("");
   const [newCity, setNewCity] = useState("");
   const [newCountry, setNewCountry] = useState("");
-  const [ message, setMessage ] = useState("");
+  const [message, setMessage] = useState("");
 
-  // Fetch addresses on component mount
   useEffect(() => {
     fetchAddresses();
   }, []);
 
-  // Function to fetch patient addresses
   const fetchAddresses = async () => {
     try {
-      const response = await Axios.get("http://localhost:8000/api/v1/patient/getAddresses", {
-        withCredentials: true,
-      });
+      const response = await Axios.get(
+        "http://localhost:8000/api/v1/patient/getAddresses",
+        {
+          withCredentials: true,
+        }
+      );
       setAddresses(response.data.addresses);
     } catch (error) {
-      console.error("Error fetching addresses:", error.response?.data?.message || error.message);
+      console.error(
+        "Error fetching addresses:",
+        error.response?.data?.message || error.message
+      );
     }
   };
 
-  // Function to handle patient logout
   const handleLogout = async () => {
-    const response = await Axios.get("http://localhost:8000/api/v1/auth/logout", { withCredentials: true });
+    const response = await Axios.get(
+      "http://localhost:8000/api/v1/auth/logout",
+      { withCredentials: true }
+    );
     console.log(response.data);
   };
 
-  // Function to show patient data
+  const [showSideNav, setShowSideNav] = useState(false);
+
+  const handleToggleSideNav = () => {
+    setShowSideNav(!showSideNav);
+  };
+
   const showData = async () => {
-    const response = await Axios.get("http://localhost:8000/api/v1/auth/getMe", { withCredentials: true });
+    const response = await Axios.get(
+      "http://localhost:8000/api/v1/auth/getMe",
+      { withCredentials: true }
+    );
     console.log(response.data);
     setPatient(response.data.loggedIn);
   };
 
-  // Functions to handle input changes for adding a new address
   const handleNewStreetChange = (e) => {
     setNewStreet(e.target.value);
   };
@@ -55,7 +82,6 @@ function PatientHome() {
     setNewCountry(e.target.value);
   };
 
-  // Function to handle adding a new address
   const handleAddAddress = async (e) => {
     e.preventDefault();
     try {
@@ -89,16 +115,83 @@ function PatientHome() {
       }
     }
   };
-  
+
   return (
     <div>
-      <div className="top-navigation">
-        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-        <Link to="/patients/home">Home</Link>
-        <Link to="/patients/medicines">Medicines</Link>
-        <Link to="/patients/viewOrder">Orders</Link>
-        <Link to="/patients/viewCart">Cart</Link>
-        <Link to="/" className="right" onClick={handleLogout}>Logout</Link>
+      <div>
+        <TopNavigation link="/patients/medicines" />
+        <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
+          <List>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/home"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/medicines"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <LocalPharmacyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Medicines" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/viewOrder"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Orders" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/patients/viewCart"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cart" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/changePassword"
+              onClick={handleToggleSideNav}
+            >
+              <ListItemIcon>
+                <LockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Change password" />
+            </ListItem>
+            <hr className="hr" />
+            <ListItem
+              button
+              component={Link}
+              to="/"
+              className="right"
+              onClick={handleLogout}
+            >
+              <ListItemIcon>
+                <LockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          </List>
+        </Drawer>
       </div>
       <div className="main-container">
         <div className="welcome-section">
@@ -135,7 +228,9 @@ function PatientHome() {
               onChange={handleNewCountryChange}
             />
             <button type="submit">Add</button>
-            <div><p>{message}</p></div>
+            <div>
+              <p>{message}</p>
+            </div>
           </form>
         </div>
 
@@ -151,11 +246,10 @@ function PatientHome() {
                 {/* <button className="remove-Button" onClick={() => handleRemoveAddress(address._id)}>Remove</button> */}
               </ul>
             </div>
-
           ))}
         </div>
       </div>
-  </div>
+    </div>
   );
 }
 

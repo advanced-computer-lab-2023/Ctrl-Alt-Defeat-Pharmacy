@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const FamilyMember = require('./FamilyMember'); // Assuming FamilyMember is properly defined
 
 const patientSchema = new mongoose.Schema({
   username: {
@@ -33,9 +34,6 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  prescriptions: {
-    type: [String],
-  },
   emergencyContact: {
     fullName: {
       type: String,
@@ -48,6 +46,9 @@ const patientSchema = new mongoose.Schema({
     relationToPatient: {
       type: String,
       required: true,
+    },
+    otp: {
+      type: String,
     },
   },
   addresses: [
@@ -69,6 +70,40 @@ const patientSchema = new mongoose.Schema({
   wallet: {
     type: Number,
     default: 0,
+  },
+  nationalId: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  healthPackage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Package',
+  },
+  healthPackageStatus: {
+    type: String,
+    enum: ['subscribed', 'unsubscribed', 'cancelled'],
+    default: 'unsubscribed',
+  },
+  healthPackageRenewalDate: {
+    type: Date,
+  },
+  healthPackageEndDate: {
+    type: Date,
+  },
+  familyMembers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: FamilyMember,
+    },
+  ],
+  medicalHistory: [
+    {
+      type: String,
+    },
+  ],
+  otp: {
+    type: String,
   },
 });
 

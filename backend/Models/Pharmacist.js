@@ -38,14 +38,21 @@ const pharmacistSchema = new mongoose.Schema({
   },
   registrationStatus: {
     type: String,
-    enum: ['pending', 'accepted', 'partially accepted'],
+    enum: ['pending', 'accepted', 'rejected'],
     default: 'pending',
+  },
+  otp: {
+    type: String,
+  },
+  wallet: {
+    type: Number,
+    default: 0,
   },
 });
 
 pharmacistSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-  this.password = await bcrypt.hash(this.password, 12);
+    this.password = await bcrypt.hash(this.password, 12);
   }
   next();
 });
