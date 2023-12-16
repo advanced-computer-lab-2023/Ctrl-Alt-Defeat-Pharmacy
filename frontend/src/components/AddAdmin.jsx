@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 import { Container } from "@mui/material";
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/AddMedicine.css";
 
 const AddAdmin = () => {
   const [username, setUsername] = useState("");
@@ -38,48 +40,62 @@ const AddAdmin = () => {
 
   return (
     <div>
-      <React.Fragment>
-        <Container maxWidth="sm" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <AddCircleSharpIcon style={{ fontSize: '43px', color: '#0076c0', marginBottom: '10px' }} />
-            <h2 style={{ color: '#0076c0', marginTop: '0', marginBottom: '20px' }}>Add Admin</h2>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <Box
-              component="form"
-              sx={{
-                '& > :not(style)': { m: 0, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField id="standard-basic" label="Username" variant="outlined" />
-            </Box>
-            <Box
-              component="form"
-              sx={{
-                '& > :not(style)': { m: 0, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField id="standard-basic" label="Password" variant="outlined" />
-            </Box>
-            <Stack spacing={2} direction="row">
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ backgroundColor: '#0076c0', color: '#fff' }}
+      <TopNavigationAdmin link="/admins/home" />
+      <div className="add-medicine-container">
+        <React.Fragment>
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+              <AddCircleSharpIcon style={{ fontSize: '43px', color: '#0076c0', marginBottom: '10px' }} />
+              <h2 style={{ color: '#0076c0', marginTop: '0', marginBottom: '20px' }}>Add Admin</h2>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <Box
+                component="form"
+                sx={{
+                  '& > :not(style)': { m: 0, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
               >
-                Add
-              </Button>
-            </Stack>
-            <p style={{ color: '#0076c0' }}>{message}</p>
-          </form>
-        </Container>
-      </React.Fragment>
+                <TextField
+                  id="standard-basic"
+                  label="Username"
+                  variant="outlined"
+                  value={username}  // Add this line
+                  onChange={(e) => setUsername(e.target.value)}  // Add this line
+                />
+              </Box>
+              <Box
+                component="form"
+                sx={{
+                  '& > :not(style)': { m: 0, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id="standard-basic"
+                  label="Password"
+                  variant="outlined"
+                  value={password}  // Add this line
+                  onChange={(e) => setPassword(e.target.value)}  // Add this line
+                />
+              </Box>
+              <Stack spacing={2} direction="row">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ backgroundColor: '#0076c0', color: '#fff' }}
+                >
+                  Add
+                </Button>
+              </Stack>
+              <p style={{ color: '#0076c0' }}>{message}</p>
+            </form>
+        </React.Fragment>
+      </div>
     </div>
   );
+  
 };
 
 export default AddAdmin;

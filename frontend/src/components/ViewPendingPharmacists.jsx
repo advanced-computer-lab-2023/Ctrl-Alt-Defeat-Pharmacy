@@ -13,6 +13,8 @@ import { Container, ThemeProvider, createTheme } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deepOrange, deepPurple } from '@mui/material/colors';
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/AddMedicine.css";
 
 const theme = createTheme({
   palette: {
@@ -71,24 +73,31 @@ const ViewPendingPharmacists = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <React.Fragment>
-          <Container
-            maxWidth="md"
-            sx={{
-              boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-              textAlign: "center",
-              height: "700px",
-            }}
-          >
+      <TopNavigationAdmin link="/admins/home" />
+      <div className="patient-details-container">
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <React.Fragment>
             <div>
-              <div style={{ marginTop: "20px" }}>
-                <PendingActionsRoundedIcon
-                  style={{ fontSize: "35px", color: "#0076c0", marginBottom: "10px" }}
-                />
-                <h2 style={{ color: "#0076c0", marginTop: "0", marginBottom: "20px" }}>
-                  Pending Pharmacist Requests
-                </h2>
+              <div style={{ marginTop: "20px", textAlign: "center" }}>
+                <Stack direction="row" spacing={2} justifyContent="center">
+                  <PendingActionsRoundedIcon
+                    style={{
+                      fontSize: "35px",
+                      color: "#0076c0",
+                      marginBottom: "10px",
+                      width: "35px", // Set width to match button
+                    }}
+                  />
+                  <h2
+                    style={{
+                      color: "#0076c0",
+                      marginTop: "0",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    Pending Pharmacist Requests
+                  </h2>
+                </Stack>
               </div>
               <TableContainer component={Paper}>
                 <Table>
@@ -109,9 +118,15 @@ const ViewPendingPharmacists = () => {
                       <TableRow key={pharmacist._id}>
                         <TableCell>
                           <Stack direction="row" spacing={2}>
-                          <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+                            <Avatar
+                              sx={{
+                                bgcolor: theme.palette.primary.main,
+                                width: "35px", // Set width to match button
+                                height: "35px", // Set height to match button
+                              }}
+                            >
                               {pharmacist.name.charAt(0)}
-                          </Avatar>
+                            </Avatar>
                           </Stack>
                         </TableCell>
                         <TableCell>{pharmacist.name}</TableCell>
@@ -125,6 +140,7 @@ const ViewPendingPharmacists = () => {
                             onClick={() => handleApprove(pharmacist.username)}
                             variant="contained"
                             color="primary"
+                            style={{ width: "100px"}} // Set width for the "Approve" button
                           >
                             Approve
                           </Button>
@@ -132,6 +148,7 @@ const ViewPendingPharmacists = () => {
                             onClick={() => handleReject(pharmacist.username)}
                             variant="contained"
                             color="secondary"
+                            style={{ width: "100px" }} // Set width for the "Reject" button
                           >
                             Reject
                           </Button>
@@ -142,8 +159,8 @@ const ViewPendingPharmacists = () => {
                 </Table>
               </TableContainer>
             </div>
-          </Container>
-        </React.Fragment>
+          </React.Fragment>
+        </div>
       </div>
     </ThemeProvider>
   );
