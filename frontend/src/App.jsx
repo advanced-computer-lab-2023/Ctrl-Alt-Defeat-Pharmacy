@@ -5,7 +5,7 @@ import RemovePharmacists from "./components/RemovePharmacists";
 import ViewPendingPharmacists from "./components/ViewPendingPharmacists";
 import ViewMedicineQuantitySales from "./components/ViewMedicineQuantitySales";
 import PatientMedicinePage from "./components/PatientMedicinePage";
-import MedicinePage from "./components/MedicinePage";
+import MedicinesPage from "./components/MedicinePage";
 import PatientDetails from "./components/PatientDetails";
 import PharmacistDetails from "./components/PharmacistDetails";
 import PatientRegister from "./components/PatientRegister";
