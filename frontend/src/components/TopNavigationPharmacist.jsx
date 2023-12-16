@@ -18,7 +18,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
+import BarChartIcon from "@mui/icons-material/BarChart";
 const TopNavigationPharmacist = (props) => {
   const { link } = props;
 
@@ -100,6 +100,17 @@ const TopNavigationPharmacist = (props) => {
             button
             component={Link}
             to="/pharmacists/home"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Medicine Sales" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/pharmacists/viewMedicineQuantitySales"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
