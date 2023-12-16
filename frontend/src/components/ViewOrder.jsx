@@ -68,9 +68,9 @@ const ViewOrder = () => {
 
   return (
     <div>
-      <TopNavigation />
+      <TopNavigation link="/patients/medicines" />
       <div className="order-container">
-        <h2>View Order</h2>
+        <h2>Orders</h2>
         {/* Replace the input field with Autocomplete */}
         <Autocomplete
           options={allOrders.map((order) => order?._id)} // Assuming orderId is the property name for order IDs
