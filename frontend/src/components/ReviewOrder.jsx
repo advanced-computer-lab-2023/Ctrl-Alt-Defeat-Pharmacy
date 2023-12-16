@@ -40,7 +40,11 @@ export default function ReviewOrder(order) {
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Status" />
-          <Typography variant="body2">{order?.status}</Typography>
+          <Typography variant="body2">
+            {order?.status
+              ? order.status.charAt(0).toUpperCase() + order.status.slice(1)
+              : ""}
+          </Typography>
         </ListItem>
         {/* Display other order details based on the order schema */}
         {/* For example: Address, Payment Method, etc. */}

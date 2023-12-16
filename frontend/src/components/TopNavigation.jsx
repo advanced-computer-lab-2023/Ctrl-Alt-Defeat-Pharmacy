@@ -107,17 +107,7 @@ const TopNavigation = (props) => {
             </ListItemIcon>
             <ListItemText primary="Account Details" />
           </ListItem>
-          <ListItem
-            button
-            component={Link}
-            to="/changePassword"
-            onClick={handleToggleSideNav}
-          >
-            <ListItemIcon>
-              <LockIcon />
-            </ListItemIcon>
-            <ListItemText primary="Change password" />
-          </ListItem>
+
           <hr className="hr" />
           <ListItem
             button
