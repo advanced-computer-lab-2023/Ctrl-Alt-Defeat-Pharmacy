@@ -17,14 +17,16 @@ This is a comprehensive software solution designed to enhance the pharmacy exper
 This project followed the Agile Methodology; meaning it was split into Sprints, with each Sprint lasting a set amount of time. A fully functioning version of the project, meeting the specified System Requirements, should be submitted and evaluated.
 #### Objectives
 * Learn how to properly use the Agile Methodology to plan out a project and develop the software.
-* Learn the process of following a given set of System Requirements to develop a software.
+* Learn the process of following a given set of System Requirements to develop software.
 * Learn to research and master the use of the MERN Stack.
 * Learn how to work together as a team on GitHub.
 ## Motivation
-In our pursuit of merging learning and practical application, we chose to develop features specific to the pharmacy domain within the El7a2ny virtual clinic ecosystem. This includes innovative functionalities for prescription management, seamless medication ordering, and dynamic communication between pharmacists and patients. Our goal is to enhance the pharmacy experience within the broader virtual clinic platform, streamlining interactions and contributing to a more efficient and cohesive healthcare system.
+In our pursuit of merging learning and practical application, we chose to develop features specific to the pharmacy domain within the El7a2ny virtual clinic ecosystem. This includes innovative functionalities for prescription management, seamless medication ordering, and dynamic communication between pharmacists and patients. Our goal is to enhance the pharmacy experience within the broader virtual clinic platform, streamline interactions, and contribute to a more efficient and cohesive healthcare system.
 ## Code Styles
-The project is formatted using prettier also The project follows the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) design pattern ,MVC is a software architectural pattern commonly used for developing user interfaces that divide the related program logic into three interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted from the user , So the Files in the backend was divided into the M (models) where the schema of the models exist which represent the core of the database , the C (controller) where the functions needed for the routes exists and the V (views) the view in MERN stack is represented by the react frontend server. Also the routes in our project was abstracted from the controller function as shown in (Yasta mesh ader <3 )
-## Tools and Frameworks
+The project is formatted using prettier also The project follows the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) design pattern, MVC is a software architectural pattern commonly used for developing user interfaces that divide the related program logic into three interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted by the user, the Files in the backend were divided into the M (models) where the schema of the models exist which represent the core of the database, the C (controller) where the functions needed for the routes exists and the V (views) the view in MERN stack is represented by the react frontend server. Also, the routes in our project were abstracted from the controller function as shown in (Yasta mesh ader <3 )
+## Tools and Frameworks      
+![image](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ff8fb74b-2c25-4e4a-9f93-5ce81691de0e)    
+
 The MERN Stack is a popular full-stack JavaScript framework used for building web applications. It consists of four key technologies: MongoDB, Express, React, and Node.js. Here's a breakdown of each component and how the MERN stack works:
 
 MongoDB (M): MongoDB is a NoSQL document database that stores data in JSON-like BSON (Binary JSON) format. It is known for its flexibility and scalability, making it suitable for handling large amounts of unstructured data.
@@ -33,7 +35,7 @@ Express.js (E): Express.js is a web application framework for Node.js. It simpli
 
 React.js (R): React.js is a declarative, efficient, and flexible JavaScript library for building user interfaces. It is maintained by Facebook and a community of individual developers and companies. React.js is used for creating dynamic client-side applications in HTML, allowing developers to build complex interfaces through reusable components.
 
-Node.js (N): Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows developers to run JavaScript on the server side. Node.js, along with Express.js, forms the server-tier of the MERN stack, handling server-side logic and responding to client requests.
+Node.js (N): Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows developers to run JavaScript on the server side. Node.js, along with Express.js, forms the server tier of the MERN stack, handling server-side logic and responding to client requests.
 #### How does the MERN stack work?
 The MERN architecture allows you to easily construct a 3-tier architecture (frontend, backend, database) entirely using JavaScript and JSON.
 
@@ -54,7 +56,7 @@ If your application stores any data (user profiles, content, comments, uploads, 
 
 That’s where MongoDB comes in: JSON documents created in your React.js front end can be sent to the Express.js server, where they can be processed and (assuming they’re valid) stored directly in MongoDB for later retrieval. Again, if you’re building in the cloud, you’ll want to look at Atlas.
 ## Build Status
-- The project currently under development and there are some styling problems to be fixed
+- The project is currently under development and there are some styling problems to be fixed
 * Unit tests will be added.
 ## Running Tests
 
@@ -145,7 +147,7 @@ export default function Checkout() {
 
 ```
 ## How to Contribute
-Anyone who would like to contribute in the project please send me an E-mail at mostafa.elamory@student.guc.edu.eg
+Anyone who would like to contribute to the project please send me an E-mail at mostafa.elamory@student.guc.edu.eg
 ## Credits
 [React.js](https://www.udemy.com/course/the-ultimate-react-course)  
 [Mongoose docs](https://mongoosejs.com/docs/)  
@@ -155,5 +157,5 @@ Anyone who would like to contribute in the project please send me an E-mail at m
 [Clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
 ## License
 
- This project is licenced under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+ This project is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
