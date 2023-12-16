@@ -63,10 +63,10 @@ export default function Checkout() {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [orderID, setOrderID] = useState("");
   const [selectedPaymentMethodString, setSelectedPaymentMethodString] =
-    useState("Cash");
+    useState("Credit Card");
   const [selectedAddress, setSelectedAddress] = useState(null);
   const handleNext = () => {
     if (activeStep !== 2) {
@@ -102,7 +102,7 @@ export default function Checkout() {
       try {
         const response = await Axios.post(
           "http://localhost:8000/api/v1/patient/checkout",
-          { addressId },
+          { addressId, paymentMethod: selectedPaymentMethodString },
           { withCredentials: true }
         );
 
@@ -137,7 +137,7 @@ export default function Checkout() {
   const handlePaymentMethodSelect = (selectedPaymentMethod) => {
     setPaymentMethod(selectedPaymentMethod);
     if (selectedPaymentMethod === "cash") {
-      setSelectedPaymentMethodString("Cash");
+      setSelectedPaymentMethodString("Cash on Delivery");
     } else if (selectedPaymentMethod === "card") {
       setSelectedPaymentMethodString("Credit Card");
     } else {
@@ -202,6 +202,7 @@ export default function Checkout() {
           "http://localhost:8000/api/v1/patient/checkout",
           {
             addressId: selectedAddress._id,
+            paymentMethod: selectedPaymentMethodString,
             withWallet: paymentMethod === "wallet",
           },
           { withCredentials: true }
@@ -210,6 +211,8 @@ export default function Checkout() {
         if (!response.data) {
           throw new Error("Checkout failed");
         }
+        console.log(response.data);
+        console.log(selectedPaymentMethodString);
 
         if (response.data.error) {
           setCheckoutMessage(response.data.error);

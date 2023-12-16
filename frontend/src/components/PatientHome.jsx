@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
-import {
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AssignmentIcon from "@mui/icons-material/Assignment";
+import { ListItemText } from "@mui/material";
+
 import LockIcon from "@mui/icons-material/Lock";
 import TopNavigation from "./TopNavigation";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Icon from "@mui/material/Icon";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
 
 function PatientHome() {
   const [patient, setPatient] = useState(null);
@@ -47,20 +42,6 @@ function PatientHome() {
     }
   };
 
-  const handleLogout = async () => {
-    const response = await Axios.get(
-      "http://localhost:8000/api/v1/auth/logout",
-      { withCredentials: true }
-    );
-    console.log(response.data);
-  };
-
-  const [showSideNav, setShowSideNav] = useState(false);
-
-  const handleToggleSideNav = () => {
-    setShowSideNav(!showSideNav);
-  };
-
   const showData = async () => {
     const response = await Axios.get(
       "http://localhost:8000/api/v1/auth/getMe",
@@ -81,6 +62,9 @@ function PatientHome() {
   const handleNewCountryChange = (e) => {
     setNewCountry(e.target.value);
   };
+  useEffect(() => {
+    showData();
+  }, []);
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
@@ -120,134 +104,131 @@ function PatientHome() {
     <div>
       <div>
         <TopNavigation link="/patients/medicines" />
-        <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
-          <List>
-            <ListItem
-              button
-              component={Link}
-              to="/patients/home"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/patients/medicines"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <LocalPharmacyIcon />
-              </ListItemIcon>
-              <ListItemText primary="Medicines" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/patients/viewOrder"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <AssignmentIcon />
-              </ListItemIcon>
-              <ListItemText primary="Orders" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/patients/viewCart"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <ShoppingCartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Cart" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/changePassword"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <LockIcon />
-              </ListItemIcon>
-              <ListItemText primary="Change password" />
-            </ListItem>
-            <hr className="hr" />
-            <ListItem
-              button
-              component={Link}
-              to="/"
-              className="right"
-              onClick={handleLogout}
-            >
-              <ListItemIcon>
-                <LockIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </List>
-        </Drawer>
       </div>
       <div className="main-container">
-        <div className="welcome-section">
-          <h2>Hello, Patient !</h2>
-          <button onClick={showData}>Show me</button>
-          {patient && (
-            <div>
-              <p>name: {patient.name}</p>
-              <p>username: {patient.username}</p>
-              <p>email: {patient.email}</p>
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <div className="welcome-section">
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <h2 style={{ color: "grey", marginLeft: "10px" }}>
+                  View Profile
+                </h2>
+              </div>
+              {patient && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <AccountCircleIcon
+                    style={{
+                      fontSize: "150px",
+                      color: "grey",
+                    }}
+                  />
+                  <div style={{ width: "100%" }}>
+                    <ListItemText
+                      primary={patient.name}
+                      secondary={`(@${patient.username})`}
+                    />
+                    <ListItemText secondary={patient.email} />
+                    <ListItemText primary={`Wallet: $${patient.wallet}`} />
+                    <div>
+                      <Link
+                        to="/changePassword"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <Button
+                          className="changepassword-button"
+                          style={{ marginTop: "10px" }}
+                          variant="contained"
+                        >
+                          <Icon
+                            sx={{
+                              fontSize: 20,
+                              marginRight: "5px",
+                            }}
+                          >
+                            <LockIcon />
+                          </Icon>
+                          Change Password
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </Paper>
+        </Container>
 
-        <div className="address-section">
-          <h2>Add Address</h2>
-          <form onSubmit={handleAddAddress}>
-            <input
-              type="text"
-              placeholder="Street"
-              value={newStreet}
-              onChange={handleNewStreetChange}
-            />
-            <input
-              type="text"
-              placeholder="City"
-              value={newCity}
-              onChange={handleNewCityChange}
-            />
-            <input
-              type="text"
-              placeholder="Country"
-              value={newCountry}
-              onChange={handleNewCountryChange}
-            />
-            <button type="submit">Add</button>
-            <div>
-              <p>{message}</p>
-            </div>
-          </form>
-        </div>
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <div className="address-section">
+              <h2>Add Address</h2>
+              <form onSubmit={handleAddAddress}>
+                <TextField
+                  type="text"
+                  value={newStreet}
+                  label="Street"
+                  onChange={handleNewStreetChange}
+                  style={{ "margin-bottom": "15px" }}
+                  placeholder="Street"
+                />
+                <TextField
+                  type="text"
+                  value={newCity}
+                  label="City"
+                  onChange={handleNewCityChange}
+                  style={{ "margin-bottom": "15px" }}
+                  placeholder="City"
+                />
+                <TextField
+                  type="text"
+                  value={newCountry}
+                  label="Country"
+                  onChange={handleNewCountryChange}
+                  style={{ "margin-bottom": "15px" }}
+                  placeholder="Country"
+                />
 
-        <div className="addresses-section">
-          <h2>Addresses</h2>
-          {addresses.map((address, index) => (
-            <div key={index} className="address-card">
-              <ul>
-                <li>Address {index + 1}</li>
-                <p>Street: {address.street}</p>
-                <p>City: {address.city}</p>
-                <p>Country: {address.country}</p>
-                {/* <button className="remove-Button" onClick={() => handleRemoveAddress(address._id)}>Remove</button> */}
-              </ul>
+                <Button
+                  variant="contained"
+                  className="add-address-button"
+                  type="submit"
+                >
+                  Add
+                </Button>
+                <div>
+                  <p>{message}</p>
+                </div>
+              </form>
             </div>
-          ))}
-        </div>
+
+            <div className="addresses-section">
+              <h2>Addresses</h2>
+              {addresses.map((address, index) => (
+                <div key={index} className="address-card">
+                  <ul>
+                    <li>Address {index + 1}</li>
+                    <p>Street: {address.street}</p>
+                    <p>City: {address.city}</p>
+                    <p>Country: {address.country}</p>
+                    {/* <button className="remove-Button" onClick={() => handleRemoveAddress(address._id)}>Remove</button> */}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Paper>
+        </Container>
       </div>
     </div>
   );

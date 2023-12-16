@@ -24,7 +24,6 @@ const ViewOrder = () => {
           { withCredentials: true }
         );
         setAllOrders(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error.message);
       }
@@ -39,14 +38,17 @@ const ViewOrder = () => {
         `http://localhost:8000/api/v1/patient/viewOrder/${value}`,
         { withCredentials: true }
       );
-      console.log(response.data);
       setOrder(response.data);
+      if (response.data !== null) {
+        setOrderId(value);
+      }
       setError(null);
     } catch (error) {
       setOrder(null);
       setError("Order not found");
     }
   };
+
   const handleCancelOrder = async () => {
     try {
       const response = await Axios.put(
@@ -56,10 +58,8 @@ const ViewOrder = () => {
       );
 
       if (response.status === 204) {
-        setOrder((prevOrder) => ({
-          ...prevOrder,
-          status: "cancelled",
-        }));
+        // Assuming the API returns updated order details after cancellation
+        setOrder(response.data);
       }
     } catch (error) {
       console.error("Error during order cancellation:", error.message);
@@ -88,7 +88,7 @@ const ViewOrder = () => {
               sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
             >
               <ReviewOrder order={order} />
-              {order.status !== "cancelled" && (
+              {order.status !== "cancelled" && order.status !== "delivered" && (
                 <button
                   onClick={handleCancelOrder}
                   className="button-container"
