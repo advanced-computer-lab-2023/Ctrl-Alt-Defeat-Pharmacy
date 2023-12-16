@@ -39,12 +39,11 @@ try {
   console.error('Multer Error:', error);
 }
 
-const calculateTotalSalesForMonth = async (chosenMonth, medicineName, startDate, endDate) => {
+const calculateTotalSalesForMonth = async (chosenMonth, medicineId, startDate, endDate) => {
   try {
     const chosenDate = new Date(chosenMonth);
 
     const firstDayOfMonth = new Date(chosenDate.getFullYear(), chosenDate.getMonth(), 1);
-
     const lastDayOfMonth = new Date(chosenDate.getFullYear(), chosenDate.getMonth() + 1, 0, 23, 59, 59, 999);
 
     const start = startDate ? new Date(startDate) : firstDayOfMonth;
@@ -58,9 +57,8 @@ const calculateTotalSalesForMonth = async (chosenMonth, medicineName, startDate,
       status: { $ne: 'Cancelled' },
     };
 
-    // Add a conditional $match stage for medicineName
-    if (medicineName) {
-      matchStage['medicine.name'] = medicineName; // Adjust the field name to match the actual field in your document
+    if (medicineId) {
+      matchStage['items.medicineId'] = medicineId;
     }
 
     const totalSalesByMedicine = await Order.aggregate([
@@ -85,6 +83,7 @@ const calculateTotalSalesForMonth = async (chosenMonth, medicineName, startDate,
         $group: {
           _id: '$medicine.name',
           totalSales: { $sum: '$items.price' },
+          individualPrices: { $push: '$items.price' },
         },
       },
       {
@@ -92,16 +91,19 @@ const calculateTotalSalesForMonth = async (chosenMonth, medicineName, startDate,
           _id: 0,
           medicine: '$_id',
           totalSales: 1,
+          individualPrices: 1,
         },
       },
     ]);
 
-    const totalSales = totalSalesByMedicine.reduce(
+    const overallTotalSales = totalSalesByMedicine.reduce(
       (accumulator, currentMedicine) => accumulator + currentMedicine.totalSales,
       0
     );
 
-    return { totalSalesByMedicine, totalSales };
+    const includeIndividualPrices = !medicineId;
+
+    return { totalSalesByMedicine, overallTotalSales, includeIndividualPrices };
   } catch (error) {
     console.error('Error calculating total sales:', error);
     throw error;
@@ -112,18 +114,41 @@ exports.getTotalSalesPerMonth = async (req, res) => {
   try {
     const { month } = req.params;
     const { medicineName, startDate, endDate } = req.query;
-    const { totalSalesByMedicine, totalSales } = await calculateTotalSalesForMonth(
+    let medicineId;
+    if (medicineName) {
+      const medicine = await Medicine.findOne({ name: medicineName });
+      if (medicine) {
+        medicineId = medicine._id;
+      }
+    }
+    const { totalSalesByMedicine, overallTotalSales, includeIndividualPrices } = await calculateTotalSalesForMonth(
       month,
-      medicineName,
+      medicineId,
       startDate,
       endDate
     );
 
-    res.status(200).json({
-      status: 'success',
-      totalSalesByMedicine,
-      totalSales,
-    });
+    if (includeIndividualPrices) {
+      res.status(200).json({
+        status: 'success',
+        totalSalesByMedicine,
+        overallTotalSales,
+      });
+    } else {
+      const filteredTotalSalesByMedicine = totalSalesByMedicine
+        .filter(medicine => medicine.medicine.toLowerCase() === medicineName.toLowerCase())
+        .map(medicine => ({
+          totalSales: medicine.totalSales,
+          individualPrices: medicine.individualPrices,
+          medicine: medicine.medicine,
+        }));
+
+      res.status(200).json({
+        status: 'success',
+        totalSalesByMedicine: filteredTotalSalesByMedicine,
+        overallTotalSales: filteredTotalSalesByMedicine[0]?.totalSales || 0,
+      });
+    }
   } catch (error) {
     res.status(404).json({
       status: 'fail',
