@@ -1,20 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import "../Css/PatientHome.css";
 import "../Css/Order.css";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import ReviewOrder from "./ReviewOrder";
 
 const ViewOrder = () => {
   const [orderId, setOrderId] = useState("");
   const [order, setOrder] = useState(null);
   const [error, setError] = useState(null);
+  const [allOrders, setAllOrders] = useState([]);
 
-  const handleViewOrder = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    const fetchAllOrders = async () => {
+      try {
+        const response = await Axios.get(
+          `http://localhost:8000/api/v1/patient/viewAllOrders`,
+          { withCredentials: true }
+        );
+        setAllOrders(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error.message);
+      }
+    };
 
+    fetchAllOrders();
+  }, []);
+
+  const handleViewOrder = async (event, value) => {
     try {
       const response = await Axios.get(
-        `http://localhost:8000/api/v1/patient/viewOrder/${orderId}`,
+        `http://localhost:8000/api/v1/patient/viewOrder/${value}`,
         { withCredentials: true }
       );
       console.log(response.data);
@@ -25,7 +46,6 @@ const ViewOrder = () => {
       setError("Order not found");
     }
   };
-
   const handleCancelOrder = async () => {
     try {
       const response = await Axios.put(
@@ -54,58 +74,25 @@ const ViewOrder = () => {
         <Link to="/patients/viewOrder">Orders</Link>
         <Link to="/patients/viewCart">Cart</Link>
       </div>
-      <div className="checkout-container">
+      <div className="order-container">
         <h2>View Order</h2>
-        <form onSubmit={handleViewOrder}>
-          <label>
-            Enter Order ID:
-            <input
-              type="text"
-              value={orderId}
-              onChange={(e) => setOrderId(e.target.value)}
-            />
-          </label>
-          <button type="submit">View Order</button>
-        </form>
-
+        {/* Replace the input field with Autocomplete */}
+        <Autocomplete
+          options={allOrders.map((order) => order?._id)} // Assuming orderId is the property name for order IDs
+          value={order?._id}
+          onChange={handleViewOrder}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Select Order ID" variant="outlined" />
+          )}
+        />
         {order && (
-          <div>
-            <h2>Order Details</h2>
-            <p className="text-center">Order ID: {order._id}</p>
-            <p className="text-center">Status: {order.status}</p>
-            <p className="text-center">Order Date: {order.Date}</p>
-
-            <h2>Delivery Address:</h2>
-            <p className="text-center">Street: {order.address.street}</p>
-            <p className="text-center">City: {order.address.city}</p>
-            <p className="text-center">Country: {order.address.country}</p>
-
-            <h2>Items:</h2>
-            {order.items && order.items.length > 0 ? (
-              <ul>
-                {order.items.map((item) => (
-                  <li key={item.medicineId._id} className="checkout-item">
-                    <strong>Name: {item.medicineId.name}</strong>
-                    <h4>Quantity: {item.quantity}</h4>
-                    <img
-                      src={item.medicineId.picture}
-                      alt={item.medicineId.name}
-                      className="medicine-picture"
-                    />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Your cart is empty</p>
-            )}
-
-            <div>
-              <strong>Total Price: {order.totalPrice}</strong>
-            </div>
-
-            <br />
-
-            <div>
+          <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+            <Paper
+              variant="outlined"
+              sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+            >
+              <ReviewOrder order={order} />
               {order.status !== "cancelled" && (
                 <button
                   onClick={handleCancelOrder}
@@ -114,14 +101,12 @@ const ViewOrder = () => {
                   Cancel Order
                 </button>
               )}
-            </div>
-          </div>
+            </Paper>
+          </Container>
         )}
-
-        {error && <p>{error}</p>}
+        <br />
+        <br />
       </div>
-      <br />
-      <Link to="/patients/home">home</Link>
     </div>
   );
 };

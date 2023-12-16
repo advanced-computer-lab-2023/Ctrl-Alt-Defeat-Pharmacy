@@ -247,6 +247,18 @@ function PatientMedicinesPage() {
         return (
           <div className="quantity-controls">
             <IconButton
+              // style={iconButtonStyle}
+              onClick={() =>
+                handleUpdateQuantity(
+                  cartItem.medicineId._id,
+                  cartItem.quantity - 1
+                )
+              }
+            >
+              {cartItem.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
+            </IconButton>
+            <span>{cartItem.quantity}</span>
+            <IconButton
               disabled={quantity <= 0}
               // style={iconButtonStyle}
               onClick={() =>
@@ -257,18 +269,6 @@ function PatientMedicinesPage() {
               }
             >
               <AddIcon />
-            </IconButton>
-            <span>{cartItem.quantity}</span>
-            <IconButton
-              // style={iconButtonStyle}
-              onClick={() =>
-                handleUpdateQuantity(
-                  cartItem.medicineId._id,
-                  cartItem.quantity - 1
-                )
-              }
-            >
-              {cartItem.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
             </IconButton>
           </div>
         );
