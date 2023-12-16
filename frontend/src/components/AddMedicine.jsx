@@ -137,7 +137,6 @@ function AddMedicine() {
         </div>
         <button type="submit">Add Medicine</button>
       </form>
-      <Link to="/admins/home">home</Link>
       {res && <div>new medicine added</div>}
     </div>
   );

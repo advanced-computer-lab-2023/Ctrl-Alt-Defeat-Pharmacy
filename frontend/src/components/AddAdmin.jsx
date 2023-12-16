@@ -55,7 +55,6 @@ const AddAdmin = () => {
         <button type="submit">Add Admin</button>
         <p>{message}</p>
       </form>
-      <Link to="/admins/home">home</Link>
     </div>
   );
 };

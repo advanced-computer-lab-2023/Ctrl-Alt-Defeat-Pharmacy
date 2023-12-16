@@ -47,6 +47,10 @@ const pharmacistSchema = new mongoose.Schema({
   otp: {
     type: String,
   },
+  wallet: {
+    type: Number,
+    default: 0,
+  },
 });
 
 pharmacistSchema.pre('save', async function (next) {
