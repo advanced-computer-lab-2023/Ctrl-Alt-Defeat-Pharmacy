@@ -2,7 +2,20 @@
 
 ![1111211](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/677c8951-6d47-4ae7-a34c-cb923035238e)
 ## Table of contents
-- [Project Description](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/edit/main/README.md#project-description)
+
+- [Project Description](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#project-description)
+- [Motivation](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#motivation)
+- [Code Styles](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#code-styles)
+- [Tools and Frameworks](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#tools-and-frameworks)
+- [Build Status](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#build-status)
+- [Features](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#features)
+- [Code Examples](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#code-examples)
+- [Installation](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#installation)
+- [API Reference](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#api-reference)
+- [Testing](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#testing)
+- [How to Contribute](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#how-to-contribute)
+- [Credits](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#credits)
+- [License](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#license)
 
 
 ## Project Description
