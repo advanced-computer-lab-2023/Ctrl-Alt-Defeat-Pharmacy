@@ -88,7 +88,7 @@ const ViewOrder = () => {
               sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
             >
               <ReviewOrder order={order} />
-              {order.status !== "cancelled" && (
+              {order.status !== "Cancelled" && order.status !== "Delivered" && (
                 <button
                   onClick={handleCancelOrder}
                   className="button-container"
