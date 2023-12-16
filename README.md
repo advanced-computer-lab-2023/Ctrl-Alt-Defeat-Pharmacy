@@ -13,6 +13,7 @@
 - [Installation](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#installation)
 - [API Reference](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#api-reference)
 - [Testing](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#testing)
+- [How to Use](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#how-to-use)
 - [How to Contribute](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#how-to-contribute)
 - [Credits](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#credits)
 - [License](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#license)
@@ -777,7 +778,8 @@ We tested the behavior of our routes to ensure they produce the correct status c
 ![shafa3ola](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/97c6d07d-7461-4276-b723-149ecb8a48d4)
 
 
-
+## How to use
+You are welcome to be one of the three primary users of our website (Admin, Pharmacist, Patient). You can make an account and log in to the website as a Pharmacist/Patient by using the sign-up page to create an account, if you are an Admin contact us at mostafa.elamory@student.guc.edu.eg to help you with that, After that, you will be able to utilize our features, login, and change your password.
 ## How to Contribute
 Anyone who would like to contribute to the project please send me an E-mail at mostafa.elamory@student.guc.edu.eg
 ## Credits
