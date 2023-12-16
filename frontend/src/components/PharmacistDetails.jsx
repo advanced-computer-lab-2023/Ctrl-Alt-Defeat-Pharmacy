@@ -11,6 +11,8 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/AddMedicine.css";
 
 const theme = createTheme({
   palette: {
@@ -63,6 +65,8 @@ function PharmacistDetails() {
   };
 
   return (
+    <div>
+        <TopNavigationAdmin link="/admins/home" />
     <ThemeProvider theme={theme}>
       <div>
         {pharmacist && (
@@ -126,6 +130,7 @@ function PharmacistDetails() {
         </TableContainer>
       </div>
     </ThemeProvider>
+    </div>
   );
 }
 

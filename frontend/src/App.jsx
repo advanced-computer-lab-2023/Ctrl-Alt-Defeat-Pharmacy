@@ -31,6 +31,7 @@ import Deposits from "./components/Deposits";
 import ListItems from "./components/ListItems";
 import Title from "./components/Title";
 import Orders from "./components/Orders";
+import TopNavigationAdmin from "./components/TopNavigationAdmin";
 
 function App() {
   return (
@@ -86,6 +87,8 @@ function App() {
           <Route path="admins/listItems" element={<ListItems />} />
           <Route path="admins/title" element={<Title />} />
           <Route path="admins/orders" element={<Orders />} />
+          <Route path="admins/topNavigationAdmin" element={<TopNavigationAdmin />} />
+
 
         </Routes>
       </BrowserRouter>

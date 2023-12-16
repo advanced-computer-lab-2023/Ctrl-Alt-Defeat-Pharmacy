@@ -8,6 +8,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/addMedicine.css";
 
 
 
@@ -58,10 +60,14 @@ const RemovePatients = () => {
   
 
   return (
+    <div>
+        <TopNavigationAdmin link="/admins/home" />
     <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div className="add-medicine-container">
+
       <React.Fragment>
         <Container maxWidth="sm" sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px', textAlign: 'center' }}>
-          <div style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '50px' }}>
             <PersonRemoveAlt1RoundedIcon style={{ fontSize: '35px', color: '#0076c0', marginBottom: '10px' }} />
             <h2 style={{ color: '#0076c0', marginTop: '0', marginBottom: '20px' }}>Remove Patient</h2>
           </div>
@@ -90,6 +96,8 @@ const RemovePatients = () => {
           <p>{message}</p>
         </Container>
       </React.Fragment>
+    </div>
+    </div>
     </div>
   );
   

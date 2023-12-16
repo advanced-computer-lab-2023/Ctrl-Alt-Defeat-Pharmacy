@@ -11,6 +11,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/PatientDetails.css";
+
 
 const theme = createTheme({
   palette: {
@@ -65,13 +68,13 @@ function PatientDetails() {
   return (
     <ThemeProvider theme={theme}>
       <div>
+        <TopNavigationAdmin link="/admins/home" />
         {patient && (
           <div>
             {/* ... (patient information) */}
           </div>
         )}
-        <br />
-
+      <div className="patient-details-container">
         <Typography variant="h2">All Patients</Typography>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -125,7 +128,9 @@ function PatientDetails() {
           </Table>
         </TableContainer>
       </div>
+      </div>
     </ThemeProvider>
+
   );
 }
 

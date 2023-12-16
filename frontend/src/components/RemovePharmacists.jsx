@@ -7,6 +7,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import TopNavigationAdmin from "./TopNavigationAdmin";
+import "../Css/AddMedicine.css";
 
 const RemovePharmacists = () => {
   const [username, setUsername] = useState("");
@@ -60,6 +62,9 @@ const RemovePharmacists = () => {
   
 
   return (
+    <div>
+        <TopNavigationAdmin link="/admins/home" />
+    <div className="add-medicine-container">
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <React.Fragment>
         <Container maxWidth="sm" sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px', textAlign: 'center' }}>
@@ -92,6 +97,8 @@ const RemovePharmacists = () => {
           <p>{message}</p>
         </Container>
       </React.Fragment>
+    </div>
+    </div>
     </div>
   );
   
