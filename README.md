@@ -11,6 +11,8 @@
 - [Features](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#features)
 - [Code Examples](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#code-examples)
 - [Installation](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#installation)
+- [Enviroment Variables](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#enviroment-variables)
+- [ScreenShots](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#screenshots)
 - [API Reference](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#api-reference)
 - [Testing](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#testing)
 - [How to Use](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/blob/main/README.md#how-to-use)
@@ -245,7 +247,14 @@ npm run dev
 - multer: 1.4.5-lts.1
 - nodemailer: 6.9.7
 - stripe : 14.4.0
+  
+## Environment Variables
+Add these keys to .env file to run project
 
+- `PORT`
+- `MONGO_URI`
+- `TOKEN_KEY`
+  
 ## ScreenShots
 **Navigation Bar and Drawer**
 ![pic1](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ea813298-bd4e-4bc0-8e89-0d26980f6010)
