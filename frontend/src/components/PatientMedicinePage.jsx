@@ -29,7 +29,7 @@ function PatientMedicinesPage() {
 
   const fetchMedicalUses = async () => {
     const response = await Axios.get(
-      "http://localhost:8000/api/v1/pharmacy/getAllMedicine",
+      "http://localhost:8000/api/v1/patient/getAllMedicines",
       { withCredentials: true }
     );
     setMedicines(response.data.data);
@@ -52,7 +52,7 @@ function PatientMedicinesPage() {
     let filteredMedicines = medicines;
     if (value !== null) {
       filteredMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${value}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByMedicalUses/${value}`,
         { withCredentials: true }
       );
       setAllMedicalUses(
@@ -65,7 +65,7 @@ function PatientMedicinesPage() {
       filteredMedicines = filteredMedicines.data.data;
     } else {
       filteredMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/medicine/searchByMedicalUse/${"all"}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByMedicalUses/${"all"}`,
         { withCredentials: true }
       );
       setAllMedicalUses(
@@ -85,13 +85,13 @@ function PatientMedicinesPage() {
     let searchedMedicines = medicines;
     if (value !== "") {
       searchedMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${value}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByNames/${value}`,
         { withCredentials: true }
       );
       searchedMedicines = searchedMedicines.data.data;
     } else {
       searchedMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/pharmacy/medicine/searchByName/${"all"}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByNames/${"all"}`,
         { withCredentials: true }
       );
       searchedMedicines = searchedMedicines.data.data;
@@ -247,6 +247,18 @@ function PatientMedicinesPage() {
         return (
           <div className="quantity-controls">
             <IconButton
+              // style={iconButtonStyle}
+              onClick={() =>
+                handleUpdateQuantity(
+                  cartItem.medicineId._id,
+                  cartItem.quantity - 1
+                )
+              }
+            >
+              {cartItem.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
+            </IconButton>
+            <span>{cartItem.quantity}</span>
+            <IconButton
               disabled={quantity <= 0}
               // style={iconButtonStyle}
               onClick={() =>
@@ -257,18 +269,6 @@ function PatientMedicinesPage() {
               }
             >
               <AddIcon />
-            </IconButton>
-            <span>{cartItem.quantity}</span>
-            <IconButton
-              // style={iconButtonStyle}
-              onClick={() =>
-                handleUpdateQuantity(
-                  cartItem.medicineId._id,
-                  cartItem.quantity - 1
-                )
-              }
-            >
-              {cartItem.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
             </IconButton>
           </div>
         );

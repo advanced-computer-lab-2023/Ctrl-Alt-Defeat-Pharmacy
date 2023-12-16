@@ -4,7 +4,8 @@ const Patient = require('../Models/Patient');
 const Medicine = require('../Models/Medicine');
 const Cart = require('../Models/Cart');
 const Order = require('../Models/Order');
-
+const APIFeatures = require('../helpers/apiFeatures');
+const prescriptions = require('../Models/Prescriptions');
 // const findByUsername = async username => {
 //   let user;
 
@@ -36,31 +37,32 @@ exports.registerPatient = async (req, res) => {
   });
 };
 
+const hasMedicineInPrescriptions = (prescription, medicineName) =>
+  prescription.medicines.some(prescribedMedicine => prescribedMedicine.name === medicineName);
+
 exports.addOverTheCounterMedicine = async (req, res) => {
   try {
     const { medicineName, quantity } = req.body;
     const patientId = req.user._id;
-
+    const hasMedicineInPrescriptionss = false;
     const medicine = await Medicine.findOne({ name: medicineName });
 
     if (!medicine) {
       return res.status(404).json({ error: 'Medicine not found' });
     }
-//check if it is a prescription medicine 
+    //check if it is a prescription medicine
     if (medicine.prescription) {
-      const patient = await Patient.findById(patientId).populate('prescriptions.medicines');
+      const patient = await Patient.findOne({ _id: patientId });
+      const prescriptionss = await prescriptions.findOne({ patientId: patientId });
 
       if (!patient) {
         return res.status(404).json({ error: 'Patient not found' });
       }
 
-      const hasMedicineInPrescriptions = patient.prescriptions.some(prescription =>
-        prescription.medicines.some(prescribedMedicine =>
-          prescribedMedicine.name === medicineName
-        )
-      );
-
-      if (!hasMedicineInPrescriptions) {
+      if (prescriptionss) {
+        hasMedicineInPrescriptionss = hasMedicineInPrescriptions(prescriptionss, medicineName);
+      }
+      if (!hasMedicineInPrescriptionss) {
         return res.status(400).json({ error: 'This medicine is not in your recent prescriptions' });
       }
     }
@@ -109,9 +111,6 @@ exports.addOverTheCounterMedicine = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-
-
 exports.viewCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ patientId: req.user._id }).populate('items.medicineId');
@@ -380,7 +379,7 @@ exports.cancelOrder = async (req, res) => {
       medicine.sales -= item.quantity;
       await medicine.save();
     });
-    if(order.paymentMethod !== 'Cash on Delivery') {
+    if (order.paymentMethod !== 'Cash on Delivery') {
       const patient = await Patient.findById(order.patient);
       patient.wallet += order.totalPrice;
     }
@@ -393,15 +392,12 @@ exports.cancelOrder = async (req, res) => {
     console.error('Error:', error.message);
     res.status(500).json({ message: 'Internal Server Error' });
   }
-}
+};
 exports.viewAllOrders = async (req, res) => {
   try {
+    const patient = await Patient.findById(req.user._id);
 
-    const patient = await Patient.findById(req.user._id);    
-    
     const allOrders = await Order.find({ patient: patient, status: { $ne: 'cancelled' } }).populate('items.medicineId');
-
-   
 
     res.status(200).json(allOrders);
   } catch (error) {
@@ -412,7 +408,7 @@ exports.viewAllOrders = async (req, res) => {
 exports.viewWallet = async (req, res) => {
   try {
     const user = await Patient.findById(req.user._id);
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -424,7 +420,6 @@ exports.viewWallet = async (req, res) => {
   }
 };
 
-
 exports.viewAlternatives = async (req, res) => {
   try {
     const { medicineName } = req.params;
@@ -435,9 +430,9 @@ exports.viewAlternatives = async (req, res) => {
       return res.status(404).json({ status: 'fail', message: 'Medicine not found' });
     }
     const alternatives = await Medicine.find({
-      _id: { $ne: originalMedicine._id }, 
-      ingredients: { $in: originalMedicine.ingredients }, 
-      quantity: { $gt: 0 }, 
+      _id: { $ne: originalMedicine._id },
+      ingredients: { $in: originalMedicine.ingredients },
+      quantity: { $gt: 0 },
       archive: false,
     });
     res.status(200).json({ status: 'success', data: alternatives });
@@ -445,7 +440,7 @@ exports.viewAlternatives = async (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
   }
-}
+};
 exports.getAllMedicine = async (req, res) => {
   try {
     const features = new APIFeatures(Medicine.find({ archive: false }), req.query).filter().sort();
@@ -465,7 +460,10 @@ exports.getAllMedicine = async (req, res) => {
 exports.getMedicineByName = async (req, res) => {
   try {
     const substring = req.params.name;
-    const returnedMedicine = await Medicine.find({ name: { $regex: substring, $options: 'i' }, archive: false }).exec();
+    const returnedMedicine =
+      substring == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ name: { $regex: substring, $options: 'i' }, archive: false }).exec();
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
@@ -478,7 +476,10 @@ exports.getMedicineByName = async (req, res) => {
 
 exports.getMedicineByMedicalUse = async (req, res) => {
   try {
-    const returnedMedicine = await Medicine.find({ medicalUse: req.params.medicalUse, archive: false });
+    const returnedMedicine =
+      req.params.medicalUse == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ medicalUse: req.params.medicalUse, archive: false });
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
@@ -488,5 +489,3 @@ exports.getMedicineByMedicalUse = async (req, res) => {
     res.status(500).json({ status: 'fail', message: 'Internal Server Error' });
   }
 };
-
-

@@ -12,7 +12,7 @@ exports.registerPharmacist = async (req, res) => {
 
 exports.getMedicineQuantitySales = async (req, res) => {
   try {
-    const returnedMedicine = await Medicine.find().select('name quantity sales');
+    const returnedMedicine = await Medicine.find().select('picture name quantity sales');
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
@@ -78,7 +78,7 @@ exports.updateMedicine = async (req, res) => {
 exports.viewWallet = async (req, res) => {
   try {
     const user = await Pharmacist.findById(req.user._id);
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }

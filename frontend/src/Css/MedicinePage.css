@@ -190,3 +190,9 @@ h1 {
   margin-top: 10px;
   color: red;
 }
+.medicine-item.dimmed {
+  opacity: 0.5; /* Adjust the opacity or add other styles for dimming */
+}
+.medicine-item.dimmed:hover {
+  box-shadow: none; /* Remove the shadow on hover */
+}

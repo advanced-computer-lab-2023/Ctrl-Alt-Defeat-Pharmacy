@@ -124,6 +124,18 @@ export default function Review() {
 
             <div className="quantity-controls">
               <IconButton
+                // style={iconButtonStyle}
+                onClick={() =>
+                  handleUpdateQuantity(
+                    product.medicineId._id,
+                    product.quantity - 1
+                  )
+                }
+              >
+                {product.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
+              </IconButton>
+              <span>{product.quantity}</span>
+              <IconButton
                 disabled={product.medicineId.quantity <= 0}
                 // style={iconButtonStyle}
                 onClick={() =>
@@ -134,18 +146,6 @@ export default function Review() {
                 }
               >
                 <AddIcon />
-              </IconButton>
-              <span>{product.quantity}</span>
-              <IconButton
-                // style={iconButtonStyle}
-                onClick={() =>
-                  handleUpdateQuantity(
-                    product.medicineId._id,
-                    product.quantity - 1
-                  )
-                }
-              >
-                {product.quantity === 1 ? <DeleteIcon /> : <RemoveIcon />}{" "}
               </IconButton>
             </div>
             <Typography
