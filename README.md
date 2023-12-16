@@ -1,21 +1,11 @@
+# El7a2ni
 
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
+![1111211](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/677c8951-6d47-4ae7-a34c-cb923035238e)
+## Table of contents
+- [Project Description](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/edit/main/README.md#project-description)
 
 
-## Screenshots
-batates so5na khales
-![sssssa](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/7b6a8dc6-5379-4457-9dda-a796aadd920f)
-
-## tata
-=======
 ## Project Description
-
 
 #### Title
 EL7a2ni
@@ -68,13 +58,59 @@ That’s where MongoDB comes in: JSON documents created in your React.js front e
 ## Build Status
 - The project is currently under development and there are some styling problems to be fixed
 * Unit tests will be added.
-## Running Tests
 
-To run tests, run the following command
+## Features
+ #### Our Website User Types:  
+ Admin-Pharmacist-Patient-Guest   
+ ####  **Admin's Features**  
+ As an Admin you can :
+ - add another adminstrator
+ - remove a pharmacist/patient from the system
+ - view all of the information uploaded by a pharmacist to apply to join the platform
+ - accept or reject the request of a pharmacist to join the platform
+ - view a pharmacist's /patient's information    
+ - view a total sales report based on a chosen month
+  ####  **Pharmacists Features**    
+   As a Pharmacist you can :
+- upload and submit required documents upon registration such as ID, pharmacy degree
+- view the available quantity, and sales of each medicine
+- add a medicine with its details
+- upload medicine image
+- edit medicine details and price
+- archive/ unarchive a medicine
+- view a total sales report based on a chosen month
+- filter sales report based on a medicine/date
+- chat with a doctor
+- Receive a notification once a medicine is out of stock on the system and via email
+ - View wallet
+####  **Patient Features** 
+As a Patient you can :
+   - add an over the counter medicine in my cart
+   - add a prescription medicine to my cart based on my prescription
+   - view cart items and edit on them
+   - add a new delivery address (or multiple addresses) and choose from them
+   - choose to pay with wallet, credit card (using Stripe) or cash on delivery
+   - view current and past orders
+   - view order details and status
+   - view alternatives to a medicine that is out of stock based on main active ingredient
+   - chat with a pharmacist
+   - View wallet   
 
-```bash
-  npm run test
-```
+   ####  **Guest Features**      
+  As an Guest you can :
+  - register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact ( full name , mobile number, relation to the patient)
+  - submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), educational background.
+####  **Registered  Features**      
+  As a Registered User you can :
+  - login with username and password
+  - logout
+  - change password
+  - reset a forgotten password through OTP sent to email
+  - view a list of all available medicines (including picture of medicine, price, description)
+  - search for medicine based on name
+  - filter medicines based on medicinal use
+
+
 
 ## Code Examples
 - To Get All Medicines
@@ -156,6 +192,544 @@ export default function Checkout() {
 }
 
 ```
+
+## Installation
+- Clone the Project    
+```http
+git clone https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy 
+```
+  - Open 2 Terminals
+#### Back-End Terminal
+- To install packages (You need to change directory to backend first (cd .\backend\)) 
+```http
+npm i 
+```
+- To run the Back-End    
+```http
+npm start 
+```
+#### Front-End Terminal
+- To install packages (You need to change directory to frontend first (cd .\frontend\)) 
+```http
+npm i 
+```
+- To run the Back-End    
+```http
+npm run dev 
+```
+#### Packages Used
+- bcryptjs: 2.4.3 
+- body-parser: 1.20.2
+- cookie-parser: 1.4.6
+- cors: 2.8.5
+- dotenv: 16.3.1
+- express : 4.18.2
+- jsonwebtoken: 9.0.2
+- mongoose : 7.6.7
+- multer: 1.4.5-lts.1
+- nodemailer: 6.9.7
+- stripe : 14.4.0
+
+
+## API Reference
+### Patient's routes
+
+#### Register as Patient
+```http
+  POST /register
+```
+
+| Parameter              | Type                                | Description                                                      |
+| :--------------------- | :---------------------------------- | :--------------------------------------------------------------- |
+| `username`             | `string`                 |(Required)  Instructor's username to fetch courses.                           |
+| `name`                 | `string`                  |(Required) Patient's name.                                                  |
+| `email`                | `string`           | (Required, Unique)Patient's email address.                                         |
+| `password`             | `string`                  | (Required)Patient's password.                                              |
+| `dateOfBirth`          | `Date`                    | (Required)Patient's date of birth.                                         |
+| `gender`               | `string`  | (Required, Enum: ['male', 'female'])Patient's gender.                                           |
+| `mobileNumber`         | `string`                 | (Required) Patient's mobile number.                                         |
+| `emergencyContact`     | `object`                            | Emergency contact information.                                   |
+| `emergencyContact.fullName`           | `string`       | (Required) Full name of the emergency contact.                              |
+| `emergencyContact.mobileNumber`      | `string`       | (Required) Mobile number of the emergency contact.                         |
+| `emergencyContact.relationToPatient` | `string`       | (Required) Relation of the emergency contact to the patient.               
+| `nationalId`           | `number`          |(Required, Unique)  Patient's national ID.                                           |
+
+#### Add To Cart
+
+```http
+  POST /addToCart
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `medicineName`      | `string` | **Required**. Id of item to fetch |
+| `quantity`      | `number` | **Required**. number of items to be added |
+
+
+#### View My Cart
+
+```http
+  GET /viewCart
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+
+#### Remove Item From Cart
+
+```http
+  PUT /removeFromCart
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `medicineId`      | `string` | **Required**. Id of item to fetch |
+
+
+#### Update Quantity Of Items
+```http
+  PUT /updateQuantity
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `medicineName`      | `string` | **Required**. Id of item to fetch |
+| `quantity`      | `number` | **Required**. number of items to be added |
+
+
+#### Checkout Cart
+```http
+  POST /checkout
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Payment Method`      | `string` | **Required**. Type of Payment|
+
+
+#### Create Stripe Checkout Session
+```http
+  POST /createStripeCheckoutSession
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `addressId`      | `string` | **Required**. Address of the order|
+
+
+#### Add New Address
+```http
+  POST /addAddress
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Street`      | `string` | **Required**. the Street Address|
+| `City`      | `string` | **Required**. the City Address|
+| `Country`      | `string` | **Required**. the Country Address|
+
+#### Get Addresses
+```http
+  GET /getAddresses
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+#### View Order
+```http
+  GET /viewOrder/:orderId
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `orderId`      | `string` | **Required**. the id of order to fetch|
+
+#### Cancel Order
+```http
+  PUT /cancelOrder/:orderId
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `orderId`      | `string` | **Required**. the id of order to fetch|
+
+#### View All Orders
+```http
+  GET /viewAllOrders
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+#### View Wallet
+```http
+  GET /viewWallet
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+#### View All Medicines
+```http
+  GET /getAllMedicines
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+
+#### Search for Medicines by Name
+```http
+  GET /medicine/searchByNames/:name
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name `     | `string` | **Required** name of medicine to fetch 
+
+#### Search for Medicines by MedicalUses
+```http
+  GET /medicine/searchByMedicalUses/:medicalUse
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Patient|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `medicalUse`      | `string` | **Required** medicalUse of medicine to fetch |
+
+### Admin's routes
+
+
+#### Accept a Pharmacist
+```http
+  PUT /approvePharmacist
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required**. username of the accepted Pharmacist|
+
+#### Reject a Pharmacist
+```http
+  PUT /rejectPharmacist
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required**. username of the rejected Pharmacist|
+
+#### Get Patient
+```http
+  GET /patientView/:id
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required** id of Patient to fetch |
+
+#### Get Pharmacist
+```http
+  GET /pharmacistView/:id
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required** id of Pharmacist to fetch |
+
+#### View Pending Pharmacists
+```http
+  GET /pendingRequests
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+#### Remove Patient
+```http
+  DELETE /removePatient/:username
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required** username of Patient to fetch |
+
+#### Remove Pharmacist
+```http
+  DELETE /removePharmacist/:username
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required** username of Pharmacist to fetch |
+
+#### Add new Admin
+```http
+  POST /addAdmin
+  ```
+| Body   | Type (Required)   | Description                 |
+| :---------- | :----------------- | :-------------------------- |
+| `username`  | `string (Yes)`   | Pharmacist's username (Unique).  |
+| `password`  |`string (Yes)`   | Pharmacist's password.      |
+| `email`     | `string (Yes)`    | Pharmacist's email address. |
+
+
+### Pharamacy Routes
+
+#### Get All Medicines
+
+```http
+  GET /getAllMedicine
+```
+
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin or Pharmacist|
+
+#### Search for medicine by name
+
+```http
+  GET /medicine/searchByName/${name}
+```
+
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin or Pharmacist|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` | **Required**. name of medicine to fetch 
+
+#### Search for medicine by medical use
+
+```http
+  GET /medicine/searchByMedicalUse/${medicalUse}
+```
+
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Authorization`      | `string` | **Required** Bearer token of the Admin or Pharmacist|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `medicalUse`      | `string` | **Required**. medicalUse of medicine to fetch |
+### Pharmacist Routes
+
+#### Register
+
+```http
+  POST /register
+```
+| Parameter              | Type                                | Description                                                      |
+| :--------------------- | :---------------------------------- | :--------------------------------------------------------------- |
+| `username`             | `string` (Required)                 | Pharmacist's username.                                           |
+| `name`                 | `string` (Required)                 | Pharmacist's name.                                               |
+| `email`                | `string` (Required, Unique)          | Pharmacist's email address.                                      |
+| `password`             | `string` (Required)                 | Pharmacist's password.                                           |
+| `dateOfBirth`          | `Date` (Required)                   | Pharmacist's date of birth.       
+| `documents`          | `file` (Optional)                   | Pharmacist's documents.                                      |
+| `hourlyRate`           | `number` (Required)                 | Pharmacist's hourly rate.                                        |
+| `affiliation`          | `string` (Required)                 | Pharmacist's affiliation or organization.                        |
+| `educationalBackground`| `string` (Required)                 | Pharmacist's educational background.                             |
+| `registrationStatus`   | `string` (Optional, Enum)           | Pharmacist's registration status, one of 'pending', 'accepted', or 'rejected'. Default is 'pending'. |
+| `otp`                  | `string` (Optional)                 | One-time password (OTP) for additional authentication.          |
+
+#### Get total sales by month
+
+```http
+  GET /totalSales/${month}
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| Authorization      | string | Required Bearer token of the Pharmacist|
+
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `month`      | `string` | **Required**. month of total sales to fetch
+
+#### Get quantites and sales of medicines 
+
+```http
+  GET /quantities
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| Authorization      | string | Required Bearer token of the Pharmacist|
+
+#### Add a new medicine
+
+```http
+  POST /addMedicine
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| Authorization      | string | Required Bearer token of the Pharmacist|
+
+
+| Parameter       | Type (Required)   | Description                                                      |
+| :-------------- | :----------------- | :--------------------------------------------------------------- |
+| `name`          | `string (Yes)`    | Name of the medicine (Unique).                                   |
+| `picture`       | `file (No)`     |  medicine's picture.                                   |
+| `price`         | `number (Yes)`    | Price of the medicine (must be >= 0).                            |
+| `description`   | `string (No)`     | Description of the medicine.                                      |
+| `quantity`      | `number (Yes)`    | Available quantity of the medicine (must be >= 0).              |
+| `sales`         | `number (No)`     | Total sales of the medicine (Default is 0, must be >= 0).       |
+| `ingredients`   | `string[] (Yes)`  | List of ingredients in the medicine.                             |
+| `medicalUse`    | `string (No)`     | Medical use or purpose of the medicine.                          |
+
+#### edit medicine 
+
+```http
+  POST /editMedicine/${id}
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| Authorization      | string | Required Bearer token of the Pharmacist|
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. id of medicine to be editted
+
+### Authentication Routes
+
+#### Login
+
+```http
+  POST /Login
+```
+| Parameter    | Type (Required)   | Description                 |
+| :----------- | :----------------- | :-------------------------- |
+| `username`   | `string (Yes)`    | Users's username.      |
+| `password`   | `string (Yes)`    | User's password.      |
+
+#### Logout
+
+```http
+  GET /Logout
+```
+
+#### Forget password
+
+```http
+  POST /forgetPassword
+```
+| Body    | Type (Required)   | Description                 |
+| :----------- | :----------------- | :-------------------------- |
+| `username`   | `string (Yes)`    | Users's username.      |
+
+#### Forget password
+
+```http
+  POST /verifyOTP/${username}
+```
+| Body    | Type (Required)   | Description                 |
+| :----------- | :----------------- | :-------------------------- |
+| `otp`   | `string (Yes)`    | Users's otp.      |
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required**. Users's username.
+
+#### reset password
+
+```http
+  POST /resetPassword/${username}
+```
+| Body    | Type (Required)   | Description                 |
+| :----------- | :----------------- | :-------------------------- |
+| `otp`   | `string (Yes)`    | Users's otp.      |
+| `password`      | `string(Yes)` |  Users's password.
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | **Required**. Users's username.
+
+#### change password
+
+```http
+  POST /changepassword
+```
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| Authorization      | string | Required Bearer token of the User|
+
+| Body    | Type (Required)   | Description                 |
+| :----------- | :----------------- | :-------------------------- |
+| `currentPassword`   | `string (Yes)`    | Users's current Password.      |
+| `oldPassword`      | `string(Yes)` |  Users's old password.
+
+
+  ## Testing
+
+The API routes were tested using Postman. Postman is an application used for API testing, serving as an HTTP client that tests HTTP requests through a graphical user interface. This allows us to obtain various types of responses that need subsequent validation. Postman provides different endpoint interaction methods, including:
+
+- GET: Obtain information
+- POST: Add information
+- PUT: Replace information
+- PATCH: Update specific information
+- DELETE: Delete information
+We tested the behavior of our routes to ensure they produce the correct status code and response according to our project flow."
+
+#### Here are examples of the tests using **Postman** :
+**Register a pharmacist**
+![image11](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/d49ec62a-a411-44f1-b26a-6fb7e386d5b1)
+
+**Get All Medicines**
+![image211](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/ca5610b7-1ed9-4348-b3da-31a4253bce8f)
+
+
 ## How to Contribute
 Anyone who would like to contribute to the project please send me an E-mail at mostafa.elamory@student.guc.edu.eg
 ## Credits
