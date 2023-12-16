@@ -18,6 +18,7 @@ import "../Css/TopNavigation.css";
 import PropTypes from "prop-types";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 
 const TopNavigation = (props) => {
   const { link } = props;
@@ -96,6 +97,18 @@ const TopNavigation = (props) => {
             </ListItemIcon>
             <ListItemText primary="Cart" />
           </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/patients/chats"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <ChatBubbleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Chats" />
+          </ListItem>
+
           <ListItem
             button
             component={Link}
