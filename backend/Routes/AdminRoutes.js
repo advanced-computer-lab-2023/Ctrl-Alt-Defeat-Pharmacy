@@ -12,5 +12,10 @@ router.route('/pharmacistView/:id').get(protect,restrictTo('admin'),Adminstrator
 router.route('/patientView/:id').get(protect,restrictTo('admin'),AdminstratorController.getPatient);
 router.route('/approvePharmacist').put(protect,restrictTo('admin'),AdminstratorController.approvePharmacist);
 router.route('/rejectPharmacist').put(protect,restrictTo('admin'),AdminstratorController.rejectPharmacist);
+router.route('/getAllPharmacists').get(protect,restrictTo('admin'),AdminstratorController.getAllPharmacists);
+router.route('/getAllPatients').get(protect,restrictTo('admin'),AdminstratorController.getAllPatients);
+router.route('/getCountOfPharmacists').get(protect,restrictTo('admin'),AdminstratorController.getCountOfPharmacists);
+router.route('/getCountOfPatients').get(protect,restrictTo('admin'),AdminstratorController.getCountOfPatients);
+router.route('/getAllOrders').get(protect,restrictTo('admin'),AdminstratorController.getAllOrders);
 
 module.exports = router;

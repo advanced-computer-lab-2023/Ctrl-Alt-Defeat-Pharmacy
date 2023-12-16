@@ -3,6 +3,7 @@ const Patient = require('../Models/Patient');
 const Pharmacist = require('../Models/Pharmacist');
 const Medicine = require('../Models/Medicine');
 const APIFeatures = require('../helpers/apiFeatures');
+const Order = require('../Models/Order');
 
 exports.addAdmin = async (req, res) => {
   try {
@@ -165,3 +166,94 @@ exports.rejectPharmacist = async (req, res) => {
   }
 }
 
+exports.getAllPharmacists = async (req, res) => {
+  try {
+    const pendingPharmacists = await Pharmacist.find({ registrationStatus: 'accepted' });
+
+    if (pendingPharmacists.length === 0) {
+      return res.status(404).json({ message: 'No data found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: pendingPharmacists,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+exports.getAllPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find();
+
+    if (patients.length === 0) {
+      return res.status(404).json({ message: 'No data found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: patients,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+}
+
+exports.getCountOfPharmacists = async (req, res) => {
+  try {
+    const count = await Pharmacist.countDocuments({ registrationStatus: 'accepted' });
+
+    res.status(200).json({
+      status: 'success',
+      data: count,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+exports.getCountOfPatients = async (req, res) => {
+  try {
+    const count = await Patient.countDocuments();
+
+    res.status(200).json({
+      status: 'success',
+      data: count,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No data found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: orders,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+}
