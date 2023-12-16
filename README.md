@@ -81,7 +81,9 @@ That’s where MongoDB comes in: JSON documents created in your React.js front e
  #### Our Website User Types:  
  Admin-Pharmacist-Patient-Guest   
  ####  **Admin's Features**  
- As an Admin you can :
+ 
+<details><summary>As an Admin you can :</summary><br>
+ 
  - add another adminstrator
  - remove a pharmacist/patient from the system
  - view all of the information uploaded by a pharmacist to apply to join the platform
@@ -101,8 +103,12 @@ That’s where MongoDB comes in: JSON documents created in your React.js front e
 - chat with a doctor
 - Receive a notification once a medicine is out of stock on the system and via email
  - View wallet
+   </details>
+   
 ####  **Patient Features** 
-As a Patient you can :
+
+<details><summary>As a Patient you can :</summary><br>
+ 
    - add an over the counter medicine in my cart
    - add a prescription medicine to my cart based on my prescription
    - view cart items and edit on them
@@ -112,10 +118,10 @@ As a Patient you can :
    - view order details and status
    - view alternatives to a medicine that is out of stock based on main active ingredient
    - chat with a pharmacist
-   - View wallet   
-
+   - View wallet
+     </details>
    ####  **Guest Features**      
-  As an Guest you can :
+ <details><summary>As a Guest you can :</summary><br>
   - register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact ( full name , mobile number, relation to the patient)
   - submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), educational background.
 ####  **Registered  Features**      
@@ -127,6 +133,7 @@ As a Patient you can :
   - view a list of all available medicines (including picture of medicine, price, description)
   - search for medicine based on name
   - filter medicines based on medicinal use
+ </details>
 
 
 
