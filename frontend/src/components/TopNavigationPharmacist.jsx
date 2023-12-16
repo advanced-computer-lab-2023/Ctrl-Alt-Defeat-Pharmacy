@@ -10,16 +10,16 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LockIcon from "@mui/icons-material/Lock";
 import Axios from "axios";
 import "../Css/TopNavigation.css";
 import PropTypes from "prop-types";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-const TopNavigation = (props) => {
+const TopNavigationPharmacist = (props) => {
   const { link } = props;
 
   const [showSideNav, setShowSideNav] = useState(false);
@@ -54,7 +54,7 @@ const TopNavigation = (props) => {
           </div>
         </Link>
         <div className="account-icon-container">
-          <Link to="/patients/home">
+          <Link to="/pharmacists/home">
             <IconButton>
               <AccountCircleIcon />
             </IconButton>
@@ -66,7 +66,7 @@ const TopNavigation = (props) => {
           <ListItem
             button
             component={Link}
-            to="/patients/medicines"
+            to="/pharmacists/medicines"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
@@ -77,29 +77,29 @@ const TopNavigation = (props) => {
           <ListItem
             button
             component={Link}
-            to="/patients/viewOrder"
+            to="/pharmacists/addMedicine"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
-              <AssignmentIcon />
+              <AddCircleOutlineIcon />
             </ListItemIcon>
-            <ListItemText primary="Orders" />
+            <ListItemText primary="Add Medication" />
           </ListItem>
           <ListItem
             button
             component={Link}
-            to="/patients/viewCart"
+            to="/pharmacists/editMedicine"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <EditIcon />
             </ListItemIcon>
-            <ListItemText primary="Cart" />
+            <ListItemText primary="Edit Medication" />
           </ListItem>
           <ListItem
             button
             component={Link}
-            to="/patients/home"
+            to="/pharmacists/home"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
@@ -137,8 +137,8 @@ const TopNavigation = (props) => {
   );
 };
 
-TopNavigation.propTypes = {
+TopNavigationPharmacist.propTypes = {
   link: PropTypes.string.isRequired,
 };
 
-export default TopNavigation;
+export default TopNavigationPharmacist;
