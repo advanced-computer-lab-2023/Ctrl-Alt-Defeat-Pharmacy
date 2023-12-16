@@ -84,23 +84,28 @@ That’s where MongoDB comes in: JSON documents created in your React.js front e
  
 <details><summary>As an Admin you can :</summary><br>
  
- - add another adminstrator
- - remove a pharmacist/patient from the system
- - view all of the information uploaded by a pharmacist to apply to join the platform
+ - Add another administrator
+ - Remove a pharmacist/patient from the system
+ - View all of the information uploaded by a pharmacist to apply to join the platform
  - accept or reject the request of a pharmacist to join the platform
- - view a pharmacist's /patient's information    
- - view a total sales report based on a chosen month
-  ####  **Pharmacists Features**    
-   As a Pharmacist you can :
-- upload and submit required documents upon registration such as ID, pharmacy degree
-- view the available quantity, and sales of each medicine
-- add a medicine with its details
-- upload medicine image
-- edit medicine details and price
-- archive/ unarchive a medicine
-- view a total sales report based on a chosen month
-- filter sales report based on a medicine/date
-- chat with a doctor
+ - View a pharmacist's /patient's information    
+ - View a total sales report based on a chosen month
+   
+   </details>
+   
+  ####  **Pharmacists Features**
+  
+  <details><summary>As a Pharmacists you can :</summary><br>
+   
+- Upload and submit required documents upon registration such as ID, pharmacy degree
+- View the available quantity and sales of each medicine
+- Add a medicine with its details
+- Upload medicine image
+- Edit medicine details and price
+- Archive/ unarchive a medicine
+- View a total sales report based on a chosen month
+- Filter sales reports based on a medicine/date
+- Chat with a doctor
 - Receive a notification once a medicine is out of stock on the system and via email
  - View wallet
    </details>
@@ -109,30 +114,36 @@ That’s where MongoDB comes in: JSON documents created in your React.js front e
 
 <details><summary>As a Patient you can :</summary><br>
  
-   - add an over the counter medicine in my cart
+   - add an over-the-counter medicine to my cart
    - add a prescription medicine to my cart based on my prescription
-   - view cart items and edit on them
+   - view cart items and edit them
    - add a new delivery address (or multiple addresses) and choose from them
-   - choose to pay with wallet, credit card (using Stripe) or cash on delivery
-   - view current and past orders
-   - view order details and status
-   - view alternatives to a medicine that is out of stock based on main active ingredient
+   - choose to pay with a wallet, credit card (using Stripe) or cash on delivery
+   - View current and past orders
+   - View order details and status
+   - View alternatives to a medicine that is out of stock based on the main active ingredient
    - chat with a pharmacist
    - View wallet
      </details>
    ####  **Guest Features**      
  <details><summary>As a Guest you can :</summary><br>
-  - register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact ( full name , mobile number, relation to the patient)
-  - submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), educational background.
+  
+  - register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact ( full name, mobile number, relation to the patient)
+  - submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), and educational background.
+</details>
+
 ####  **Registered  Features**      
-  As a Registered User you can :
+
+ <details><summary>As a Registered User you can :</summary><br>
+  
   - login with username and password
-  - logout
+  - Logout
   - change password
   - reset a forgotten password through OTP sent to email
-  - view a list of all available medicines (including picture of medicine, price, description)
-  - search for medicine based on name
+  - View a list of all available medicines (including a picture of the medicine, price, and description)
+  - Search for medicine based on name
   - filter medicines based on medicinal use
+    
  </details>
 
 
