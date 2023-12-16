@@ -99,7 +99,7 @@ const TopNavigationPharmacist = (props) => {
           <ListItem
             button
             component={Link}
-            to="/pharmacists/home"
+            to="/pharmacists/viewMedicineQuantitySales"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
@@ -110,7 +110,7 @@ const TopNavigationPharmacist = (props) => {
           <ListItem
             button
             component={Link}
-            to="/pharmacists/viewMedicineQuantitySales"
+            to="/pharmacists/home"
             onClick={handleToggleSideNav}
           >
             <ListItemIcon>
