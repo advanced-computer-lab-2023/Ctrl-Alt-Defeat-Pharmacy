@@ -137,7 +137,9 @@ function PatientHome() {
                       secondary={`(@${patient.username})`}
                     />
                     <ListItemText secondary={patient.email} />
-                    <ListItemText primary={`Wallet: $${patient.wallet}`} />
+                    <ListItemText
+                      primary={`Wallet: $${Math.floor(patient.wallet)}`}
+                    />
                     <div>
                       <Link
                         to="/changePassword"

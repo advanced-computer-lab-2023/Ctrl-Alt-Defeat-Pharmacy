@@ -284,7 +284,7 @@ exports.Checkout = async (req, res) => {
     const selectedAddressId = req.body.addressId;
     const deliveryAddress = req.user.addresses.find(address => address._id.toString() === selectedAddressId.toString());
 
-    if (paymentMethod === 'wallet') {
+    if (paymentMethod === 'Wallet') {
       if (patient.wallet < totalPrice) {
         return res.status(200).json({ error: 'Insufficient funds in your wallet' });
       }
@@ -380,8 +380,9 @@ exports.cancelOrder = async (req, res) => {
       await medicine.save();
     });
     if (order.paymentMethod !== 'Cash on Delivery') {
-      const patient = await Patient.findById(order.patient);
+      const patient = await Patient.findById(order.patient._id);
       patient.wallet += order.totalPrice;
+      await patient.save();
     }
 
     res.status(204).json({
