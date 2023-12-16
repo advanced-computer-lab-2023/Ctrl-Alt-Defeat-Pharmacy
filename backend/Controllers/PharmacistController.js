@@ -1,7 +1,6 @@
 const Pharmacist = require('../Models/Pharmacist');
 const Medicine = require('../Models/Medicine');
 const Order = require('../Models/Order');
-
 const path = require('path');
 const multer = require('multer');
 
@@ -178,6 +177,29 @@ exports.registerPharmacist = async (req, res) => {
   }
 };
 
+exports.registerPharmacist = async (req, res) => {
+  try {
+    let newPharma = req.body;
+    console.log(req);
+
+    // If files are uploaded, add them to the newPharma object
+    if (req.files && req.files.length > 0) {
+      newPharma.Documents = req.files.map(file => file.filename);
+    }
+
+    const newPharmacist = await Pharmacist.create(newPharma);
+    newPharmacist.registrationStatus = 'pending';
+    res.status(201).json({
+      message: 'pending approval of the new pharmacist',
+      data: newPharmacist,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error.message, // Provide a more informative error message
+    });
+  }
+};
 exports.getMedicineQuantitySales = async (req, res) => {
   try {
     const returnedMedicine = await Medicine.find().select('picture name quantity sales');
