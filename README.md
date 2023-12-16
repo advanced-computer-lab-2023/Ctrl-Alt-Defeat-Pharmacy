@@ -1,4 +1,4 @@
-# El7a2ni
+# El7a2ny
 
 ![1111211](https://github.com/advanced-computer-lab-2023/Ctrl-Alt-Defeat-Pharmacy/assets/102230910/677c8951-6d47-4ae7-a34c-cb923035238e)
 ## Table of contents
@@ -21,7 +21,7 @@
 ## Project Description
 
 #### Title
-EL7a2ni
+EL7a2ny
 #### Course
 Advanced Computer Lab (CSEN 704), Winter 2023
 #### Theme
