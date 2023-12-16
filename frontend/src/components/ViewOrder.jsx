@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import ReviewOrder from "./ReviewOrder";
+import TopNavigation from "./TopNavigation";
 
 const ViewOrder = () => {
   const [orderId, setOrderId] = useState("");
@@ -67,13 +68,7 @@ const ViewOrder = () => {
 
   return (
     <div>
-      <div className="top-navigation">
-        <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-        <Link to="/patients/home">Home</Link>
-        <Link to="/patients/medicines">Medicines</Link>
-        <Link to="/patients/viewOrder">Orders</Link>
-        <Link to="/patients/viewCart">Cart</Link>
-      </div>
+      <TopNavigation />
       <div className="order-container">
         <h2>View Order</h2>
         {/* Replace the input field with Autocomplete */}
