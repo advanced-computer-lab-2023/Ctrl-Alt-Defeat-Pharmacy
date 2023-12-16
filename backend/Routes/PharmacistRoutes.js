@@ -6,7 +6,7 @@ const router = express.Router();
 
 router;
 router.route('/register').post(PharmacistController.uploadPharmacistDocuments, PharmacistController.registerPharmacist);
-router.route('/totalSales/:month').get(protect, restrictTo('pharmacist'), PharmacistController.getTotalSalesPerMonth);
+router.route('/totalSales/:month').get(PharmacistController.getTotalSalesPerMonth);
 router.route('/quantities').get(protect, restrictTo('pharmacist'), PharmacistController.getMedicineQuantitySales);
 router
   .route('/addMedicine')
