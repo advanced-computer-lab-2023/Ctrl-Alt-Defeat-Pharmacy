@@ -7,6 +7,9 @@ const pharmacistSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  Documents: {
+    type: [String],
+  },
   name: {
     type: String,
     required: true,
@@ -43,6 +46,10 @@ const pharmacistSchema = new mongoose.Schema({
   },
   otp: {
     type: String,
+  },
+  wallet: {
+    type: Number,
+    default: 0,
   },
 });
 

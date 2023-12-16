@@ -1,7 +1,6 @@
 const express = require('express');
 const AdminstratorController = require('./../Controllers/AdminstratorController');
-const { protect , restrictTo } = require('../Middlewares/authMiddlewares');
-
+const { protect, restrictTo } = require('../Middlewares/authMiddlewares');
 
 const router = express.Router();
 router.route('/addAdmin').post(protect,restrictTo('admin'),AdminstratorController.addAdmin);
@@ -17,5 +16,4 @@ router.route('/getAllPatients').get(protect,restrictTo('admin'),AdminstratorCont
 router.route('/getCountOfPharmacists').get(protect,restrictTo('admin'),AdminstratorController.getCountOfPharmacists);
 router.route('/getCountOfPatients').get(protect,restrictTo('admin'),AdminstratorController.getCountOfPatients);
 router.route('/getAllOrders').get(protect,restrictTo('admin'),AdminstratorController.getAllOrders);
-
 module.exports = router;

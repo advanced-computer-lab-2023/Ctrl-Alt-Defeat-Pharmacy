@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
+import TopNavigationPharmacist from "./TopNavigationPharmacist";
 
 function PharmacistHome() {
 
@@ -26,22 +27,8 @@ function PharmacistHome() {
 
   return (
     <div>
-      <h1>Pharmacist Home</h1>
-      <h3>Hello, Pharmacist</h3>
-      <br />
-      <Link to="/pharmacists/medicines">View Medicines</Link>
-      <br />
-      <Link to="/pharmacists/addMedicine">Add Medicine</Link>
-      <br />
-      <Link to="/pharmacists/editMedicine">Edit Medicine</Link>
-      <br />
-      <Link to="/pharmacists/viewMedicineQuantitySales">View Medicine Quantity Sales</Link>
-      <br/>
-      <Link to="/" onClick={handleLogout}>
-        Logout
-      </Link>
-      <br />
-      <Link to="/changePassword">change password</Link>
+      <TopNavigationPharmacist link="/pharmacists/home" />
+
     </div>
   );
 }
