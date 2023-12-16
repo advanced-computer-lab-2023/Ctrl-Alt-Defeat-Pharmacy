@@ -460,7 +460,10 @@ exports.getAllMedicine = async (req, res) => {
 exports.getMedicineByName = async (req, res) => {
   try {
     const substring = req.params.name;
-    const returnedMedicine = await Medicine.find({ name: { $regex: substring, $options: 'i' }, archive: false }).exec();
+    const returnedMedicine =
+      substring == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ name: { $regex: substring, $options: 'i' }, archive: false }).exec();
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,
@@ -473,7 +476,10 @@ exports.getMedicineByName = async (req, res) => {
 
 exports.getMedicineByMedicalUse = async (req, res) => {
   try {
-    const returnedMedicine = await Medicine.find({ medicalUse: req.params.medicalUse, archive: false });
+    const returnedMedicine =
+      req.params.medicalUse == 'all'
+        ? await Medicine.find()
+        : await Medicine.find({ medicalUse: req.params.medicalUse, archive: false });
     res.status(200).json({
       status: 'success',
       data: returnedMedicine,

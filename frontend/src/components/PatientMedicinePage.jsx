@@ -85,13 +85,13 @@ function PatientMedicinesPage() {
     let searchedMedicines = medicines;
     if (value !== "") {
       searchedMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/patient/medicine/searchByName/${value}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByNames/${value}`,
         { withCredentials: true }
       );
       searchedMedicines = searchedMedicines.data.data;
     } else {
       searchedMedicines = await Axios.get(
-        `http://localhost:8000/api/v1/patient/medicine/searchByName/${"all"}`,
+        `http://localhost:8000/api/v1/patient/medicine/searchByNames/${"all"}`,
         { withCredentials: true }
       );
       searchedMedicines = searchedMedicines.data.data;
