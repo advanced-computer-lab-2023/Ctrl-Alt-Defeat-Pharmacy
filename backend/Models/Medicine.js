@@ -34,6 +34,12 @@ const medicineSchema = new mongoose.Schema({
   medicalUse: {
     type: String,
   },
+  archive: {
+     type: Boolean,
+      default: false },
+  prescription: {
+     type: Boolean, 
+     required: true },
 });
 
 const Medicine = mongoose.model('Medicine', medicineSchema);

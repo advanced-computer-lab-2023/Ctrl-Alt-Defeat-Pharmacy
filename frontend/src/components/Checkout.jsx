@@ -1,28 +1,159 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import PaymentForm from "./PaymentForm";
+import AddressForm from "./AddressForm";
+import Review from "./Review";
+import TopNavigation from "./TopNavigation";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
-import "../Css/Checkout.css";
-import "../Css/PatientHome.css";
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        EL7a2ny
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
-const Checkout = () => {
+const steps = ["Shipping address", "Payment details", "Review your order"];
+
+function getStepContent(
+  step,
+  handleAddressSelect,
+  handlePaymentMethodSelect,
+  selectedAddress,
+  selectedPaymentMethodString
+) {
+  switch (step) {
+    case 0:
+      return <AddressForm handleAddressSelect={handleAddressSelect} />;
+    case 1:
+      return (
+        <PaymentForm handlePaymentMethodSelect={handlePaymentMethodSelect} />
+      );
+    case 2:
+      return (
+        <Review
+          selectedAddress={selectedAddress}
+          selectedPaymentMethod={selectedPaymentMethodString}
+        />
+      );
+    default:
+      throw new Error("Unknown step");
+  }
+}
+
+export default function Checkout() {
+  const [activeStep, setActiveStep] = React.useState(0);
   const [cart, setCart] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [orderID, setOrderID] = useState("");
+  const [selectedPaymentMethodString, setSelectedPaymentMethodString] =
+    useState("Cash");
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const handleNext = () => {
+    if (activeStep !== 2) {
+      setActiveStep(activeStep + 1);
+    } else {
+      pay();
+    }
+  };
+  React.useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const addressesResponse = await Axios.get(
+          `http://localhost:8000/api/v1/patient/getAddresses`,
+          { withCredentials: true }
+        );
+        const addressesData = addressesResponse.data;
+        setAddresses(addressesData.addresses);
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
 
-  useEffect(() => {
+    fetchAddresses();
+  }, []);
+  React.useEffect(() => {
     const checkout = async () => {
-    const url = new URL(window.location.href);
-    const queryParams = new URLSearchParams(url.search);
-    const success = queryParams.get('success');
-    const addressId = queryParams.get('addressId');
-    if( !success ) return;
+      const url = new URL(window.location.href);
+      const queryParams = new URLSearchParams(url.search);
+      const success = queryParams.get("success");
+      const addressId = queryParams.get("addressId");
+      if (!success) return;
 
+      try {
+        const response = await Axios.post(
+          "http://localhost:8000/api/v1/patient/checkout",
+          { addressId },
+          { withCredentials: true }
+        );
+
+        if (!response.data) {
+          throw new Error("Checkout failed");
+        }
+
+        setCheckoutMessage(
+          `Order placed successfully. Order ID: ${response.data._id}`
+        );
+        setOrderID(response.data._id);
+
+        setActiveStep(3);
+        setSelectedAddressId("");
+        fetchData();
+        window.history.replaceState({}, document.title, "/patients/medicines");
+      } catch (error) {
+        console.error("Error during checkout:", error.message);
+        setCheckoutMessage("Failed to place the order. Please try again.");
+      }
+    };
+    fetchData();
+    checkout();
+  }, []);
+  const handleAddressSelect = (selectedAddress) => {
+    // Use the selected address in Checkout component
+    setSelectedAddressId(selectedAddress);
+    setSelectedAddress(addresses[selectedAddress]);
+    // You can set it in state or perform other operations with the selected address
+  };
+
+  const handlePaymentMethodSelect = (selectedPaymentMethod) => {
+    setPaymentMethod(selectedPaymentMethod);
+    if (selectedPaymentMethod === "cash") {
+      setSelectedPaymentMethodString("Cash");
+    } else if (selectedPaymentMethod === "card") {
+      setSelectedPaymentMethodString("Credit Card");
+    } else {
+      setSelectedPaymentMethodString("Wallet");
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
+  const handleCheckout = async () => {
     try {
       const response = await Axios.post(
-        "http://localhost:8000/api/v1/patient/checkout",
-        { addressId },
+        "http://localhost:8000/api/v1/patient/createStripeCheckoutSession",
+        { addressId: selectedAddress._id },
         { withCredentials: true }
       );
 
@@ -30,20 +161,12 @@ const Checkout = () => {
         throw new Error("Checkout failed");
       }
 
-      setCheckoutMessage(`Order placed successfully. Order ID: ${response.data._id}`);
-      setSelectedAddressId("");
-      fetchData();
-      window.history.replaceState({}, document.title, "/patients/healthPackages");
-
+      window.location = response.data.url;
     } catch (error) {
       console.error("Error during checkout:", error.message);
       setCheckoutMessage("Failed to place the order. Please try again.");
     }
   };
-    fetchData();
-    checkout();
-  }, []);
-
   const fetchData = async () => {
     try {
       const cartResponse = await Axios.get(
@@ -64,44 +187,23 @@ const Checkout = () => {
     }
   };
 
-  const handleAddressSelection = (e) => {
-    setSelectedAddressId(e.target.value);
-  };
-
-  const handleCheckout = async () => {
-    try {
-      const response = await Axios.post(
-        "http://localhost:8000/api/v1/patient/createStripeCheckoutSession",
-        { addressId: selectedAddressId },
-        { withCredentials: true }
-      );
-
-      if (!response.data) {
-        throw new Error("Checkout failed");
-      }
-
-      window.location = response.data.url;
-
-    } catch (error) {
-      console.error("Error during checkout:", error.message);
-      setCheckoutMessage("Failed to place the order. Please try again.");
-    }
-  };
-
   const pay = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (!selectedAddressId) {
-        setCheckoutMessage("Please select a delivery address.");
-        return;
+      setCheckoutMessage("Please select a delivery address.");
+      return;
     }
 
-    if(paymentMethod === 'card') {
+    if (paymentMethod === "card") {
       handleCheckout();
     } else {
       try {
         const response = await Axios.post(
           "http://localhost:8000/api/v1/patient/checkout",
-          { addressId: selectedAddressId, withWallet: paymentMethod === 'wallet' },
+          {
+            addressId: selectedAddress._id,
+            withWallet: paymentMethod === "wallet",
+          },
           { withCredentials: true }
         );
 
@@ -109,117 +211,87 @@ const Checkout = () => {
           throw new Error("Checkout failed");
         }
 
-        if(response.data.error) {
+        if (response.data.error) {
           setCheckoutMessage(response.data.error);
           return;
         }
 
-        setCheckoutMessage(`Order placed successfully. Order ID: ${response.data._id}`);
+        setCheckoutMessage(
+          `Order placed successfully. Order ID: ${response.data._id}`
+        );
+        setOrderID(response.data._id);
+        setActiveStep(3);
         setSelectedAddressId("");
         fetchData();
-
       } catch (error) {
         console.error("Error during checkout:", error.message);
         setCheckoutMessage("Failed to place the order. Please try again.");
       }
     }
-  }
-
+  };
 
   return (
-    <div>
-    <div className="top-navigation">
-      <Link to="/patients/home">CTRL-ALT-DEFEAT Pharmacy</Link>
-      <Link to="/patients/home">Home</Link>
-      <Link to="/patients/medicines">Medicines</Link>
-      <Link to="/patients/viewOrder">Orders</Link>
-      <Link to="/patients/viewCart">Cart</Link>
-    </div>
-    <div className="checkout-container">
-      <div className="checkout-section">
-        <h3>Your Cart</h3>
-        {cart.items && cart.items.length > 0 ? (
-          <ul>
-            {cart.items.map((item) => (
-              <li key={item.medicineId._id} className="checkout-item">
-                <strong>Name: {item.medicineId.name}</strong>
-                <p>Quantity: {item.quantity}</p>
-                <img src={item.medicineId.picture} alt={item.medicineId.name} className="medicine-picture" />
-              </li>
+    <React.Fragment>
+      <CssBaseline />
+      <TopNavigation link="/patients/medicines" />
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+        >
+          <Typography component="h1" variant="h4" align="center">
+            Checkout
+          </Typography>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
             ))}
-          </ul>
-        ) : (
-          <p>Your cart is empty</p>
-        )}
-      </div>
+          </Stepper>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography variant="h5" gutterBottom>
+                Thank you for your order.
+              </Typography>
+              <Typography variant="subtitle1">
+                Your order number is #{orderID}. We have emailed your order
+                confirmation, and will send you an update when your order has
+                shipped.
+              </Typography>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {getStepContent(
+                activeStep,
+                handleAddressSelect,
+                handlePaymentMethodSelect,
+                selectedAddress,
+                selectedPaymentMethodString
+              )}
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                {activeStep !== 0 && (
+                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                    Back
+                  </Button>
+                )}
 
-      <div className="checkout-section">
-        <h3>Select Delivery Address:</h3>
-        <select onChange={handleAddressSelection}>
-          <option value="">Select an Address</option>
-          {addresses.map((address) => (
-            <option key={address._id} value={address._id}>
-              {address.street}, {address.city}, {address.country}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="checkout-section">
-        <h3> Pay With</h3>
-        <div>
-        <input 
-          type="radio"
-          checked={paymentMethod === 'cash'}
-          id="cash" 
-          name="payment" 
-          value="cash" 
-          onChange={(e) => setPaymentMethod(e.target.value)} 
-        />
-        <label htmlFor="cash">Cash on delivery</label>
-        </div>
-        <div>
-        <input 
-          type="radio" 
-          checked={paymentMethod === 'card'}
-          id="card" 
-          name="payment" 
-          value="card" 
-          onChange={(e) => setPaymentMethod(e.target.value)} 
-        />
-        <label htmlFor="card">Credit Card</label>
-        </div>
-        <div>
-        <input 
-          type="radio" 
-          checked={paymentMethod === 'wallet'}
-          id="wallet" 
-          name="payment" 
-          value="wallet" 
-          onChange={(e) => setPaymentMethod(e.target.value)} 
-        />
-        <label htmlFor="wallet">Wallet</label>
-        </div>
-      </div>
-
-      <div className="checkout-section">
-        <h3>Payment summary</h3>
-        <p>Subtotal: ${Math.floor(cart.totalPrice * 100) / 100}</p>
-        <p>Delivery fee: $5</p>
-        <p>Service fee: ${Math.floor(cart.totalPrice * 0.05 * 100) / 100}</p>
-        <p>Total: ${Math.floor((cart.totalPrice + 5 + cart.totalPrice * 0.05) * 100) / 100}</p>
-      </div>
-
-      <div>
-        <button onClick={pay} className="checkout-button">
-          Place Order
-        </button>
-        {checkoutMessage && <p className="checkout-message">{checkoutMessage}</p>}
-      </div>
-
-    </div>
-  </div>    
+                <Button
+                  variant="contained"
+                  onClick={handleNext}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                </Button>
+              </Box>
+              {checkoutMessage && (
+                <p className="checkout-message">{checkoutMessage}</p>
+              )}
+            </React.Fragment>
+          )}
+        </Paper>
+        <Copyright />
+      </Container>
+    </React.Fragment>
   );
-};
-
-export default Checkout;
+}

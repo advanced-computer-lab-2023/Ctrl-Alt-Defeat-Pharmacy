@@ -46,7 +46,6 @@ function PharmacistDetails() {
         </div>
       )}
       <br />
-      <Link to="/admins/home">home</Link>
     </div>
   );
 }
