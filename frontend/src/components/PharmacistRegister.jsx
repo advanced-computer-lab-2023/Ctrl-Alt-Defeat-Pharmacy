@@ -246,7 +246,7 @@ export default function SignInSide() {
                   ":hover": { backgroundColor: "#0076c0" },
                 }}
               >
-                Sign In
+                Sign Up
               </Button>{" "}
               <Grid container>
                 <Grid
