@@ -32,7 +32,10 @@ import ListItems from "./components/ListItems";
 import Title from "./components/Title";
 import Orders from "./components/Orders";
 import TopNavigationAdmin from "./components/TopNavigationAdmin";
+import SalesReport from "./components/SalesReport";
+import SalesReportPhar from "./components/SalesReportPhar";
 import Chat from "./components/Chat";
+
 
 function App() {
   return (
@@ -97,10 +100,9 @@ function App() {
           <Route path="admins/listItems" element={<ListItems />} />
           <Route path="admins/title" element={<Title />} />
           <Route path="admins/orders" element={<Orders />} />
-          <Route
-            path="admins/topNavigationAdmin"
-            element={<TopNavigationAdmin />}
-          />
+          <Route path="admins/topNavigationAdmin" element={<TopNavigationAdmin />} />
+          <Route path="admins/salesReport" element={<SalesReport />} />
+          <Route path="pharmacists/salesReportPhar" element={<SalesReportPhar />} />
         </Routes>
       </BrowserRouter>
 

@@ -19,6 +19,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import SalesReportPhar from "./SalesReportPhar";
+
 const TopNavigationPharmacist = (props) => {
   const { link } = props;
 
@@ -73,6 +76,17 @@ const TopNavigationPharmacist = (props) => {
               <LocalPharmacyIcon />
             </ListItemIcon>
             <ListItemText primary="Medications" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/pharmacists/salesReportPhar"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <SummarizeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Report" />
           </ListItem>
           <ListItem
             button

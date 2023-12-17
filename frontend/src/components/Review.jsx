@@ -53,7 +53,7 @@ export default function Review({ selectedAddress, selectedPaymentMethod }) {
               secondary={`Quantity: ${product.quantity}`} // Fix: Concatenate the string and product quantity using template literals
             />
             <Typography variant="body2">
-              {product.medicineId.price * product.quantity}$
+              {Math.floor(product.medicineId.price * product.quantity)}$
             </Typography>
           </ListItem>
         ))}
