@@ -20,10 +20,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import HomeIcon from "@mui/icons-material/Home";
-import PendingActionsRoundedIcon from '@mui/icons-material/PendingActionsRounded';
-import PersonRemoveAlt1RoundedIcon from '@mui/icons-material/PersonRemoveAlt1Rounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
+import PendingActionsRoundedIcon from "@mui/icons-material/PendingActionsRounded";
+import PersonRemoveAlt1RoundedIcon from "@mui/icons-material/PersonRemoveAlt1Rounded";
+import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import AddCircleSharpIcon from "@mui/icons-material/AddCircleSharp";
 
 const TopNavigationAdmin = (props) => {
   const { link } = props;
@@ -59,132 +59,125 @@ const TopNavigationAdmin = (props) => {
             />
           </div>
         </Link>
-        <div className="account-icon-container">
-          <Link to="/pharmacists/home">
-            <IconButton>
-              <AccountCircleIcon />
-            </IconButton>
-          </Link>
-        </div>
       </div>
       <Drawer anchor="left" open={showSideNav} onClose={handleToggleSideNav}>
-          <List>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/home"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/patients/medicines"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <LocalPharmacyIcon />
-              </ListItemIcon>
-              <ListItemText primary="Medicines" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/addadmin"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <AddCircleSharpIcon />
-              </ListItemIcon>
-              <ListItemText primary="Add Admin" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/viewPendingPharmacists"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <PendingActionsRoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Pending" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/removePatient"
-              onClick={handleToggleSideNav}
-            >
+        <List>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/home"
+            onClick={handleToggleSideNav}
+          >
             <ListItemIcon>
-                <PersonRemoveAlt1RoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Remove Patient" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/removePharmacist"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <PersonRemoveAlt1RoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Remove Pharmacist" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/admins/patientDetails"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <InfoRoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Patients Details" />
-            </ListItem>            
-            <ListItem
-              button
-              component={Link}
-              to="/admins/pharmacistDetails"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <InfoRoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Pharmacist Details" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/changePassword"
-              onClick={handleToggleSideNav}
-            >
-              <ListItemIcon>
-                <LockIcon />
-              </ListItemIcon>
-              <ListItemText primary="Change password" />
-            </ListItem>
-            <hr className="hr" />
-            <ListItem
-              button
-              component={Link}
-              to="/"
-              className="right"
-              onClick={handleLogout}
-            >
-              <ListItemIcon>
-                <LockIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </List>
-        </Drawer>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/pharmacists/medicines"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <LocalPharmacyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Medicines" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/addadmin"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <AddCircleSharpIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Admin" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/viewPendingPharmacists"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <PendingActionsRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Pending" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/removePatient"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <PersonRemoveAlt1RoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove Patient" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/removePharmacist"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <PersonRemoveAlt1RoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove Pharmacist" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/patientDetails"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <InfoRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Patients Details" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/pharmacistDetails"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <InfoRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Pharmacist Details" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/changePassword"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <LockIcon />
+            </ListItemIcon>
+            <ListItemText primary="Change password" />
+          </ListItem>
+          <hr className="hr" />
+          <ListItem
+            button
+            component={Link}
+            to="/"
+            className="right"
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <LockIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </List>
+      </Drawer>
     </div>
   );
-}
+};
 
 export default TopNavigationAdmin;

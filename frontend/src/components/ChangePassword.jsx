@@ -6,6 +6,7 @@ import TopNavigationPharmacist from "./TopNavigationPharmacist";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import TopNavigationAdmin from "./TopNavigationAdmin";
 
 const PasswordField = ({ value, onChange, placeholder }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -95,8 +96,9 @@ const ChangePassword = () => {
     <div>
       {role === "patient" && <TopNavigation link="/patients/medicines" />}
       {role === "pharmacist" && (
-        <TopNavigationPharmacist link="/pharmacists/home" />
+        <TopNavigationPharmacist link="/pharmacists/medicines" />
       )}
+      {role === "admin" && <TopNavigationAdmin link="/admins/home" />}
       <div className="container-password">
         <h2>Change Password</h2>
 
