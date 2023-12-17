@@ -8,7 +8,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import "../Css/PatientDetails.css";
-
+import { Container } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 const SalesReportPhar = () => {
   const [salesData, setSalesData] = useState([]);
@@ -52,7 +57,18 @@ const SalesReportPhar = () => {
   }, [medicineName, startDate, endDate, month]);
 
   const months = [
-    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
   ];
 
   return (
@@ -62,8 +78,8 @@ const SalesReportPhar = () => {
         <h1>Monthly Sales Report</h1>
         <div>
           {/* Replace the native input with Material-UI TextField */}
-          <TextField 
-            sx={{ m: 1, width: '25ch', margin: '10px' }}
+          <TextField
+            sx={{ m: 1, width: "25ch", margin: "10px" }}
             id="outlined-basic"
             label="Medicine Name"
             variant="outlined"
@@ -75,8 +91,7 @@ const SalesReportPhar = () => {
           <FormControl fullWidth>
             <InputLabel id="month-select-label">Month</InputLabel>
             <Select
-                        sx={{ m: 1, width: '25ch', margin: '10px' }}
-
+              sx={{ m: 1, width: "25ch", margin: "10px" }}
               labelId="month-select-label"
               id="month-select"
               value={month}
@@ -108,13 +123,33 @@ const SalesReportPhar = () => {
           />
         </div>
         <button onClick={filterSalesData}>Fetch Sales Data</button>
-        <ul>
+        {/* <ul>
           {salesData.map((product) => (
             <li key={product.medicine}>
               Medicine: {product.medicine}, Total Sale Profit: {product.totalSales}
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <List>
+              {salesData.map((product) => (
+                <ListItem key={product.medicine} sx={{ py: 1, px: 0 }}>
+                  <ListItemText
+                    primary={product.medicine}
+                    secondary={`Total Sales: $${Math.floor(
+                      product.totalSales
+                    )}`} // Fix: Concatenate the string and product quantity using template literals
+                  />
+                  <Typography variant="body2">{product.sales}</Typography>
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Container>
       </div>
     </div>
   );
