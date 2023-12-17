@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopNavigationAdmin from "./TopNavigationAdmin";
 import "../Css/AddMedicine.css";
+import "../Css/PharmacistDetails.css";
 
 const theme = createTheme({
   palette: {
@@ -60,76 +61,108 @@ function PharmacistDetails() {
   }, []);
 
   const handleClick = (selectedUsername) => {
-    const selectedPharmacist = pharmacists.find((p) => p.username === selectedUsername);
+    const selectedPharmacist = pharmacists.find(
+      (p) => p.username === selectedUsername
+    );
     setPharmacist(selectedPharmacist);
   };
 
   return (
     <div>
-        <TopNavigationAdmin link="/admins/home" />
-    <ThemeProvider theme={theme}>
-      <div>
-        {pharmacist && (
+      <TopNavigationAdmin link="/admins/home" />
+      <div className="pharmacist-details-container">
+        <ThemeProvider theme={theme}>
           <div>
-            <Typography variant="h2">Pharmacist Information</Typography>
-            <Typography variant="h3">Username: {pharmacist.username}</Typography>
-            <Typography variant="h3">Name: {pharmacist.name}</Typography>
-            <Typography variant="h3">Email: {pharmacist.email}</Typography>
-            <Typography variant="h3">Date of Birth: {pharmacist.dateOfBirth}</Typography>
-            <Typography variant="h3">Hourly Rate: {pharmacist.hourlyRate}</Typography>
-            <Typography variant="h3">Affiliation: {pharmacist.affiliation}</Typography>
-            <Typography variant="h3">Educational Background: {pharmacist.educationalBackground}</Typography>
-          </div>
-        )}
-        <br />
+            {pharmacist && (
+              <div>
+                <Typography variant="h2">Pharmacist Information</Typography>
+                <Typography variant="h3">
+                  Username: {pharmacist.username}
+                </Typography>
+                <Typography variant="h3">Name: {pharmacist.name}</Typography>
+                <Typography variant="h3">Email: {pharmacist.email}</Typography>
+                <Typography variant="h3">
+                  Date of Birth: {pharmacist.dateOfBirth}
+                </Typography>
+                <Typography variant="h3">
+                  Hourly Rate: {pharmacist.hourlyRate}
+                </Typography>
+                <Typography variant="h3">
+                  Affiliation: {pharmacist.affiliation}
+                </Typography>
+                <Typography variant="h3">
+                  Educational Background: {pharmacist.educationalBackground}
+                </Typography>
+              </div>
+            )}
+            <br />
 
-        <Typography variant="h2">All Pharmacists</Typography>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead style={{ backgroundColor: '#0076c0' }}>
-              <TableRow>
-                <TableCell>
-                  <Typography variant="subtitle1">Username</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Name</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Email</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Date of Birth</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Hourly Rate</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Affiliation</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1">Educational Background</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {pharmacists.map((pharmacist) => (
-                <TableRow key={pharmacist._id}>
-                  <TableCell component="th" scope="row" style={{ border: '1px solid #eee' }}>
-                    {pharmacist.username}
-                  </TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.name}</TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.email}</TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.dateOfBirth}</TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.hourlyRate}</TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.affiliation}</TableCell>
-                  <TableCell style={{ border: '1px solid #eee' }}>{pharmacist.educationalBackground}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            <Typography variant="h2">All Pharmacists</Typography>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead style={{ backgroundColor: "#0076c0" }}>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant="subtitle1">Username</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">Name</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">Email</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">Date of Birth</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">Hourly Rate</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">Affiliation</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">
+                        Educational Background
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {pharmacists.map((pharmacist) => (
+                    <TableRow key={pharmacist._id}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{ border: "1px solid #eee" }}
+                      >
+                        {pharmacist.username}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.name}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.email}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.dateOfBirth}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.hourlyRate}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.affiliation}
+                      </TableCell>
+                      <TableCell style={{ border: "1px solid #eee" }}>
+                        {pharmacist.educationalBackground}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </ThemeProvider>
       </div>
-    </ThemeProvider>
     </div>
   );
 }

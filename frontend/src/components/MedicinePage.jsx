@@ -7,12 +7,14 @@ import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Autocomplete from "@mui/material/Autocomplete";
+import TopNavigationAdmin from "./TopNavigationAdmin";
 
 function PatientMedicinesPage() {
   const [medicines, setMedicines] = useState([]);
   const [medicalUseFilter, setMedicalUseFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [allMedicalUses, setAllMedicalUses] = useState([]);
+  const [role, setRole] = useState("");
   const fetchMedicalUses = async () => {
     const response = await Axios.get(
       "http://localhost:8000/api/v1/pharmacy/getAllMedicine",
@@ -73,7 +75,21 @@ function PatientMedicinesPage() {
     }
     setMedicines(filteredMedicines);
   };
+  const showData = async () => {
+    try {
+      const response = await Axios.get(
+        "http://localhost:8000/api/v1/auth/getMe",
+        { withCredentials: true }
+      );
+      setRole(response.data.role);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
+    showData();
+  }, []);
   const handleSearch = async (value) => {
     setSearchTerm(value);
     let searchedMedicines = medicines;
@@ -95,7 +111,10 @@ function PatientMedicinesPage() {
 
   return (
     <div>
-      <TopNavigationPharmacist link="/pharmacists/home" />
+      {role === "admin" && <TopNavigationAdmin link="/admins/home" />}
+      {role === "pharmacist" && (
+        <TopNavigationPharmacist link="/pharmacists/home" />
+      )}
       <div className="medicine-container">
         <div className="filter-search-section">
           <div className="search-section">

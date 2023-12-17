@@ -52,7 +52,11 @@ export default function PatientPharmacistPieChart() {
   return (
     <React.Fragment>
       <Title>Patients and Pharmacists</Title>
-      <PieChart width={900} height={200}>
+      <PieChart
+        width={900}
+        height={200}
+        style={{ marginTop: "-20px", marginLeft: "-10px" }}
+      >
         <Pie
           data={data}
           dataKey="value"
