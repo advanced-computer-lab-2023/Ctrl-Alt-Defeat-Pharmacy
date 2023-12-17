@@ -176,8 +176,8 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link component={RouterLink} to="/forgetPassword">
+                  forgot password
                 </Link>
               </Grid>
               <Grid style={{ display: "flex", gap: "3px" }}>

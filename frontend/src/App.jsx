@@ -34,6 +34,8 @@ import Orders from "./components/Orders";
 import TopNavigationAdmin from "./components/TopNavigationAdmin";
 import SalesReport from "./components/SalesReport";
 import SalesReportPhar from "./components/SalesReportPhar";
+import Chat from "./components/Chat";
+
 
 function App() {
   return (
@@ -60,9 +62,15 @@ function App() {
             element={<RemovePharmacists />}
           />
           <Route path="/admins/removePatient" element={<RemovePatients />} />
-          <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
-          <Route path= "admins/patientDetails" element={<PatientDetails />} />
-          <Route path= "admins/pharmacistDetails" element={<PharmacistDetails />} />
+          <Route
+            path="/admins/viewPendingPharmacists"
+            element={<ViewPendingPharmacists />}
+          />
+          <Route path="admins/patientDetails" element={<PatientDetails />} />
+          <Route
+            path="admins/pharmacistDetails"
+            element={<PharmacistDetails />}
+          />
           <Route path="/admins/medicines" element={<MedicinePage />} />
           <Route
             path="/admins/viewPendingPharmacists"
@@ -77,12 +85,15 @@ function App() {
           <Route path="/pharmacists/addMedicine" element={<AddMedicine />} />
           <Route path="/pharmacists/editMedicine" element={<EditMedicine />} />
           <Route path="/pharmacists/medicines" element={<MedicinePage />} />
+          <Route path="/pharmacists/chats" element={<Chat />} />
+
           {/* Patient */}
           <Route path="/patients/home" element={<PatientHome />} />
           <Route path="patients/medicines" element={<PatientMedicinePage />} />
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/checkout" element={<Checkout />} />
+          <Route path="patients/chats" element={<Chat />} />
           <Route path="admins/chart" element={<Chart />} />
           <Route path="admins/dashboard" element={<Dashboard />} />
           <Route path="admins/deposits" element={<Deposits />} />
@@ -92,8 +103,6 @@ function App() {
           <Route path="admins/topNavigationAdmin" element={<TopNavigationAdmin />} />
           <Route path="admins/salesReport" element={<SalesReport />} />
           <Route path="pharmacists/salesReportPhar" element={<SalesReportPhar />} />
-
-
         </Routes>
       </BrowserRouter>
 
