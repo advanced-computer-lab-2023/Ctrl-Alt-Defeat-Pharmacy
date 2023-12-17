@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import LockIcon from "@mui/icons-material/Lock";
 import Axios from "axios";
 import "../Css/TopNavigation.css";
 import PropTypes from "prop-types";
@@ -118,17 +117,7 @@ const TopNavigationPharmacist = (props) => {
             </ListItemIcon>
             <ListItemText primary="Account Details" />
           </ListItem>
-          <ListItem
-            button
-            component={Link}
-            to="/changePassword"
-            onClick={handleToggleSideNav}
-          >
-            <ListItemIcon>
-              <LockIcon />
-            </ListItemIcon>
-            <ListItemText primary="Change password" />
-          </ListItem>
+
           <hr className="hr" />
           <ListItem
             button

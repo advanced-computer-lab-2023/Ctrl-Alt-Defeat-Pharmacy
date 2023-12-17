@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Container, Paper } from "@mui/material";
 import "../Css/ChangePassword.css";
 import TopNavigation from "./TopNavigation";
 import TopNavigationPharmacist from "./TopNavigationPharmacist";
