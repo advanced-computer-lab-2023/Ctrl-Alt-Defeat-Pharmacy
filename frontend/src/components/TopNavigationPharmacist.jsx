@@ -18,6 +18,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 const TopNavigationPharmacist = (props) => {
   const { link } = props;
 
@@ -105,6 +106,17 @@ const TopNavigationPharmacist = (props) => {
               <BarChartIcon />
             </ListItemIcon>
             <ListItemText primary="Medicine Sales" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/pharmacists/chats"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <ChatBubbleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Chats" />
           </ListItem>
           <ListItem
             button
