@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import Title from './Title';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import Title from "./Title";
+import axios from "axios";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#82CA9D', '#FF6666', '#FFCC99'];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#AF19FF",
+  "#82CA9D",
+  "#FF6666",
+  "#FFCC99",
+];
 
 export default function PatientPharmacistPieChart() {
   const [patientCount, setPatientCount] = useState(0);
@@ -13,14 +22,20 @@ export default function PatientPharmacistPieChart() {
     const fetchData = async () => {
       try {
         // Fetch patient count
-        const responsePatients = await axios.get('http://localhost:8000/api/v1/admin/getCountOfPatients', { withCredentials: true });
+        const responsePatients = await axios.get(
+          "http://localhost:8000/api/v1/admin/getCountOfPatients",
+          { withCredentials: true }
+        );
         setPatientCount(responsePatients.data?.data);
 
         // Fetch pharmacist count
-        const responsePharmacists = await axios.get('http://localhost:8000/api/v1/admin/getCountOfPharmacists', { withCredentials: true });
+        const responsePharmacists = await axios.get(
+          "http://localhost:8000/api/v1/admin/getCountOfPharmacists",
+          { withCredentials: true }
+        );
         setPharmacistCount(responsePharmacists.data?.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -29,8 +44,8 @@ export default function PatientPharmacistPieChart() {
 
   // Render PieChart with combined data
   const data = [
-    { label: 'Patients', value: patientCount },
-    { label: 'Pharmacists', value: pharmacistCount },
+    { label: "Patients", value: patientCount },
+    { label: "Pharmacists", value: pharmacistCount },
   ];
   console.log(patientCount, pharmacistCount);
 
