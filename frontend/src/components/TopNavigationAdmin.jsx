@@ -24,6 +24,8 @@ import PendingActionsRoundedIcon from "@mui/icons-material/PendingActionsRounded
 import PersonRemoveAlt1RoundedIcon from "@mui/icons-material/PersonRemoveAlt1Rounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import AddCircleSharpIcon from "@mui/icons-material/AddCircleSharp";
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import SalesReport from "./SalesReport";
 
 const TopNavigationAdmin = (props) => {
   const { link } = props;
@@ -72,6 +74,17 @@ const TopNavigationAdmin = (props) => {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/admins/salesReport"
+            onClick={handleToggleSideNav}
+          >
+            <ListItemIcon>
+              <SummarizeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Report" />
           </ListItem>
           <ListItem
             button
