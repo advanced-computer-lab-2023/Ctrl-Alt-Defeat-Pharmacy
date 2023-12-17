@@ -25,6 +25,7 @@ import ForgetPassword from "./components/ForgetPassword";
 import ResetPassword from "./components/ResetPassword";
 import ChangePassword from "./components/ChangePassword";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ChatPage from "./components/ChatPage";
 
 function App() {
   return (
@@ -51,9 +52,15 @@ function App() {
             element={<RemovePharmacists />}
           />
           <Route path="/admins/removePatient" element={<RemovePatients />} />
-          <Route path="/admins/viewPendingPharmacists" element={<ViewPendingPharmacists />}/>
-          <Route path= "admins/patientDetails" element={<PatientDetails />} />
-          <Route path= "admins/pharmacistDetails" element={<PharmacistDetails />} />
+          <Route
+            path="/admins/viewPendingPharmacists"
+            element={<ViewPendingPharmacists />}
+          />
+          <Route path="admins/patientDetails" element={<PatientDetails />} />
+          <Route
+            path="admins/pharmacistDetails"
+            element={<PharmacistDetails />}
+          />
           <Route path="/admins/medicines" element={<MedicinePage />} />
           <Route
             path="/admins/viewPendingPharmacists"
@@ -74,6 +81,7 @@ function App() {
           <Route path="patients/viewOrder" element={<ViewOrder />} />
           <Route path="patients/viewCart" element={<ViewCart />} />
           <Route path="patients/checkout" element={<Checkout />} />
+          <Route path="/chats" element={<ChatPage />} />
         </Routes>
       </BrowserRouter>
 

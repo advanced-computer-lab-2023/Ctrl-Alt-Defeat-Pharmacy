@@ -29,6 +29,7 @@ exports.protect = async (req, res, next) => {
     });
   } else {
     req.user = currentUser;
+    req.role = decoded.role;
     next();
   }
 };

@@ -55,16 +55,15 @@ exports.login = async (req, res) => {
     return;
   }
 
-  if(role === 'pharmacist' && user.registrationStatus !== 'accepted') {
-    if(user.registrationStatus === 'rejected'){
+  if (role === 'pharmacist' && user.registrationStatus !== 'accepted') {
+    if (user.registrationStatus === 'rejected') {
       res.status(401).json({
         status: 'failed',
         message: 'Your request to join the platform has been rejected',
       });
 
       return;
-    }
-    else{
+    } else {
       res.status(401).json({
         status: 'failed',
         message: 'Your request to join the platform is still pending',
@@ -72,7 +71,6 @@ exports.login = async (req, res) => {
 
       return;
     }
-    
   }
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -89,6 +87,7 @@ exports.login = async (req, res) => {
 exports.getMe = async (req, res) => {
   res.status(200).json({
     loggedIn: req.user,
+    role: req.role,
   });
 };
 

@@ -103,9 +103,8 @@ function PatientHome() {
         <Link to="/patients/medicines">Medicines</Link>
         <Link to="/patients/viewOrder">Orders</Link>
         <Link to="/patients/viewCart">Cart</Link>
-        <li>
-          <Link to="/changePassword">change password</Link>
-        </li>
+        <Link to="/changePassword">change password</Link>
+        <Link to="/chats">Chats</Link>
         <Link to="/" className="right" onClick={handleLogout}>
           Logout
         </Link>

@@ -38,6 +38,8 @@ function PharmacistHome() {
         View Medicine Quantity Sales
       </Link>
       <br />
+      <Link to="/chats">Chats</Link>
+      <br />
       <Link to="/" onClick={handleLogout}>
         Logout
       </Link>
